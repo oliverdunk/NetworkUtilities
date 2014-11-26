@@ -21,7 +21,7 @@ public class NetworkUtilities extends JavaPlugin {
      * of plugins.
      */
     public void onEnable(){
-        bootPluginMetrics(); //Attempts to boot metrics system.
+        bootPluginMetrics(); //Attempts to boot metrics system
         log("Version " + version + " now running.");
         log("This version is compatible with " + compatibility);
         //TODO: Initialize any null classes required at runtime
@@ -41,6 +41,7 @@ public class NetworkUtilities extends JavaPlugin {
             metrics.start(); //Sends metrics
             return true; //Success
         } catch (IOException e) {
+            log("Failed to boot metrics system.");
             return false; //Send failure
         }
     }
