@@ -26,12 +26,7 @@ public class StringPermissionSet extends PermissionSet {
      */
     @Override
     public boolean playerHasPermission(Player player) {
-        if(!inverted) {
-            if (player.hasPermission(permission)) return true;
-            return false;
-        }else{
-            if(player.hasPermission(permission)) return true;
-            return false;
-        }
+            if (player.hasPermission(permission)) getCorrectReturn(true);
+            return getCorrectReturn(false);
     }
 }

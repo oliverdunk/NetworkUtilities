@@ -17,4 +17,9 @@ public abstract class PermissionSet {
 
     public void invert(){inverted=true;}
 
+    public boolean getCorrectReturn(boolean value){
+        if(!inverted) return value;
+        return !value;
+    }
+
 }

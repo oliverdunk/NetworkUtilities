@@ -28,13 +28,8 @@ public class ListPermissionSet extends PermissionSet {
      */
     @Override
     public boolean playerHasPermission(Player player) {
-        if(!inverted) {
-            if (uniqueUserIdentifiers.contains(player.getUniqueId().toString())) return true;
-            return false;
-        }else{
-            if (uniqueUserIdentifiers.contains(player.getUniqueId().toString())) return true;
-            return false;
-        }
+            if (uniqueUserIdentifiers.contains(player.getUniqueId().toString())) getCorrectReturn(true);
+            return getCorrectReturn(false);
     }
 
     /**
