@@ -25,7 +25,7 @@ public class blockBreakHandler implements Listener{
     public blockBreakHandler(permissionSet permission){this.permission = permission;}
     public blockBreakHandler(permissionSet permission, EventPriority eventPriority){this.permission = permission; this.eventPriority = eventPriority;}
 
-    @EventHandler(priority = eventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockBreakLowest(BlockBreakEvent event){
         if(!eventPriority.equals(eventPriority.LOWEST)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
@@ -39,21 +39,21 @@ public class blockBreakHandler implements Listener{
         event.setCancelled(true);
     }
 
-    @EventHandler(priority = eventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreakNormal(BlockBreakEvent event){
         if(!eventPriority.equals(eventPriority.NORMAL)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
-    @EventHandler(priority = eventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBreakHigh(BlockBreakEvent event){
         if(!eventPriority.equals(eventPriority.HIGH)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
-    @EventHandler(priority = eventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreakHighest(BlockBreakEvent event){
         if(!eventPriority.equals(eventPriority.HIGHEST)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
