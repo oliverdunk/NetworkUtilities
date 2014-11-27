@@ -1,4 +1,4 @@
-package me.olivervscreeper.networkutilities.events;
+package me.olivervscreeper.networkutilities.events.player.special;
 
 import me.olivervscreeper.networkutilities.permissions.PermissionSet;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
  *
  * @author OliverVsCreeper
  */
-public class PVPEventHandler {
+public class PlayerPVPEventHandler {
 
     /**
      * Event handling information
@@ -22,8 +22,8 @@ public class PVPEventHandler {
     /*
     Constructors for the event class
      */
-    public PVPEventHandler(PermissionSet permission){this.permission = permission;}
-    public PVPEventHandler(PermissionSet permission, EventPriority eventPriority){this.permission = permission; this.eventPriority = eventPriority;}
+    public PlayerPVPEventHandler(PermissionSet permission){this.permission = permission;}
+    public PlayerPVPEventHandler(PermissionSet permission, EventPriority eventPriority){this.permission = permission; this.eventPriority = eventPriority;}
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPVPLowest(EntityDamageByEntityEvent event){

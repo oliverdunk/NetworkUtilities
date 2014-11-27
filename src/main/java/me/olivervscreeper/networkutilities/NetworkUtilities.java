@@ -1,6 +1,6 @@
 package me.olivervscreeper.networkutilities;
 
-import me.olivervscreeper.networkutilities.events.BlockBreakHandler;
+import me.olivervscreeper.networkutilities.events.player.blocks.BlockBreakHandler;
 import me.olivervscreeper.networkutilities.permissions.ListPermissionSet;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventPriority;

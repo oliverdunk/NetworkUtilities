@@ -1,16 +1,18 @@
-package me.olivervscreeper.networkutilities.events;
+package me.olivervscreeper.networkutilities.events.player;
 
 import me.olivervscreeper.networkutilities.permissions.PermissionSet;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 /**
- * Created on 27/11/2014.
+ * Created on 25/11/2014.
  *
  * @author OliverVsCreeper
  */
-public class BlockPlaceHandler {
+public class PlayerInteractHandler implements Listener{
+
     /**
      * Event handling information
      */
@@ -20,39 +22,39 @@ public class BlockPlaceHandler {
     /*
     Constructors for the event class
      */
-    public BlockPlaceHandler(PermissionSet permission){this.permission = permission;}
-    public BlockPlaceHandler(PermissionSet permission, EventPriority eventPriority){this.permission = permission; this.eventPriority = eventPriority;}
+    public PlayerInteractHandler(PermissionSet permission){this.permission = permission;}
+    public PlayerInteractHandler(PermissionSet permission, EventPriority eventPriority){this.permission = permission; this.eventPriority = eventPriority;}
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onBlockPlaceLowest(BlockPlaceEvent event){
+    public void onInteractLowest(PlayerInteractEvent event){
         if(!eventPriority.equals(eventPriority.LOWEST)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOW)
-    public void onBlockPlaceLow(BlockPlaceEvent event) {
+    public void onInteractLow(PlayerInteractEvent event) {
         if (!eventPriority.equals(eventPriority.LOW)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onBlockPlaceNormal(BlockPlaceEvent event){
+    public void onInteractNormal(PlayerInteractEvent event){
         if(!eventPriority.equals(eventPriority.NORMAL)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockPlaceHigh(BlockPlaceEvent event){
+    public void onInteractHigh(PlayerInteractEvent event){
         if(!eventPriority.equals(eventPriority.HIGH)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockPlaceHighest(BlockPlaceEvent event){
+    public void onInteractHighest(PlayerInteractEvent event){
         if(!eventPriority.equals(eventPriority.HIGHEST)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);

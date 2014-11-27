@@ -1,17 +1,17 @@
-package me.olivervscreeper.networkutilities.events;
+package me.olivervscreeper.networkutilities.events.player;
 
 import me.olivervscreeper.networkutilities.permissions.PermissionSet;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 
 /**
  * Created on 25/11/2014.
  *
  * @author OliverVsCreeper
  */
-public class BlockBreakHandler implements Listener{
+public class PlayerDropItemHandler implements Listener{
 
     /**
      * Event handling information
@@ -22,39 +22,39 @@ public class BlockBreakHandler implements Listener{
     /*
     Constructors for the event class
      */
-    public BlockBreakHandler(PermissionSet permission){this.permission = permission;}
-    public BlockBreakHandler(PermissionSet permission, EventPriority eventPriority){this.permission = permission; this.eventPriority = eventPriority;}
+    public PlayerDropItemHandler(PermissionSet permission){this.permission = permission;}
+    public PlayerDropItemHandler(PermissionSet permission, EventPriority eventPriority){this.permission = permission; this.eventPriority = eventPriority;}
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onBlockBreakLowest(BlockBreakEvent event){
+    public void onDropItemLowest(PlayerDropItemEvent event){
         if(!eventPriority.equals(eventPriority.LOWEST)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOW)
-    public void onBlockBreakLow(BlockBreakEvent event) {
+    public void onDropItemLow(PlayerDropItemEvent event) {
         if (!eventPriority.equals(eventPriority.LOW)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onBlockBreakNormal(BlockBreakEvent event){
+    public void onDropItemNormal(PlayerDropItemEvent event){
         if(!eventPriority.equals(eventPriority.NORMAL)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockBreakHigh(BlockBreakEvent event){
+    public void onDropItemHigh(PlayerDropItemEvent event){
         if(!eventPriority.equals(eventPriority.HIGH)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockBreakHighest(BlockBreakEvent event){
+    public void onDropItemHighest(PlayerDropItemEvent event){
         if(!eventPriority.equals(eventPriority.HIGHEST)) return;
         if(permission.playerHasPermission(event.getPlayer())) return;
         event.setCancelled(true);
