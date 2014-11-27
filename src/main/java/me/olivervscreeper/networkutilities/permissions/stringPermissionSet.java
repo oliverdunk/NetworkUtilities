@@ -10,22 +10,23 @@ import org.bukkit.entity.Player;
  *
  * @author OliverVsCreeper
  */
-public class stringPermissionSet extends permissionSet {
+public class StringPermissionSet extends PermissionSet {
 
     String permission = "networkutilities.permission.default";
 
-    public stringPermissionSet(){};
-    public stringPermissionSet(String permission){permission = permission;}
+    public StringPermissionSet(){};
+    public StringPermissionSet(String permission){permission = permission;}
 
     /**
      * Checks to see if the player has the string node
      * provided in Bukkit's Permission API.
      *
+     * @param player player to check
      * @return boolean If the player has the string permission.
      */
     @Override
-    public boolean playerHasPermission(Player p) {
-        if(p.hasPermission(permission)) return true;
+    public boolean playerHasPermission(Player player) {
+        if(player.hasPermission(permission)) return true;
         return false;
     }
 }

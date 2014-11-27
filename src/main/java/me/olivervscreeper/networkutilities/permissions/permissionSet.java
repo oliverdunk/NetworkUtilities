@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
  *
  * @author OliverVsCreeper
  */
-public abstract class permissionSet {
+public abstract class PermissionSet {
 
     public abstract boolean playerHasPermission(Player p);
 

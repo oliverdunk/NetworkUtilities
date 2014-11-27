@@ -1,9 +1,11 @@
 package me.olivervscreeper.networkutilities;
 
+import me.olivervscreeper.networkutilities.events.BlockBreakHandler;
+import me.olivervscreeper.networkutilities.permissions.ListPermissionSet;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
-
-import java.io.IOException;
 
 /**
  * Created on 23/11/2014.
@@ -24,7 +26,8 @@ public class NetworkUtilities extends JavaPlugin {
         bootPluginMetrics(); //Attempts to boot metrics system
         log("Version " + version + " now running.");
         log("This version is compatible with " + compatibility);
-        //TODO: Initialize any null classes required at runtime
+
+        getServer().getPluginManager().registerEvents(new BlockBreakHandler(new ListPermissionSet().grantPermission(Bukkit.getPlayer("olivervscreeper")), EventPriority.NORMAL), this);
     }
 
     /**
@@ -40,7 +43,7 @@ public class NetworkUtilities extends JavaPlugin {
             Metrics metrics = new Metrics(this);
             metrics.start(); //Sends metrics
             return true; //Success
-        } catch (IOException e) {
+        } catch (Exception e) {
             log("Failed to boot metrics system.");
             return false; //Send failure
         }

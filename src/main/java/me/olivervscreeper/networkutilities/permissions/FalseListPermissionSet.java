@@ -12,30 +12,30 @@ import java.util.List;
  *
  * @author OliverVsCreeper
  */
-public class ListPermissionSet extends PermissionSet {
+public class FalseListPermissionSet extends PermissionSet {
 
     private List<String> uniqueUserIdentifiers = new ArrayList<String>();
 
-    public ListPermissionSet(){};
-    public ListPermissionSet(List<String> list){this.uniqueUserIdentifiers = list;};
+    public FalseListPermissionSet(){};
+    public FalseListPermissionSet(List<String> list){this.uniqueUserIdentifiers = list;};
 
     /**
      * Checks to see if the UUID of the player is contained
      * within the permission set.
      *
      * @param player player to check
-     * @return boolean If the UUID of the player is in the permission set.
+     * @return boolean If the UUID of the player is not in the permission set.
      */
     @Override
     public boolean playerHasPermission(Player player) {
-        if(uniqueUserIdentifiers.contains(player.getUniqueId().toString())) return true;
-        return false;
+        if(uniqueUserIdentifiers.contains(player.getUniqueId().toString())) return false;
+        return true;
     }
 
     /**
      * Adds the UUID of a player to the list.
      */
-    public ListPermissionSet grantPermission(Player p){
+    public FalseListPermissionSet grantPermission(Player p){
         uniqueUserIdentifiers.add(p.getUniqueId().toString());
         return this;
     }
@@ -43,7 +43,7 @@ public class ListPermissionSet extends PermissionSet {
     /**
      * Removes the UUID of a player from the list.
      */
-    public ListPermissionSet revokePermission(Player p){
+    public FalseListPermissionSet revokePermission(Player p){
         uniqueUserIdentifiers.remove(p.getUniqueId().toString());
         return this;
     }
