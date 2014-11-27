@@ -20,7 +20,12 @@ public class OPPermissionSet extends PermissionSet {
      */
     @Override
     public boolean playerHasPermission(Player player) {
-        if(player.isOp()) return true;
-        return false;
+        if(!inverted) {
+            if (player.isOp()) return true;
+            return false;
+        }else{
+            if (player.isOp()) return false;
+            return true;
+        }
     }
 }

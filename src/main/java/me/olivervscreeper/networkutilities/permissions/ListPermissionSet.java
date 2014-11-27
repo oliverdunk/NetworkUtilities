@@ -12,30 +12,35 @@ import java.util.List;
  *
  * @author OliverVsCreeper
  */
-public class FalseListPermissionSet extends PermissionSet {
+public class ListPermissionSet extends PermissionSet {
 
     private List<String> uniqueUserIdentifiers = new ArrayList<String>();
 
-    public FalseListPermissionSet(){};
-    public FalseListPermissionSet(List<String> list){this.uniqueUserIdentifiers = list;};
+    public ListPermissionSet(){};
+    public ListPermissionSet(List<String> list){this.uniqueUserIdentifiers = list;};
 
     /**
      * Checks to see if the UUID of the player is contained
      * within the permission set.
      *
      * @param player player to check
-     * @return boolean If the UUID of the player is not in the permission set.
+     * @return boolean If the UUID of the player is in the permission set.
      */
     @Override
     public boolean playerHasPermission(Player player) {
-        if(uniqueUserIdentifiers.contains(player.getUniqueId().toString())) return false;
-        return true;
+        if(!inverted) {
+            if (uniqueUserIdentifiers.contains(player.getUniqueId().toString())) return true;
+            return false;
+        }else{
+            if (uniqueUserIdentifiers.contains(player.getUniqueId().toString())) return true;
+            return false;
+        }
     }
 
     /**
      * Adds the UUID of a player to the list.
      */
-    public FalseListPermissionSet grantPermission(Player p){
+    public ListPermissionSet grantPermission(Player p){
         uniqueUserIdentifiers.add(p.getUniqueId().toString());
         return this;
     }
@@ -43,7 +48,7 @@ public class FalseListPermissionSet extends PermissionSet {
     /**
      * Removes the UUID of a player from the list.
      */
-    public FalseListPermissionSet revokePermission(Player p){
+    public ListPermissionSet revokePermission(Player p){
         uniqueUserIdentifiers.remove(p.getUniqueId().toString());
         return this;
     }

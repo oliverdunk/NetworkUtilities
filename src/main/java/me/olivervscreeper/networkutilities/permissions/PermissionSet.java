@@ -11,6 +11,10 @@ import org.bukkit.entity.Player;
  */
 public abstract class PermissionSet {
 
+    public boolean inverted = false;
+
     public abstract boolean playerHasPermission(Player p);
+
+    public void invert(){inverted=true;}
 
 }
