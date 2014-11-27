@@ -3,24 +3,27 @@ package me.olivervscreeper.networkutilities.serialization;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import me.olivervscreeper.networkutilities.serialization.json.JSONException;
+import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
 
 /**
- * A class to help with the serialization of dyed leather armor. The Red, Green, and Blue values are saved
- * appropriately.
+ * A class to help with the serialization of dyed leather armor. The Red, Green,
+ * and Blue values are saved appropriately.
+ * 
  * @author KILL3RTACO
- * @since 1.0
+ * @since TacoSerialization 1.0
  *
  */
 public class LeatherArmorSerialization {
 	
-	protected LeatherArmorSerialization() {
-	}
+	protected LeatherArmorSerialization() {}
 	
 	/**
 	 * Serialize LeatherArmorMeta, saving the Color's rgb value.
-	 * @param meta The LeatherArmorMeta to serialize
+	 * 
+	 * @param meta
+	 *            The LeatherArmorMeta to serialize
 	 * @return The serialized meta information
 	 */
 	public static JSONObject serializeArmor(LeatherArmorMeta meta) {
@@ -35,8 +38,11 @@ public class LeatherArmorSerialization {
 	}
 	
 	/**
-	 * Serializes the LeatherArmorMeta using serializeArmor() and returns the String form.
-	 * @param meta The LeatherArmorMeta to serialized
+	 * Serializes the LeatherArmorMeta using serializeArmor() and returns the
+	 * String form.
+	 * 
+	 * @param meta
+	 *            The LeatherArmorMeta to serialized
 	 * @return The serialization string
 	 */
 	public static String serializeArmorAsString(LeatherArmorMeta meta) {
@@ -44,9 +50,13 @@ public class LeatherArmorSerialization {
 	}
 	
 	/**
-	 * Serializes the LeatherArmorMeta using serializeArmor() and returns the String form.
-	 * @param meta The LeatherArmorMeta to serialized
-	 * @param pretty Whether the resulting String should be 'pretty' or not
+	 * Serializes the LeatherArmorMeta using serializeArmor() and returns the
+	 * String form.
+	 * 
+	 * @param meta
+	 *            The LeatherArmorMeta to serialized
+	 * @param pretty
+	 *            Whether the resulting String should be 'pretty' or not
 	 * @return The serialization string
 	 */
 	public static String serializeArmorAsString(LeatherArmorMeta meta, boolean pretty) {
@@ -54,15 +64,20 @@ public class LeatherArmorSerialization {
 	}
 	
 	/**
-	 * Serializes the LeatherArmorMeta using serializeArmor() and returns the String form.
-	 * @param meta The LeatherArmorMeta to serialized
-	 * @param pretty Whether the resulting String should be 'pretty' or not
-	 * @param indentFactor the amount of spaces in a tab
+	 * Serializes the LeatherArmorMeta using serializeArmor() and returns the
+	 * String form.
+	 * 
+	 * @param meta
+	 *            The LeatherArmorMeta to serialized
+	 * @param pretty
+	 *            Whether the resulting String should be 'pretty' or not
+	 * @param indentFactor
+	 *            the amount of spaces in a tab
 	 * @return The serialization string
 	 */
 	public static String serializeArmorAsString(LeatherArmorMeta meta, boolean pretty, int indentFactor) {
 		try {
-			if(pretty) {
+			if (pretty) {
 				return serializeArmor(meta).toString(indentFactor);
 			} else {
 				return serializeArmor(meta).toString();
@@ -74,9 +89,13 @@ public class LeatherArmorSerialization {
 	}
 	
 	/**
-	 * Gets LeatherArmorMeta from the a JSONObject constructed from the given String
-	 * @param json The String to use
-	 * @return LeatherArmorMeta taken from a JSONObject constructed from the given String
+	 * Gets LeatherArmorMeta from the a JSONObject constructed from the given
+	 * String
+	 * 
+	 * @param json
+	 *            The String to use
+	 * @return LeatherArmorMeta taken from a JSONObject constructed from the
+	 *         given String
 	 */
 	public static LeatherArmorMeta getLeatherArmorMeta(String json) {
 		try {
@@ -89,14 +108,16 @@ public class LeatherArmorSerialization {
 	
 	/**
 	 * Gets LeatherArmorMeta from the given JSONObject
-	 * @param json The JSONObject to decode
+	 * 
+	 * @param json
+	 *            The JSONObject to decode
 	 * @return LeatherArmorMeta taken from the given JSONObject as a reference
 	 */
 	public static LeatherArmorMeta getLeatherArmorMeta(JSONObject json) {
 		try {
 			ItemStack dummyItems = new ItemStack(Material.LEATHER_HELMET, 1);
 			LeatherArmorMeta meta = (LeatherArmorMeta) dummyItems.getItemMeta();
-			if(json.has("color")) {
+			if (json.has("color")) {
 				meta.setColor(ColorSerialization.getColor(json.getJSONObject("color")));
 			}
 			return meta;

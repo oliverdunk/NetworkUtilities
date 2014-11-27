@@ -1,15 +1,23 @@
 package me.olivervscreeper.networkutilities.serialization;
 
+import me.olivervscreeper.networkutilities.serialization.json.JSONArray;
+import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+import me.olivervscreeper.networkutilities.serialization.json.JSONException;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
+
+/**
+ * A class to help with the serialization in FireworkEffects. This is primarily
+ * used by {@link FireworkSerialization}
+ * 
+ * @author KILL3RTACO
+ *
+ * @since TacoSerialization 1.2
+ */
 public class FireworkEffectSerialization {
 	
-	protected FireworkEffectSerialization() {
-	}
+	protected FireworkEffectSerialization() {}
 	
 	public static FireworkEffect getFireworkEffect(String json) {
 		return getFireworkEffect(json);
@@ -21,22 +29,22 @@ public class FireworkEffectSerialization {
 			
 			//colors
 			JSONArray colors = json.getJSONArray("colors");
-			for(int j = 0; j < colors.length(); j++) {
+			for (int j = 0; j < colors.length(); j++) {
 				builder.withColor(ColorSerialization.getColor(colors.getJSONObject(j)));
 			}
 			
 			//fade colors
 			JSONArray fadeColors = json.getJSONArray("fade-colors");
-			for(int j = 0; j < fadeColors.length(); j++) {
+			for (int j = 0; j < fadeColors.length(); j++) {
 				builder.withFade(ColorSerialization.getColor(colors.getJSONObject(j)));
 			}
 			
 			//hasFlicker
-			if(json.getBoolean("flicker"))
+			if (json.getBoolean("flicker"))
 				builder.withFlicker();
 			
 			//trail
-			if(json.getBoolean("trail"))
+			if (json.getBoolean("trail"))
 				builder.withTrail();
 			
 			//type
@@ -57,14 +65,14 @@ public class FireworkEffectSerialization {
 			
 			//colors
 			JSONArray colors = new JSONArray();
-			for(Color c : effect.getColors()) {
+			for (Color c : effect.getColors()) {
 				colors.put(ColorSerialization.serializeColor(c));
 			}
 			root.put("colors", colors);
 			
 			//fade colors
 			JSONArray fadeColors = new JSONArray();
-			for(Color c : effect.getFadeColors()) {
+			for (Color c : effect.getFadeColors()) {
 				fadeColors.put(ColorSerialization.serializeColor(c));
 			}
 			root.put("fade-colors", fadeColors);

@@ -4,14 +4,21 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
+import me.olivervscreeper.networkutilities.serialization.json.JSONArray;
+import me.olivervscreeper.networkutilities.serialization.json.JSONException;
+import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+
+/**
+ * A class to help with the serialiaztion of Fireworks
+ * 
+ * @author KILL3RTACO
+ *
+ * @since TacoSerialization 1.2
+ */
 public class FireworkSerialization {
 	
-	protected FireworkSerialization() {
-	}
+	protected FireworkSerialization() {}
 	
 	public static FireworkMeta getFireworkMeta(String json) {
 		return getFireworkMeta(json);
@@ -22,10 +29,10 @@ public class FireworkSerialization {
 			FireworkMeta dummy = (FireworkMeta) new ItemStack(Material.FIREWORK).getItemMeta();
 			dummy.setPower(json.optInt("power", 1));
 			JSONArray effects = json.getJSONArray("effects");
-			for(int i = 0; i < effects.length(); i++) {
+			for (int i = 0; i < effects.length(); i++) {
 				JSONObject effectDto = effects.getJSONObject(i);
 				FireworkEffect effect = FireworkEffectSerialization.getFireworkEffect(effectDto);
-				if(effect != null)
+				if (effect != null)
 					dummy.addEffect(effect);
 			}
 			return dummy;
@@ -40,7 +47,7 @@ public class FireworkSerialization {
 			JSONObject root = new JSONObject();
 			root.put("power", meta.getPower());
 			JSONArray effects = new JSONArray();
-			for(FireworkEffect e : meta.getEffects()) {
+			for (FireworkEffect e : meta.getEffects()) {
 				effects.put(FireworkEffectSerialization.serializeFireworkEffect(e));
 			}
 			root.put("effects", effects);

@@ -1,20 +1,22 @@
 package me.olivervscreeper.networkutilities.serialization;
 
+import me.olivervscreeper.networkutilities.serialization.json.JSONException;
+import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class Serializer {
 	
 	/**
 	 * Serialize a JSONObject
-	 * @param object The object to serialize
-	 * @return
+	 * 
+	 * @param object
+	 *            The object to serialize
+	 * @return the object as a string, newlines and indentation included
 	 */
 	public static String toString(JSONObject object) {
 		return toString(object, true);
@@ -22,9 +24,12 @@ public class Serializer {
 	
 	/**
 	 * Serialize a JSONObject
-	 * @param object The object to serialize
-	 * @param pretty Whether to add new lines or tabs
-	 * @return
+	 * 
+	 * @param object
+	 *            The object to serialize
+	 * @param pretty
+	 *            Whether to add new lines or tabs
+	 * @return the object as a string
 	 */
 	public static String toString(JSONObject object, boolean pretty) {
 		return toString(object, pretty, 5);
@@ -32,14 +37,18 @@ public class Serializer {
 	
 	/**
 	 * Serialize a JSONObject
-	 * @param object The object to serialize
-	 * @param pretty Whether to add new lines or tabs
-	 * @param tabSize The tab size in spaces
-	 * @return
+	 * 
+	 * @param object
+	 *            The object to serialize
+	 * @param pretty
+	 *            Whether to add new lines or tabs
+	 * @param tabSize
+	 *            The tab size in spaces
+	 * @return the object as a string
 	 */
 	public static String toString(JSONObject object, boolean pretty, int tabSize) {
 		try {
-			if(pretty) {
+			if (pretty) {
 				return object.toString(tabSize);
 			} else {
 				return object.toString();
@@ -52,10 +61,14 @@ public class Serializer {
 	
 	/**
 	 * Get a JSONObject from a file
-	 * @param file The file to use
+	 * 
+	 * @param file
+	 *            The file to use
 	 * @return The JSONObject constructed from the text in the file
-	 * @throws FileNotFoundException If the file was not found
-	 * @throws JSONException If the text in the file does not make a JSONObject
+	 * @throws FileNotFoundException
+	 *             If the file was not found
+	 * @throws JSONException
+	 *             If the text in the file does not make a JSONObject
 	 */
 	public static JSONObject getObjectFromFile(File file) throws FileNotFoundException, JSONException {
 		return getObjectFromStream(new FileInputStream(file));
@@ -63,9 +76,11 @@ public class Serializer {
 	
 	/**
 	 * 
-	 * @param stream The stream to use
+	 * @param stream
+	 *            The stream to use
 	 * @return The JSONObject constructed from the text from the stream
-	 * @throws JSONException If the text from the stream does not make a JSONObject
+	 * @throws JSONException
+	 *             If the text from the stream does not make a JSONObject
 	 */
 	public static JSONObject getObjectFromStream(InputStream stream) throws JSONException {
 		return new JSONObject(getStringFromStream(stream));
@@ -73,6 +88,7 @@ public class Serializer {
 	
 	/**
 	 * Get a string from a file
+	 * 
 	 * @param file
 	 * @return The contents of the given text file
 	 * @throws FileNotFoundException
@@ -83,7 +99,9 @@ public class Serializer {
 	
 	/**
 	 * Get a string from a stream
-	 * @param stream The stream to use
+	 * 
+	 * @param stream
+	 *            The stream to use
 	 * @return The string found within the given stream
 	 */
 	public static String getStringFromStream(InputStream stream) {

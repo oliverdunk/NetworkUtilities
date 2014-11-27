@@ -2,42 +2,46 @@ package me.olivervscreeper.networkutilities.serialization;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Horse;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import me.olivervscreeper.networkutilities.serialization.json.JSONException;
+import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
 
 /**
- * A class to help with the serialization of Horses.
- * <br/><br/>
+ * A class to help with the serialization of Horses. <br/>
+ * <br/>
  * This serialization class supports optional serialization.<br/>
- * TacoSerialization will create a folder in your server plugins directory (wherever that may be) called
- * 'TacoSerialization'. Inside the folder will be a config.yml file. Various values can be turned off to
- * prevent some keys from being generated.
+ * TacoSerialization will create a folder in your server plugins directory
+ * (wherever that may be) called 'TacoSerialization'. Inside the folder will be
+ * a config.yml file. Various values can be turned off to prevent some keys from
+ * being generated.
+ * 
  * @author KILL3RTACO
- * @since 1.0
+ * @since TacoSerialization 1.1
  *
  */
 public class HorseSerialization {
 	
-	protected HorseSerialization() {
-	}
+	protected HorseSerialization() {}
 	
 	/**
 	 * Serialize a Horse into a JSONObject.
-	 * @param horse The Horse to serialize
+	 * 
+	 * @param horse
+	 *            The Horse to serialize
 	 * @return The serialized Horse
 	 */
 	public static JSONObject serializeHorse(Horse horse) {
 		try {
 			JSONObject root = LivingEntitySerialization.serializeEntity(horse);
-			if(shouldSerialize("color"))
+			if (shouldSerialize("color"))
 				root.put("color", horse.getColor().name());
-			if(shouldSerialize("inventory"))
+			if (shouldSerialize("inventory"))
 				root.put("inventory", InventorySerialization.serializeInventory(horse.getInventory()));
-			if(shouldSerialize("jump-strength"))
+			if (shouldSerialize("jump-strength"))
 				root.put("jump-strength", horse.getJumpStrength());
-			if(shouldSerialize("style"))
+			if (shouldSerialize("style"))
 				root.put("style", horse.getStyle());
-			if(shouldSerialize("variant"))
+			if (shouldSerialize("variant"))
 				root.put("variant", horse.getVariant());
 			return root;
 		} catch (JSONException e) {
@@ -48,7 +52,9 @@ public class HorseSerialization {
 	
 	/**
 	 * Serialize a Horse as a String.
-	 * @param horse The Horse to serialize
+	 * 
+	 * @param horse
+	 *            The Horse to serialize
 	 * @return The serialization String.
 	 */
 	public static String serializeHorseAsString(Horse horse) {
@@ -57,8 +63,11 @@ public class HorseSerialization {
 	
 	/**
 	 * Serialize a Horse as a String.
-	 * @param horse The Horse to serialize
-	 * @param pretty Whether the resulting string should be 'pretty' or not.
+	 * 
+	 * @param horse
+	 *            The Horse to serialize
+	 * @param pretty
+	 *            Whether the resulting string should be 'pretty' or not.
 	 * @return The serialization String.
 	 */
 	public static String serializeHorseAsString(Horse horse, boolean pretty) {
@@ -67,14 +76,18 @@ public class HorseSerialization {
 	
 	/**
 	 * Serialize a Horse as a String.
-	 * @param horse The Horse to serialize
-	 * @param pretty Whether the resulting string should be 'pretty' or not.
-	 * @param indentFactor The amount of spaces in a tab
+	 * 
+	 * @param horse
+	 *            The Horse to serialize
+	 * @param pretty
+	 *            Whether the resulting string should be 'pretty' or not.
+	 * @param indentFactor
+	 *            The amount of spaces in a tab
 	 * @return The serialization String.
 	 */
 	public static String serializeHorseAsString(Horse horse, boolean pretty, int indentFactor) {
 		try {
-			if(pretty) {
+			if (pretty) {
 				return serializeHorse(horse).toString(indentFactor);
 			} else {
 				return serializeHorse(horse).toString();
@@ -86,10 +99,13 @@ public class HorseSerialization {
 	}
 	
 	/**
-	 * Spawn a Horse in a given Location and apply stats specified in a JSONObject constructed
-	 * with the given String.
-	 * @param location Where to spawn the Horse
-	 * @param stats The stats to apply
+	 * Spawn a Horse in a given Location and apply stats specified in a
+	 * JSONObject constructed with the given String.
+	 * 
+	 * @param location
+	 *            Where to spawn the Horse
+	 * @param stats
+	 *            The stats to apply
 	 * @return The Horse spawned
 	 */
 	public static Horse spawnHorse(Location location, String stats) {
@@ -102,23 +118,27 @@ public class HorseSerialization {
 	}
 	
 	/**
-	 * Spawn a Horse in a given Location and apply stats specified in the given JSONObject.
-	 * @param location Where to spawn the Horse
-	 * @param stats The stats to apply
+	 * Spawn a Horse in a given Location and apply stats specified in the given
+	 * JSONObject.
+	 * 
+	 * @param location
+	 *            Where to spawn the Horse
+	 * @param stats
+	 *            The stats to apply
 	 * @return The Horse spawned
 	 */
 	public static Horse spawnHorse(Location location, JSONObject stats) {
 		try {
 			Horse horse = (Horse) LivingEntitySerialization.spawnEntity(location, stats);
-			if(stats.has("color"))
+			if (stats.has("color"))
 				horse.setColor(Horse.Color.valueOf(stats.getString("color")));
-			if(stats.has("jump-strength"))
+			if (stats.has("jump-strength"))
 				horse.setCustomName(stats.getString("name"));
-			if(stats.has("style"))
+			if (stats.has("style"))
 				horse.setStyle(Horse.Style.valueOf(stats.getString("style")));
-			if(stats.has("inventory"))
+			if (stats.has("inventory"))
 				PotionEffectSerialization.addPotionEffects(stats.getString("potion-effects"), horse);
-			if(stats.has("variant"))
+			if (stats.has("variant"))
 				horse.setVariant(Horse.Variant.valueOf(stats.getString("variant")));
 			return horse;
 		} catch (JSONException e) {
@@ -129,7 +149,9 @@ public class HorseSerialization {
 	
 	/**
 	 * Test if a certain key should be serialized
-	 * @param key The key to test
+	 * 
+	 * @param key
+	 *            The key to test
 	 * @return Whether the key should be serilaized or not
 	 */
 	public static boolean shouldSerialize(String key) {
