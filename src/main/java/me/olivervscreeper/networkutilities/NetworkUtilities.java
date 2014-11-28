@@ -2,7 +2,6 @@ package me.olivervscreeper.networkutilities;
 
 import me.olivervscreeper.networkutilities.command.Command;
 import me.olivervscreeper.networkutilities.command.CommandManager;
-import me.olivervscreeper.networkutilities.permissions.OPPermissionSet;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -18,7 +17,7 @@ import java.util.List;
  */
 public class NetworkUtilities extends JavaPlugin {
 
-    public static String version = "1.0-RELEASE";
+    public static String version = "1.1-SNAPSHOT";
     public static String compatibility = "Bukkit 1.7.10-R0.1-SNAPSHOT";
 
     public static Plugin plugin;
@@ -36,7 +35,6 @@ public class NetworkUtilities extends JavaPlugin {
         log("Version compatible with " + compatibility);
         manager = new CommandManager(this);
         manager.registerCommands(this.getClass());
-        manager.setPermission("nu", new OPPermissionSet());
     }
 
     /**
@@ -67,7 +65,7 @@ public class NetworkUtilities extends JavaPlugin {
      * @param message message for the console to log
      */
     public static void log(String message){
-        plugin.getServer().getLogger().info("NU - " + message);
+        plugin.getServer().getLogger().info("<NetworkUtilities> - " + message);
     }
 
     @Command(command = "nu-version")
