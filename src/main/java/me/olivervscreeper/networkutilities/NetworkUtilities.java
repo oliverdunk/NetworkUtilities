@@ -68,7 +68,7 @@ public class NetworkUtilities extends JavaPlugin {
         plugin.getServer().getLogger().info("<NetworkUtilities> - " + message);
     }
 
-    @Command(command = "nu-version")
+    @Command(command = "nu-version", permission = "none")
     public static void nuVersionCommand(Player player, List<String> args){
         player.sendMessage(ChatColor.WHITE + "This server is running NetworkUtilities version " + ChatColor.GRAY + version + ChatColor.WHITE + " for " + ChatColor.GRAY + compatibility + ".");
     }
