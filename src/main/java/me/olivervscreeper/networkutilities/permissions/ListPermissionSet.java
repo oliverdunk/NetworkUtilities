@@ -47,4 +47,15 @@ public class ListPermissionSet extends PermissionSet {
         uniqueUserIdentifiers.remove(p.getUniqueId().toString());
         return this;
     }
+
+    /**
+     * Finds all online players applicable to the
+     * Permission set.
+     *
+     * @return List A list of UUID's of applicable players
+     */
+    @Override
+    public List<String> getAllPlayers() {
+        return uniqueUserIdentifiers;
+    }
 }
