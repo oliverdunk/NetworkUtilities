@@ -16,5 +16,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
     public String command();
-    public String permission() default "networkutilities.commands.default";
+    public String permission() default "none";
 }
