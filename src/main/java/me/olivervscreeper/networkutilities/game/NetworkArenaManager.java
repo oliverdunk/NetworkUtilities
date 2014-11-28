@@ -1,6 +1,6 @@
 package me.olivervscreeper.networkutilities.game;
 
-import me.olivervscreeper.networkutilities.game.events.ArenaPreTickEvent;
+import me.olivervscreeper.networkutilities.NetworkUtilities;
 import me.olivervscreeper.networkutilities.game.events.ArenaTickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -33,13 +33,14 @@ public class NetworkArenaManager {
 
     public void tick(){
         for(NetworkArena a : arenas){
-            ArenaPreTickEvent preEvent = new ArenaPreTickEvent(a);
-            Bukkit.getServer().getPluginManager().callEvent(preEvent);
-            if(preEvent.isCancelled()) continue;
-
             ArenaTickEvent event = new ArenaTickEvent(a);
             Bukkit.getServer().getPluginManager().callEvent(event);
         }
+    }
+
+    public void addArena(NetworkArena arena){
+        arenas.add(arena);
+        Bukkit.getPluginManager().registerEvents(arena, NetworkUtilities.plugin);
     }
 
 }
