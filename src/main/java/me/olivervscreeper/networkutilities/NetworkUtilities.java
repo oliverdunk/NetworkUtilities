@@ -75,9 +75,4 @@ public class NetworkUtilities extends JavaPlugin {
         player.sendMessage(ChatColor.WHITE + "This server is running NetworkUtilities version " + ChatColor.GRAY + version + ChatColor.WHITE + " for " + ChatColor.GRAY + compatibility + ".");
     }
 
-    @Command(command = "nu")
-    public static void nuCommand(Player player, List<String> args){
-        player.sendMessage(ChatColor.WHITE + "Not Yet Implemented.");
-    }
-
 }
