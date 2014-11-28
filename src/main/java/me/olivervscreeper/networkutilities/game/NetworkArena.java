@@ -19,6 +19,7 @@ public class NetworkArena {
 
     private int maxPlayers = 8;
     private int maxRuntime = MathUtils.secondsToTick(900);
+    private NetworkArenaState state = NetworkArenaState.LOBBY;
 
     private List<String> playerUUIDs = new ArrayList<String>();
 
@@ -28,4 +29,15 @@ public class NetworkArena {
         this.spawns = spawns;
     }
 
+    public List<String> getAllPlayers(){
+        return playerUUIDs;
+    }
+
+    public NetworkArenaState getState() {
+        return state;
+    }
+
+    public void setState(NetworkArenaState state) {
+        this.state = state;
+    }
 }

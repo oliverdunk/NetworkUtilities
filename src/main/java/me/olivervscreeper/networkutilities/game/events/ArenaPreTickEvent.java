@@ -1,6 +1,7 @@
 package me.olivervscreeper.networkutilities.game.events;
 
 import me.olivervscreeper.networkutilities.game.NetworkArena;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -9,14 +10,25 @@ import org.bukkit.event.HandlerList;
  *
  * @author OliverVsCreeper
  */
-public class ArenaTickEvent extends Event{
+public class ArenaPreTickEvent extends Event implements Cancellable {
 
+    private Boolean cancelled = false;
     private static HandlerList handlers = new HandlerList();
 
     private NetworkArena arena;
 
-    public ArenaTickEvent(NetworkArena arena){
+    public ArenaPreTickEvent(NetworkArena arena){
         this.arena = arena;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean shouldCancel) {
+        cancelled = shouldCancel;
     }
 
     @Override

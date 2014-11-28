@@ -1,6 +1,7 @@
 package me.olivervscreeper.networkutilities.game.events;
 
 import me.olivervscreeper.networkutilities.game.NetworkArena;
+import me.olivervscreeper.networkutilities.game.NetworkArenaState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -28,6 +29,7 @@ public class PlayerJoinArenaEvent extends Event implements Cancellable {
 
     @Override
     public boolean isCancelled() {
+        if(arena.getState().equals(NetworkArenaState.MAINTENANCE)) return true;
         return cancelled;
     }
 
