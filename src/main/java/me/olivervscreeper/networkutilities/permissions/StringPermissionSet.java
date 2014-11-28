@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class StringPermissionSet extends PermissionSet {
 
-    String permission = "networkutilities.permission.default";
+    String permission = "networkutilities.permissions.default";
 
     public StringPermissionSet(){};
     public StringPermissionSet(String permission){permission = permission;}
