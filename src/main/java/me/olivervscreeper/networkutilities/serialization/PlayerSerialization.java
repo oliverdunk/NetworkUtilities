@@ -19,113 +19,103 @@ import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
  *
  */
 public class PlayerSerialization {
-	
-	protected PlayerSerialization() {}
-	
-	/**
-	 * Serialize a Player into a JSONObject. The player's EnderChest, inventory
-	 * (including armor) and stats such as experience and potion effects will be
-	 * saved unless disabled.
-	 * 
-	 * @param player
-	 * @return The serialized stats
-	 */
-	public static JSONObject serializePlayer(Player player) {
-		try {
-			JSONObject root = LivingEntitySerialization.serializeEntity(player);
-			root.put("ender-chest", InventorySerialization.serializeInventory(player.getEnderChest()));
-			root.put("inventory", InventorySerialization.serializePlayerInventory(player.getInventory()));
-			root.put("stats", PlayerStatsSerialization.serializePlayerStats(player));
-			return root;
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	/**
-	 * Serialize a player as a String
-	 * 
-	 * @param player
-	 *            The player to serialize
-	 * @return The serialization string
-	 */
-	public static String serializePlayerAsString(Player player) {
-		return serializePlayerAsString(player, false);
-	}
-	
-	/**
-	 * Serialize a player as a String
-	 * 
-	 * @param player
-	 *            The player to serialize
-	 * @param pretty
-	 *            Whether the resulting string should be 'pretty' or not
-	 * @return The serialization string
-	 */
-	public static String serializePlayerAsString(Player player, boolean pretty) {
-		return serializePlayerAsString(player, pretty, 5);
-	}
-	
-	/**
-	 * Serialize a player as a String
-	 * 
-	 * @param player
-	 *            The player to serialize
-	 * @param pretty
-	 *            Whether the resulting string should be 'pretty' or not
-	 * @param indentFactor
-	 *            The amount of spaces in a tab
-	 * @return The serialization string
-	 */
-	public static String serializePlayerAsString(Player player, boolean pretty, int indentFactor) {
-		try {
-			if (pretty) {
-				return serializePlayer(player).toString(indentFactor);
-			} else {
-				return serializePlayer(player).toString();
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	/**
-	 * Set a player's meta information with desired stats
-	 * 
-	 * @param meta
-	 *            The stats to set
-	 * @param player
-	 *            The affected player
-	 */
-	public static void setPlayer(String meta, Player player) {
-		try {
-			setPlayer(new JSONObject(meta), player);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Set a player's meta information with desired stats
-	 * 
-	 * @param meta
-	 *            The stats to set
-	 * @param player
-	 *            The affected player
-	 */
-	public static void setPlayer(JSONObject meta, Player player) {
-		try {
-			if (meta.has("ender-chest"))
-				InventorySerialization.setInventory(player.getEnderChest(), meta.getJSONArray("ender-chest"));
-			if (meta.has("inventory"))
-				InventorySerialization.setPlayerInventory(player, meta.getJSONObject("inventory"));
-			if (meta.has("stats"))
-				PlayerStatsSerialization.applyPlayerStats(player, meta.getJSONObject("stats"));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-	
+    
+    protected PlayerSerialization() {}
+    
+    /**
+     * Serialize a Player into a JSONObject. The player's EnderChest, inventory
+     * (including armor) and stats such as experience and potion effects will be
+     * saved unless disabled.
+     * 
+     * @param player
+     * @return The serialized stats
+     */
+    public static JSONObject serializePlayer(Player player) {
+        try {
+            JSONObject root = LivingEntitySerialization.serializeEntity(player);
+            root.put("ender-chest", InventorySerialization.serializeInventory(player.getEnderChest()));
+            root.put("inventory", InventorySerialization.serializePlayerInventory(player.getInventory()));
+            root.put("stats", PlayerStatsSerialization.serializePlayerStats(player));
+            return root;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+     * Serialize a player as a String
+     * 
+     * @param player The player to serialize
+     * @return The serialization string
+     */
+    public static String serializePlayerAsString(Player player) {
+        return serializePlayerAsString(player, false);
+    }
+    
+    /**
+     * Serialize a player as a String
+     * 
+     * @param player The player to serialize
+     * @param pretty Whether the resulting string should be 'pretty' or not
+     * @return The serialization string
+     */
+    public static String serializePlayerAsString(Player player, boolean pretty) {
+        return serializePlayerAsString(player, pretty, 5);
+    }
+    
+    /**
+     * Serialize a player as a String
+     * 
+     * @param player The player to serialize
+     * @param pretty Whether the resulting string should be 'pretty' or not
+     * @param indentFactor The amount of spaces in a tab
+     * @return The serialization string
+     */
+    public static String serializePlayerAsString(Player player, boolean pretty, int indentFactor) {
+        try {
+            if (pretty) {
+                return serializePlayer(player).toString(indentFactor);
+            } else {
+                return serializePlayer(player).toString();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+     * Set a player's meta information with desired stats
+     * 
+     * @param meta The stats to set
+     * @param player The affected player
+     */
+    public static void setPlayer(String meta, Player player) {
+        try {
+            setPlayer(new JSONObject(meta), player);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Set a player's meta information with desired stats
+     * 
+     * @param meta The stats to set
+     * @param player The affected player
+     */
+    public static void setPlayer(JSONObject meta, Player player) {
+        try {
+            if (meta.has("ender-chest"))
+                InventorySerialization.setInventory(player.getEnderChest(), meta.getJSONArray("ender-chest"));
+            if (meta.has("inventory"))
+                InventorySerialization.setPlayerInventory(player, meta.getJSONObject("inventory"));
+            if (meta.has("stats"))
+                PlayerStatsSerialization.applyPlayerStats(player, meta.getJSONObject("stats"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }
