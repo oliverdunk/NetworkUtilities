@@ -33,12 +33,9 @@ public class PlayerSerialization {
 	public static JSONObject serializePlayer(Player player) {
 		try {
 			JSONObject root = LivingEntitySerialization.serializeEntity(player);
-			if (SerializationConfig.getShouldSerialize("player-ender-chest"))
-				root.put("ender-chest", InventorySerialization.serializeInventory(player.getEnderChest()));
-			if (SerializationConfig.getShouldSerialize("player.inventory"))
-				root.put("inventory", InventorySerialization.serializePlayerInventory(player.getInventory()));
-			if (SerializationConfig.getShouldSerialize("player.stats"))
-				root.put("stats", PlayerStatsSerialization.serializePlayerStats(player));
+			root.put("ender-chest", InventorySerialization.serializeInventory(player.getEnderChest()));
+			root.put("inventory", InventorySerialization.serializePlayerInventory(player.getInventory()));
+			root.put("stats", PlayerStatsSerialization.serializePlayerStats(player));
 			return root;
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -129,17 +126,6 @@ public class PlayerSerialization {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Test if a certain key should be serialized
-	 * 
-	 * @param key
-	 *            The key to test
-	 * @return Whether the key should be serilaized or not
-	 */
-	public static boolean shouldSerialize(String key) {
-		return SerializationConfig.getShouldSerialize("player." + key);
 	}
 	
 }

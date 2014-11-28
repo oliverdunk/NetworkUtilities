@@ -34,8 +34,7 @@ public class WolfSerialization {
 	public static JSONObject serializeWolf(Wolf wolf) {
 		try {
 			JSONObject root = LivingEntitySerialization.serializeEntity(wolf);
-			if (shouldSerialize("collar-color"))
-				root.put("collar-color", ColorSerialization.serializeColor(wolf.getCollarColor().getColor()));
+			root.put("collar-color", ColorSerialization.serializeColor(wolf.getCollarColor().getColor()));
 			return root;
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -121,24 +120,12 @@ public class WolfSerialization {
 	public static Wolf spawnWolf(Location location, JSONObject stats) {
 		try {
 			Wolf wolf = (Wolf) LivingEntitySerialization.spawnEntity(location, stats);
-			if (stats.has("collar-color"))
-				wolf.setCollarColor(DyeColor.getByColor(ColorSerialization.getColor(stats.getString("collar-color"))));
+			wolf.setCollarColor(DyeColor.getByColor(ColorSerialization.getColor(stats.getString("collar-color"))));
 			return wolf;
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	/**
-	 * Test if a certain key should be serialized
-	 * 
-	 * @param key
-	 *            The key to test
-	 * @return Whether the key should be serilaized or not
-	 */
-	public static boolean shouldSerialize(String key) {
-		return SerializationConfig.getShouldSerialize("wolf." + key);
 	}
 	
 }

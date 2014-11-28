@@ -33,8 +33,7 @@ public class OcelotSerialization {
 	public static JSONObject serializeOcelot(Ocelot ocelot) {
 		try {
 			JSONObject root = LivingEntitySerialization.serializeEntity(ocelot);
-			if (shouldSerialize("type"))
-				root.put("type", ocelot.getCatType().name());
+			root.put("type", ocelot.getCatType().name());
 			return root;
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -127,17 +126,6 @@ public class OcelotSerialization {
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	/**
-	 * Test if a certain key should be serialized
-	 * 
-	 * @param key
-	 *            The key to test
-	 * @return Whether the key should be serilaized or not
-	 */
-	public static boolean shouldSerialize(String key) {
-		return SerializationConfig.getShouldSerialize("ocelot." + key);
 	}
 	
 }

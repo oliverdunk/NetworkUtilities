@@ -34,28 +34,17 @@ public class PlayerStatsSerialization {
 	public static JSONObject serializePlayerStats(Player player) {
 		try {
 			JSONObject root = new JSONObject();
-			if (shouldSerialize("can-fly"))
-				root.put("can-fly", player.getAllowFlight());
-			if (shouldSerialize("display-name"))
-				root.put("display-name", player.getDisplayName());
-			if (shouldSerialize("exhaustion"))
-				root.put("exhaustion", player.getExhaustion());
-			if (shouldSerialize("exp"))
-				root.put("exp", player.getExp());
-			if (shouldSerialize("flying"))
-				root.put("flying", player.isFlying());
-			if (shouldSerialize("food"))
-				root.put("food", player.getFoodLevel());
-			if (shouldSerialize("gamemode"))
-				root.put("gamemode", player.getGameMode().ordinal());
-//			if (shouldSerialize("health"))
-//				root.put("health", player.getHealthScale());
-			if (shouldSerialize("level"))
-				root.put("level", player.getLevel());
-//			if (shouldSerialize("potion-effects"))
-//				root.put("potion-effects", PotionEffectSerialization.serializeEffects(player.getActivePotionEffects()));
-			if (shouldSerialize("saturation"))
-				root.put("saturation", player.getSaturation());
+			root.put("can-fly", player.getAllowFlight());
+			root.put("display-name", player.getDisplayName());
+			root.put("exhaustion", player.getExhaustion());
+			root.put("exp", player.getExp());
+			root.put("flying", player.isFlying());
+			root.put("food", player.getFoodLevel());
+			root.put("gamemode", player.getGameMode().ordinal());
+			root.put("health", player.getHealthScale());
+			root.put("level", player.getLevel());
+			root.put("potion-effects", PotionEffectSerialization.serializeEffects(player.getActivePotionEffects()));
+			root.put("saturation", player.getSaturation());
 			return root;
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -162,17 +151,6 @@ public class PlayerStatsSerialization {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Test if a certain key should be serialized
-	 * 
-	 * @param key
-	 *            The key to test
-	 * @return Whether the key should be serilaized or not
-	 */
-	public static boolean shouldSerialize(String key) {
-		return SerializationConfig.getShouldSerialize("player-stats." + key);
 	}
 	
 }

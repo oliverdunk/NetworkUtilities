@@ -41,14 +41,10 @@ public class LivingEntitySerialization {
 //		}
 		try {
 			JSONObject root = new JSONObject();
-			if (shouldSerialize("age") && entity instanceof Ageable)
-				root.put("age", ((Ageable) entity).getAge());
-			if (shouldSerialize("health"))
-				root.put("health", entity.getHealth());
-			if (shouldSerialize("name"))
-				root.put("name", entity.getCustomName());
-			if (shouldSerialize("potion-effects"))
-				root.put("potion-effects", PotionEffectSerialization.serializeEffects(entity.getActivePotionEffects()));
+			root.put("age", ((Ageable) entity).getAge());
+			root.put("health", entity.getHealth());
+			root.put("name", entity.getCustomName());
+			root.put("potion-effects", PotionEffectSerialization.serializeEffects(entity.getActivePotionEffects()));
 			root.put("type", entity.getType().getTypeId());
 			return root;
 		} catch (JSONException e) {
@@ -155,17 +151,6 @@ public class LivingEntitySerialization {
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	/**
-	 * Test if a certain key should be serialized
-	 * 
-	 * @param key
-	 *            The key to test
-	 * @return Whether the key should be serilaized or not
-	 */
-	public static boolean shouldSerialize(String key) {
-		return SerializationConfig.getShouldSerialize("living-entity." + key);
 	}
 	
 }

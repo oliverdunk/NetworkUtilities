@@ -33,16 +33,11 @@ public class HorseSerialization {
 	public static JSONObject serializeHorse(Horse horse) {
 		try {
 			JSONObject root = LivingEntitySerialization.serializeEntity(horse);
-			if (shouldSerialize("color"))
-				root.put("color", horse.getColor().name());
-			if (shouldSerialize("inventory"))
-				root.put("inventory", InventorySerialization.serializeInventory(horse.getInventory()));
-			if (shouldSerialize("jump-strength"))
-				root.put("jump-strength", horse.getJumpStrength());
-			if (shouldSerialize("style"))
-				root.put("style", horse.getStyle());
-			if (shouldSerialize("variant"))
-				root.put("variant", horse.getVariant());
+			root.put("color", horse.getColor().name());
+			root.put("inventory", InventorySerialization.serializeInventory(horse.getInventory()));
+			root.put("jump-strength", horse.getJumpStrength());
+			root.put("style", horse.getStyle());
+			root.put("variant", horse.getVariant());
 			return root;
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -145,17 +140,6 @@ public class HorseSerialization {
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	/**
-	 * Test if a certain key should be serialized
-	 * 
-	 * @param key
-	 *            The key to test
-	 * @return Whether the key should be serilaized or not
-	 */
-	public static boolean shouldSerialize(String key) {
-		return SerializationConfig.getShouldSerialize("horse." + key);
 	}
 	
 }
