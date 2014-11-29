@@ -241,7 +241,7 @@ public class CommandManager implements Listener{
     		found = true;
     		for(MethodPair pair : methods)
     		{
-    			if(!player.hasPermission(pair.permission) && !pair.permission.equalsIgnoreCase("none"))continue;//change, add cant do it
+    			if(!player.hasPermission(pair.permission) && !pair.permission.equalsIgnoreCase("none"))continue;
     			good = true;
     			try {
 					pair.method.invoke(object, player, args);
