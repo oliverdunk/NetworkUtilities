@@ -73,19 +73,9 @@ public class NetworkUtilities extends JavaPlugin {
     	return manager;
     }
 
-    @Command(command = "nu-version", permission = "none", priority = 1)
+    @Command(command = "nu-version", permission = "none")
     public void nuVersionCommand(Player player, List<String> args){
         player.sendMessage(ChatColor.WHITE + "This server is running NetworkUtilities version " + ChatColor.GRAY + version + ChatColor.WHITE + " for " + ChatColor.GRAY + compatibility + ".");
-    }
-    
-    @Command(command = "test1", permission = "none", priority = 2)
-    public void onT(Player player, List<String> args){
-        player.sendMessage("Called first");
-    }
-    
-    @Command(command = "test1", permission = "none", priority = 1)
-    public void onT2(Player player, List<String> args){
-        player.sendMessage("Called last");
     }
 
 }
