@@ -17,5 +17,6 @@ import java.lang.annotation.Target;
 public @interface Command {
     public String command();
     public String permission() default "none";
+    public int priority() default 0;
     public String deprecated() default "";
 }
