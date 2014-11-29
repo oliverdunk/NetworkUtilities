@@ -43,6 +43,7 @@ MAINTAINERS
 -----------
 Current maintainers:
 * Oliver M. Dunk (@olivervscreeper)
+* Günther Jungbluth (@scipio3000)
 
 This project has been sponsored by:
 * AWAITING SPONSORSHIP

@@ -34,7 +34,7 @@ public class NetworkUtilities extends JavaPlugin {
         log("Version " + version + " now running.");
         log("Version compatible with " + compatibility);
         manager = new CommandManager(this);
-        manager.registerCommands(this.getClass());
+        manager.registerCommands(this);
     }
 
     /**
@@ -67,9 +67,14 @@ public class NetworkUtilities extends JavaPlugin {
     public static void log(String message){
         plugin.getServer().getLogger().info("<NetworkUtilities> - " + message);
     }
+    
+    public static CommandManager getCommandManager()
+    {
+    	return manager;
+    }
 
     @Command(command = "nu-version", permission = "none")
-    public static void nuVersionCommand(Player player, List<String> args){
+    public void nuVersionCommand(Player player, List<String> args){
         player.sendMessage(ChatColor.WHITE + "This server is running NetworkUtilities version " + ChatColor.GRAY + version + ChatColor.WHITE + " for " + ChatColor.GRAY + compatibility + ".");
     }
 
