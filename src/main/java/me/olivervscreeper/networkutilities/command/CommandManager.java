@@ -44,29 +44,29 @@ public class CommandManager implements Listener{
      */
     private class MethodPair
     {
-    	Method method;
-    	String permission;
-    	int priority;
-    	
-    	public MethodPair(Method method, String permission, int priority)
-    	{
-    		this.method = method;
-    		this.permission = permission;
-    		this.priority = priority;
-    	}
-    	
-		public int getPriority() {
-			return priority;
-		}
+        Method method;
+        String permission;
+        int priority;
+        
+        public MethodPair(Method method, String permission, int priority)
+        {
+            this.method = method;
+            this.permission = permission;
+            this.priority = priority;
+        }
+        
+        public int getPriority() {
+            return priority;
+        }
 
 
-		public Method getMethod() {
-			return method;
-		}
+        public Method getMethod() {
+            return method;
+        }
 
-		public String getPermission() {
-			return permission;
-		}
+        public String getPermission() {
+            return permission;
+        }
     }
     
     public String permissionMessage = ChatColor.RED + "It seems that you can't do this right now!";
@@ -75,8 +75,8 @@ public class CommandManager implements Listener{
     Plugin plugin;
     
     public CommandManager(Plugin plugin) {
-    	this.plugin = plugin;
-    	commands = new ConcurrentHashMap<Object, ConcurrentHashMap<String,ArrayList<MethodPair>>>();
+        this.plugin = plugin;
+        commands = new ConcurrentHashMap<Object, ConcurrentHashMap<String,ArrayList<MethodPair>>>();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -89,7 +89,7 @@ public class CommandManager implements Listener{
      */
     public void unregisterCommands(Object object)
     {
-    	commands.remove(object);
+        commands.remove(object);
     }
     /**
      * Register a new command object
@@ -98,36 +98,36 @@ public class CommandManager implements Listener{
      * @author scipio3000
      */
     public void registerCommands(Object object){
-    	for(Method method : object.getClass().getDeclaredMethods())//Declared output private methods too
-    	{
-    		if(method.getAnnotation(Command.class) == null) continue;
-    		Command command = ((Command)method.getAnnotation(Command.class));
-    		String commandName = command.command();
-    		if(commandName == null)continue;
-    		commandName = commandName.toLowerCase();
-    		ConcurrentHashMap<String, ArrayList<MethodPair>> methodList = commands.get(object);
-    		if(methodList == null)
-    		{
-    			methodList = new ConcurrentHashMap<String, ArrayList<MethodPair>>();
-    			commands.put(object, methodList);
-    		}
-    		ArrayList<MethodPair> methods = methodList.get(commandName);
-    		if(methods == null)
-    		{
-    			methods = new ArrayList<MethodPair>();
-    			methodList.put(commandName, methods);
-    		}
-    		String permission = command.permission();
-    		int priority = command.priority();
-    		registerCommand(commandName);//It's alright if the command already exist.
-    		methods.add(new MethodPair(method, permission, priority));
-    		methods.sort(new Comparator<MethodPair>() {
+        for(Method method : object.getClass().getDeclaredMethods())//Declared output private methods too
+        {
+            if(method.getAnnotation(Command.class) == null) continue;
+            Command command = ((Command)method.getAnnotation(Command.class));
+            String commandName = command.command();
+            if(commandName == null)continue;
+            commandName = commandName.toLowerCase();
+            ConcurrentHashMap<String, ArrayList<MethodPair>> methodList = commands.get(object);
+            if(methodList == null)
+            {
+                methodList = new ConcurrentHashMap<String, ArrayList<MethodPair>>();
+                commands.put(object, methodList);
+            }
+            ArrayList<MethodPair> methods = methodList.get(commandName);
+            if(methods == null)
+            {
+                methods = new ArrayList<MethodPair>();
+                methodList.put(commandName, methods);
+            }
+            String permission = command.permission();
+            int priority = command.priority();
+            registerCommand(commandName);//It's alright if the command already exist.
+            methods.add(new MethodPair(method, permission, priority));
+            methods.sort(new Comparator<MethodPair>() {
 
-				public int compare(MethodPair arg0, MethodPair arg1) {
-					return -Integer.compare(arg0.getPriority(), arg1.getPriority());
-				}
-			});
-    	}
+                public int compare(MethodPair arg0, MethodPair arg1) {
+                    return Integer.compare(arg0.getPriority(), arg1.getPriority());
+                }
+            });
+        }
     }
     
     /**
@@ -138,9 +138,9 @@ public class CommandManager implements Listener{
      */
     private void registerCommandIntoBukkit(String name)
     {
-		PluginCommand command = getCommand(name);
-		SimpleCommandMap map = (SimpleCommandMap) getCommandMap();
-		map.register(plugin.getDescription().getName(), command);
+        PluginCommand command = getCommand(name);
+        SimpleCommandMap map = (SimpleCommandMap) getCommandMap();
+        map.register(plugin.getDescription().getName(), command);
     }
     
     /**
@@ -148,54 +148,54 @@ public class CommandManager implements Listener{
      * 
      * @author scipio3000
      */
-	private void registerCommand(String name) {
-		PluginCommand command = getCommand(name);
-		SimpleCommandMap map = (SimpleCommandMap) getCommandMap();
-		map.register(plugin.getDescription().getName(), command);
-	}
-	
-	/**
-	 * Gets the command map.
-	 *
-	 * @return the command map
-	 * 
-	 * @author scipio3000
-	 */
-	private CommandMap getCommandMap()
-	{
-		CommandMap commandMap = null;
-		try {
-			if (Bukkit.getPluginManager() instanceof SimplePluginManager) {
-				Field f = SimplePluginManager.class.getDeclaredField("commandMap");
-				f.setAccessible(true);
-				commandMap = (CommandMap) f.get(Bukkit.getPluginManager());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return commandMap;
-	}
-	
-	/**
-	 * Gets a bukkit command object
-	 *
-	 * @param name the name
-	 * @return the command
-	 * 
-	 * @author scipio3000
-	 */
-	private PluginCommand getCommand(String name)
-	{
-		PluginCommand command = null;
-		try {
-			Constructor<PluginCommand> c = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
-			c.setAccessible(true);
-			command = c.newInstance(name, plugin);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return command;
-	}
+    private void registerCommand(String name) {
+        PluginCommand command = getCommand(name);
+        SimpleCommandMap map = (SimpleCommandMap) getCommandMap();
+        map.register(plugin.getDescription().getName(), command);
+    }
+    
+    /**
+     * Gets the command map.
+     *
+     * @return the command map
+     * 
+     * @author scipio3000
+     */
+    private CommandMap getCommandMap()
+    {
+        CommandMap commandMap = null;
+        try {
+            if (Bukkit.getPluginManager() instanceof SimplePluginManager) {
+                Field f = SimplePluginManager.class.getDeclaredField("commandMap");
+                f.setAccessible(true);
+                commandMap = (CommandMap) f.get(Bukkit.getPluginManager());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commandMap;
+    }
+    
+    /**
+     * Gets a bukkit command object
+     *
+     * @param name the name
+     * @return the command
+     * 
+     * @author scipio3000
+     */
+    private PluginCommand getCommand(String name)
+    {
+        PluginCommand command = null;
+        try {
+            Constructor<PluginCommand> c = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
+            c.setAccessible(true);
+            command = c.newInstance(name, plugin);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return command;
+    }
 
     /**
      * Parses an executed command and handles it.
@@ -225,38 +225,38 @@ public class CommandManager implements Listener{
      * @return boolean If a command as executed.
      */
     private Boolean parseCommand(Player player, String command, List<String> args){
-    	command = command.toLowerCase();
-    	Iterator<Entry<Object,ConcurrentHashMap<String, ArrayList<MethodPair>>>> ite = commands.entrySet().iterator();
-    	boolean found = false, good = false;
-    	while(ite.hasNext())
-    	{
-    		Entry<Object,ConcurrentHashMap<String, ArrayList<MethodPair>>> e = ite.next();
-    		ConcurrentHashMap<String, ArrayList<MethodPair>> map = e.getValue();
-    		Object object = e.getKey();
-    		ArrayList<MethodPair> methods = map.get(command);
-    		if(methods == null)continue;
-    		found = true;
-    		for(MethodPair pair : methods)
-    		{
-    			if(!player.hasPermission(pair.permission) && !pair.permission.equalsIgnoreCase("none"))continue;
-    			good = true;
-    			try {
-					pair.method.invoke(object, player, args);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-					player.sendMessage(errorMessage);
-				}
-    		}
-    	}
-    	if(found)
-    	{
-    		if(!good)
-    		{
-    			player.sendMessage(permissionMessage);
-        		return false;
-    		}
-    		return true;
-    	}
+        command = command.toLowerCase();
+        Iterator<Entry<Object,ConcurrentHashMap<String, ArrayList<MethodPair>>>> ite = commands.entrySet().iterator();
+        boolean found = false, good = false;
+        while(ite.hasNext())
+        {
+            Entry<Object,ConcurrentHashMap<String, ArrayList<MethodPair>>> e = ite.next();
+            ConcurrentHashMap<String, ArrayList<MethodPair>> map = e.getValue();
+            Object object = e.getKey();
+            ArrayList<MethodPair> methods = map.get(command);
+            if(methods == null)continue;
+            found = true;
+            for(MethodPair pair : methods)
+            {
+                if(!player.hasPermission(pair.permission) && !pair.permission.equalsIgnoreCase("none"))continue;
+                good = true;
+                try {
+                    pair.method.invoke(object, player, args);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    player.sendMessage(errorMessage);
+                }
+            }
+        }
+        if(found)
+        {
+            if(!good)
+            {
+                player.sendMessage(permissionMessage);
+                return false;
+            }
+            return true;
+        }
         return false;
     }
 
