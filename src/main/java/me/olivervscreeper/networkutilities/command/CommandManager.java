@@ -50,6 +50,14 @@ public class CommandManager implements Listener{
         }
     }
 
+    /**
+     * Parses an executed command and handles it.
+     * If the command is registered, it will be triggered.
+     * Else, the event will be ignored and the
+     * command left to run.
+     *
+     * @param event the event that has been triggered by the command
+     */
     @EventHandler
     public void onCommandPre(PlayerCommandPreprocessEvent event){
         List<String> messageArgs = ListUtils.splitString(event.getMessage(), " ");
@@ -67,12 +75,13 @@ public class CommandManager implements Listener{
      * @param player player running command (for permissions)
      * @param command name of the command being run
      * @param args arguments used by the executor
-     * @return boolean If a command was executed.
+     * @return boolean If a command as exwecuted.
      */
     public Boolean parseCommand(Player player, String command, List<String> args){
          for(Method method : commands) {
             String commandName = method.getAnnotation(Command.class).command();
             String permission = method.getAnnotation(Command.class).permission();
+            if(!method.getAnnotation(Command.class).deprecated().equals("")) continue;
             if(!commandName.equals(command)) continue;
                 if(!player.hasPermission(permission) && !permission.equals("none")){
                     player.sendMessage(permissionMessage);
