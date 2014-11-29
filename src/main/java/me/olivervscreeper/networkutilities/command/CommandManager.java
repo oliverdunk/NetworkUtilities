@@ -251,12 +251,16 @@ public class CommandManager implements Listener{
 				}
     		}
     	}
-    	if(found && !good)
+    	if(found)
     	{
-    		player.sendMessage(permissionMessage);
-    		return false;
+    		if(!good)
+    		{
+    			player.sendMessage(permissionMessage);
+        		return false;
+    		}
+    		return true;
     	}
-        return true;
+        return false;
     }
 
 }
