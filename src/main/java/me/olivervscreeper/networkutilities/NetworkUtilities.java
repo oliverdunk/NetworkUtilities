@@ -58,7 +58,7 @@ public class NetworkUtilities extends JavaPlugin {
 
     /**
      * Logs a message to the console using the default
-     * Minecraft logger. A prefix of "NU - " is prefixed,
+     * Minecraft logger. A prefix of "<NetworkUtilities> - " is prefixed,
      * and the message is sent. Intended only for use
      * by the NetworkUtilities plugin.
      *
@@ -73,7 +73,7 @@ public class NetworkUtilities extends JavaPlugin {
         return manager;
     }
 
-    @Command(command = "nu-version", permission = "none", priority = 1)
+    @Command(command = "nu", permission = "none", priority = 1)
     public void nuVersionCommand(Player player, List<String> args){
         player.sendMessage(ChatColor.WHITE + "This server is running NetworkUtilities version " + ChatColor.GRAY + version + ChatColor.WHITE + " for " + ChatColor.GRAY + compatibility + ".");
     }
