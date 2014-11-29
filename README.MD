@@ -19,7 +19,10 @@ methods which allow for easy coding.
 http://www.olivervscreeper.co.uk/plugins
 
 * To submit bug reports and feature suggestions, or to track changes:
-https://bitbucket.org/olivervscreeper/networkutilities
+https://github.com/olivervscreeper/NetworkUtilities/
+
+* To get started, read:
+https://github.com/olivervscreeper/NetworkUtilities/wiki/Getting-Started
 
 REQUIREMENTS
 ------------
