@@ -42,7 +42,7 @@ This can be done in the /plugins/PluginMetrics folder.
 MAINTAINERS
 -----------
 Current maintainers:
-* Oliver M. Dunk (@olivervscreeper)
+* Oliver Dunk (@olivervscreeper)
 * Günther Jungbluth (@scipio3000)
 
 This project has been sponsored by:

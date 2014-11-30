@@ -1,4 +1,4 @@
-package me.olivervscreeper.networkutilities.game;
+package me.olivervscreeper.networkutilities.game.states;
 
 /**
  * Created on 29/11/2014.
