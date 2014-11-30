@@ -1,5 +1,6 @@
-package me.olivervscreeper.networkutilities.game;
+package me.olivervscreeper.networkutilities.game.players;
 
+import me.olivervscreeper.networkutilities.game.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -12,6 +13,7 @@ public class GamePlayer {
 
     String name;
     Game game;
+    PlayerData data;
 
     public GamePlayer(String name, Game game){
         this.name = name;
@@ -22,12 +24,12 @@ public class GamePlayer {
         return Bukkit.getPlayerExact(name);
     }
 
-    public void prepare(){
-        //TODO: Save inventory, location and health and set to adventure mode with no data
+    public void saveData(){
+        data = new PlayerData().prepare();
     }
 
-    public void revert(){
-        //TODO: Revert the player using data from the prepare() method
+    public void resetData(){
+        data.revert();
     }
 
 }

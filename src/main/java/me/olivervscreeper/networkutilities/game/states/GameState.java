@@ -27,6 +27,7 @@ public abstract class GameState implements Listener{
     public abstract String getName();
     public abstract String getDisplayName();
 
+    //If either return false, a GameState change can not take place
     public abstract Boolean onStateBegin();
     public abstract Boolean onStateEnd();
 
