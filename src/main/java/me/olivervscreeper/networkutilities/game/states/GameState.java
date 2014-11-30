@@ -1,7 +1,7 @@
 package me.olivervscreeper.networkutilities.game.states;
 
 import me.olivervscreeper.networkutilities.NetworkUtilities;
-import me.olivervscreeper.networkutilities.game.Game;
+import me.olivervscreeper.networkutilities.game.NetworkGame;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -13,9 +13,9 @@ import org.bukkit.event.Listener;
  */
 public abstract class GameState implements Listener{
 
-    private Game gameInstance;
+    private NetworkGame gameInstance;
 
-    public GameState(Game game){
+    public GameState(NetworkGame game){
         this.gameInstance = game;
     }
 

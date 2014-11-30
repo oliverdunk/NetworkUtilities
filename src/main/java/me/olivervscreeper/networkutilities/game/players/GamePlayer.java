@@ -1,6 +1,6 @@
 package me.olivervscreeper.networkutilities.game.players;
 
-import me.olivervscreeper.networkutilities.game.Game;
+import me.olivervscreeper.networkutilities.game.NetworkGame;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -12,10 +12,10 @@ import org.bukkit.entity.Player;
 public class GamePlayer {
 
     String name;
-    Game game;
+    NetworkGame game;
     PlayerData data;
 
-    public GamePlayer(String name, Game game){
+    public GamePlayer(String name, NetworkGame game){
         this.name = name;
         this.game = game;
     }
