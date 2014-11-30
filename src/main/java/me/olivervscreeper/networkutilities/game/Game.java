@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @author OliverVsCreeper
  */
-public abstract class NetworkGame implements Listener{
+public abstract class Game implements Listener{
 
     //TODO: Add basic system for Arenas
 
@@ -41,7 +41,7 @@ public abstract class NetworkGame implements Listener{
     public abstract List<GameState> getAllStates();
     public abstract Location getLobbyLocation();
 
-    public NetworkGame(){
+    public Game(){
         Bukkit.getPluginManager().registerEvents(this, NetworkUtilities.plugin);
     }
 
@@ -116,7 +116,7 @@ public abstract class NetworkGame implements Listener{
         if(!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         if(!(players.keySet().contains(player.getName()))) return;
-        if(!(player.getHealth() - event.getDamage() <= 0)) return;
+        if(!((player.getHealth() - event.getDamage() <= 0))) return;
         event.setCancelled(true);
         player.setHealth(20D);
 

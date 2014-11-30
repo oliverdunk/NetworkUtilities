@@ -1,6 +1,6 @@
 package me.olivervscreeper.networkutilities.game.events;
 
-import me.olivervscreeper.networkutilities.game.NetworkGame;
+import me.olivervscreeper.networkutilities.game.Game;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -15,10 +15,10 @@ public class PlayerDeathInArenaEvent extends Event{
     static HandlerList handlers = new HandlerList();
     Boolean cancelled = false;
 
-    private NetworkGame game;
+    private Game game;
     private Player player;
 
-    public PlayerDeathInArenaEvent(NetworkGame game, Player player){
+    public PlayerDeathInArenaEvent(Game game, Player player){
         this.game = game;
         this.player = player;
     }
@@ -32,7 +32,7 @@ public class PlayerDeathInArenaEvent extends Event{
         return handlers;
     }
 
-    public NetworkGame getGame() {
+    public Game getGame() {
         return game;
     }
 

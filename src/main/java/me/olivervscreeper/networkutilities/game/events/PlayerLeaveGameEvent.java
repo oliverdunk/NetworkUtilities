@@ -1,6 +1,6 @@
 package me.olivervscreeper.networkutilities.game.events;
 
-import me.olivervscreeper.networkutilities.game.NetworkGame;
+import me.olivervscreeper.networkutilities.game.Game;
 import me.olivervscreeper.networkutilities.game.states.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -17,11 +17,11 @@ public class PlayerLeaveGameEvent extends Event implements Cancellable{
     static HandlerList handlers = new HandlerList();
     Boolean cancelled = false;
 
-    private NetworkGame game;
+    private Game game;
     private Player player;
     private GameState gameState;
 
-    public PlayerLeaveGameEvent(NetworkGame game, Player player, GameState gameState){
+    public PlayerLeaveGameEvent(Game game, Player player, GameState gameState){
         this.game = game;
         this.player = player;
         this.gameState = gameState;
@@ -46,7 +46,7 @@ public class PlayerLeaveGameEvent extends Event implements Cancellable{
         cancelled = newStatus;
     }
 
-    public NetworkGame getGame() {
+    public Game getGame() {
         return game;
     }
 

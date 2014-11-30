@@ -1,6 +1,6 @@
 package me.olivervscreeper.networkutilities.game.states;
 
-import me.olivervscreeper.networkutilities.game.NetworkGame;
+import me.olivervscreeper.networkutilities.game.Game;
 
 /**
  * Created on 30/11/2014.
@@ -9,7 +9,7 @@ import me.olivervscreeper.networkutilities.game.NetworkGame;
  */
 public class IdleGameState extends GameState{
 
-    public IdleGameState(NetworkGame game) {
+    public IdleGameState(Game game) {
         super(game);
     }
 
