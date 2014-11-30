@@ -1,9 +1,7 @@
 package me.olivervscreeper.networkutilities.messages;
 
 import me.olivervscreeper.networkutilities.game.players.GamePlayer;
-import net.minecraft.server.v1_8_R1.ChatSerializer;
-import net.minecraft.server.v1_8_R1.IChatBaseComponent;
-import net.minecraft.server.v1_8_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_8_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
@@ -24,8 +22,8 @@ public class Message {
     private List<UUID> recipients = new ArrayList<UUID>();
 
     private int titleIn = 2;
-    private int titleOut = 2;
-    private int titleStay = 5;
+    private int titleOut = 15;
+    private int titleStay = 60;
 
     public static final String NETWORK = "&8[&bNetworkUtilities&8] &7%m";
     public static final String INFO = "&8[&2Info&8] &7%m";
@@ -88,12 +86,22 @@ public class Message {
                     ((CraftPlayer)player).getHandle().playerConnection.sendPacket(bar);
                     break;
                 case TITLE:
-                    //TODO: Implement when Spigot releases API
-                    new Message(Message.INFO).addRecipient(player).send("Not Yet Implemented!");
+                    PlayerConnection titleConnection = ((CraftPlayer) player).getHandle().playerConnection;
+                    PacketPlayOutTitle titlePacketPlayOutTimes = new PacketPlayOutTitle(EnumTitleAction.TIMES, null, titleIn, titleStay, titleOut);
+                    titleConnection.sendPacket(titlePacketPlayOutTimes);
+
+                    IChatBaseComponent titleMain = ChatSerializer.a("{\"text\": \"" + message + "\"}");
+                    PacketPlayOutTitle packetPlayOutTitle = new PacketPlayOutTitle(EnumTitleAction.TITLE, titleMain);
+                    titleConnection.sendPacket(packetPlayOutTitle);
                     break;
                 case SUBTITLE:
-                    //TODO: Implement when Spigot releases API
-                    new Message(Message.INFO).addRecipient(player).send("Not Yet Implemented!");
+                    PlayerConnection subtitleConnection = ((CraftPlayer) player).getHandle().playerConnection;
+                    PacketPlayOutTitle subtitlePacketPlayOutTimes = new PacketPlayOutTitle(EnumTitleAction.TIMES, null, titleIn, titleStay, titleOut);
+                    subtitleConnection.sendPacket(subtitlePacketPlayOutTimes);
+
+                    IChatBaseComponent subtitleSub = ChatSerializer.a("{\"text\": \"" + message + "\"}");
+                    PacketPlayOutTitle subtitlePacketPlayOutSubTitle = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, subtitleSub);
+                    subtitleConnection.sendPacket(subtitlePacketPlayOutSubTitle);
                     break;
             }
         }

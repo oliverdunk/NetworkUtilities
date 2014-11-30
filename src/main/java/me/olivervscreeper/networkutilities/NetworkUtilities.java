@@ -2,7 +2,8 @@ package me.olivervscreeper.networkutilities;
 
 import me.olivervscreeper.networkutilities.command.Command;
 import me.olivervscreeper.networkutilities.command.CommandManager;
-import org.bukkit.ChatColor;
+import me.olivervscreeper.networkutilities.messages.Message;
+import me.olivervscreeper.networkutilities.messages.MessageDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -75,7 +76,9 @@ public class NetworkUtilities extends JavaPlugin {
 
     @Command(command = "nu", permission = "none", priority = 1)
     public void nuVersionCommand(Player player, List<String> args){
-        player.sendMessage(ChatColor.WHITE + "This server is running NetworkUtilities version " + ChatColor.GRAY + version + ChatColor.WHITE + " for " + ChatColor.GRAY + compatibility + ".");
+        new Message(Message.BLANK).addRecipient(player).send("Using NetworkUtilities", MessageDisplay.TITLE);
+        new Message(Message.BLANK).addRecipient(player).send("Version: " + version + ".", MessageDisplay.SUBTITLE);
+        new Message(Message.BLANK).addRecipient(player).send("Intended for " + compatibility, MessageDisplay.ACTIONBAR);
     }
 
 }
