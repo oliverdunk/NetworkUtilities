@@ -6,6 +6,7 @@ import me.olivervscreeper.networkutilities.game.events.GameSwitchStateEvent;
 import me.olivervscreeper.networkutilities.game.events.PlayerDeathInArenaEvent;
 import me.olivervscreeper.networkutilities.game.events.PlayerJoinGameEvent;
 import me.olivervscreeper.networkutilities.game.events.PlayerLeaveGameEvent;
+import me.olivervscreeper.networkutilities.game.extensions.GameExtension;
 import me.olivervscreeper.networkutilities.game.players.GamePlayer;
 import me.olivervscreeper.networkutilities.game.states.GameState;
 import me.olivervscreeper.networkutilities.game.states.IdleGameState;
@@ -16,6 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +55,10 @@ public abstract class Game implements Listener{
                 }, 0, 20);
     }
 
+    public boolean requireExtension(GameExtension extension){
+        return extension.onEnable();
+    }
+
     public GameState getState(){return currentState;}
 
     public Boolean setState(GameState state){
@@ -85,6 +92,7 @@ public abstract class Game implements Listener{
     }
 
     public Boolean addPlayer(Player player){
+        if(players.containsKey(player.getName())) return false;
         //Throw the linked event, and end the action if the event becomes cancelled
         PlayerJoinGameEvent event = new PlayerJoinGameEvent(this, player, currentState);
         Bukkit.getPluginManager().callEvent(event);
@@ -134,6 +142,12 @@ public abstract class Game implements Listener{
         //Throw the linked event - cannot be cancelled
         PlayerDeathInArenaEvent newEvent = new PlayerDeathInArenaEvent(this, player);
         Bukkit.getPluginManager().callEvent(newEvent);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event){
+        if(!players.containsKey(event.getPlayer().getName())) return;
+        removePlayer(event.getPlayer());
     }
 
 }
