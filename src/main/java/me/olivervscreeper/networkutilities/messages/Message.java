@@ -4,6 +4,7 @@ import me.olivervscreeper.networkutilities.game.players.GamePlayer;
 import net.minecraft.server.v1_8_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -104,6 +105,44 @@ public class Message {
                     subtitleConnection.sendPacket(subtitlePacketPlayOutSubTitle);
                     break;
             }
+        }
+        recipients.clear();
+    }
+
+    public void send(String message, MessageDisplay display, Sound sound){
+        message = ChatColor.translateAlternateColorCodes('&', PREFIX.replace("%m", message));
+        for(UUID uniqueUserIdentifier : recipients){
+            Player player = Bukkit.getPlayer(uniqueUserIdentifier);
+            String newMessage = message.replace("%p", player.getName());
+            switch(display) {
+                case CHAT:
+                    player.sendMessage(newMessage);
+                    break;
+                case ACTIONBAR:
+                    IChatBaseComponent icbc = ChatSerializer.a("{\"text\": \"" + newMessage + "\"}");
+                    PacketPlayOutChat bar = new PacketPlayOutChat(icbc, (byte)2);
+                    ((CraftPlayer)player).getHandle().playerConnection.sendPacket(bar);
+                    break;
+                case TITLE:
+                    PlayerConnection titleConnection = ((CraftPlayer) player).getHandle().playerConnection;
+                    PacketPlayOutTitle titlePacketPlayOutTimes = new PacketPlayOutTitle(EnumTitleAction.TIMES, null, titleIn, titleStay, titleOut);
+                    titleConnection.sendPacket(titlePacketPlayOutTimes);
+
+                    IChatBaseComponent titleMain = ChatSerializer.a("{\"text\": \"" + message + "\"}");
+                    PacketPlayOutTitle packetPlayOutTitle = new PacketPlayOutTitle(EnumTitleAction.TITLE, titleMain);
+                    titleConnection.sendPacket(packetPlayOutTitle);
+                    break;
+                case SUBTITLE:
+                    PlayerConnection subtitleConnection = ((CraftPlayer) player).getHandle().playerConnection;
+                    PacketPlayOutTitle subtitlePacketPlayOutTimes = new PacketPlayOutTitle(EnumTitleAction.TIMES, null, titleIn, titleStay, titleOut);
+                    subtitleConnection.sendPacket(subtitlePacketPlayOutTimes);
+
+                    IChatBaseComponent subtitleSub = ChatSerializer.a("{\"text\": \"" + message + "\"}");
+                    PacketPlayOutTitle subtitlePacketPlayOutSubTitle = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, subtitleSub);
+                    subtitleConnection.sendPacket(subtitlePacketPlayOutSubTitle);
+                    break;
+            }
+            player.playSound(player.getLocation(), sound, 10, 1);
         }
         recipients.clear();
     }

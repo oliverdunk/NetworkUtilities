@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,12 +31,11 @@ public abstract class Game implements Listener{
 
     //TODO: Add basic system for Arenas
 
-    GameState currentState = new IdleGameState(this); //State of the Game
-    List<GameState> registeredStates = new ArrayList<GameState>();
+    GameState currentState = null; //State of the Game
     Iterator stateIterator;
 
-    THashMap<String, GamePlayer> players = new THashMap<String, GamePlayer>();
-    THashMap<String, GamePlayer> spectators = new THashMap<String, GamePlayer>();
+    public HashMap<String, GamePlayer> players = new HashMap<String, GamePlayer>();
+    public HashMap<String, GamePlayer> spectators = new HashMap<String, GamePlayer>();
 
     public abstract String getName();
     public abstract List<GameState> getAllStates();
@@ -43,36 +43,45 @@ public abstract class Game implements Listener{
 
     public Game(){
         Bukkit.getPluginManager().registerEvents(this, NetworkUtilities.plugin);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(NetworkUtilities.plugin,
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        tick();
+                    }
+                }, 0, 20);
     }
 
     public GameState getState(){return currentState;}
 
     public Boolean setState(GameState state){
-        //Throw the linked event, and end the action if the event becomes cancelled
-        GameSwitchStateEvent event = new GameSwitchStateEvent(this, state);
-        Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return false;
+        if(currentState != null) {
+            //Throw the linked event, and end the action if the event becomes cancelled
+            GameSwitchStateEvent event = new GameSwitchStateEvent(this, state);
+            Bukkit.getPluginManager().callEvent(event);
+            if (event.isCancelled()) return false;
 
-        if(!currentState.onStateEnd()) return false;
+            if (!currentState.onStateEnd()) return false;
+        }
         if(!state.onStateBegin()) return false;
         currentState = state;
         return true;
     }
 
     public void tick(){
+        if(currentState == null) nextState();
         currentState.tick();
         currentState.incrementRuntime();
     }
 
     public Boolean nextState(){
-        if(stateIterator == null | !stateIterator.hasNext()){
-            stateIterator = registeredStates.iterator();
+        if(stateIterator == null){
+            stateIterator = getAllStates().iterator();
+        }
+        if(!stateIterator.hasNext()){
+            stateIterator = getAllStates().iterator();
         }
         return setState((GameState) stateIterator.next()); //Set state to the next possible state
-    }
-
-    public void registerState(GameState state){
-        registeredStates.add(state);
     }
 
     public Boolean addPlayer(Player player){
@@ -83,7 +92,9 @@ public abstract class Game implements Listener{
 
         players.put(player.getName(), new GamePlayer(player.getName(), this));
         players.get(player.getName()).saveData();
+        players.get(player.getName()).reset();
         player.setGameMode(GameMode.ADVENTURE);
+        if(getLobbyLocation() == null) return true;
         player.teleport(getLobbyLocation());
         return true;
     }

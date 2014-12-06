@@ -40,7 +40,7 @@ public class LivingEntitySerialization {
 //        }
         try {
             JSONObject root = new JSONObject();
-            root.put("age", ((Ageable) entity).getAge());
+            //root.put("age", ((Ageable) entity).getAge());
             root.put("health", entity.getHealth());
             root.put("name", entity.getCustomName());
             root.put("potion-effects", PotionEffectSerialization.serializeEffects(entity.getActivePotionEffects()));

@@ -29,7 +29,7 @@ public class GamePlayer {
     }
 
     public void saveData(){
-        data = new PlayerData().prepare();
+        data = new PlayerData(getPlayer().getName()).prepare();
     }
 
     public void resetData(){
@@ -55,9 +55,6 @@ public class GamePlayer {
         p.getEnderChest().clear();
         for(PotionEffect effect : p.getActivePotionEffects()){
             p.removePotionEffect(effect.getType());
-        }
-        for(Achievement ach : Achievement.values()){
-            p.removeAchievement(ach);
         }
     }
 
