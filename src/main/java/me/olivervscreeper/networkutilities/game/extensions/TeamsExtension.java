@@ -46,6 +46,7 @@ public class TeamsExtension extends GameExtension implements Listener{
         registerListener(this);
         teamIterator = teams.iterator();
         enabled = true;
+        gameInstance.logger.log("Team extension enabled");
         return true;
     }
 
@@ -78,6 +79,7 @@ public class TeamsExtension extends GameExtension implements Listener{
         }
         team.addPlayer(event.getPlayer());
         new Message(Message.INFO).addRecipient(event.getPlayer()).send("You were added to the " + team.getDisplayName() + ChatColor.GRAY + " team!");
+        gameInstance.logger.log("Player " + event.getPlayer().getName() + " was added to " + team.getName());
     }
 
     @EventHandler
@@ -85,6 +87,7 @@ public class TeamsExtension extends GameExtension implements Listener{
         fillFirst.add(getTeam(event.getPlayer()));
         getTeam(event.getPlayer()).removePlayer(event.getPlayer());
         new Message(Message.INFO).addRecipient(event.getPlayer()).send("You were removed from your team.");
+        gameInstance.logger.log("Player " + event.getPlayer().getName() + " was removed from their team");
     }
 
 }

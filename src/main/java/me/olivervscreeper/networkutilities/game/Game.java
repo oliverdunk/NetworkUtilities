@@ -1,6 +1,7 @@
 package me.olivervscreeper.networkutilities.game;
 
 import gnu.trove.map.hash.THashMap;
+import me.olivervscreeper.networkutilities.NULogger;
 import me.olivervscreeper.networkutilities.NetworkUtilities;
 import me.olivervscreeper.networkutilities.game.events.GameSwitchStateEvent;
 import me.olivervscreeper.networkutilities.game.events.PlayerDeathInArenaEvent;
@@ -36,6 +37,7 @@ public abstract class Game implements Listener{
 
     GameState currentState = null; //State of the Game
     Iterator stateIterator;
+    public NULogger logger;
 
     public HashMap<String, GamePlayer> players = new HashMap<String, GamePlayer>();
     public HashMap<String, GamePlayer> spectators = new HashMap<String, GamePlayer>();
@@ -44,7 +46,9 @@ public abstract class Game implements Listener{
     public abstract List<GameState> getAllStates();
     public abstract Location getLobbyLocation();
 
-    public Game(){
+    public Game(NULogger logger){
+        this.logger = logger;
+        logger.log(getName() + " has been initialized");
         Bukkit.getPluginManager().registerEvents(this, NetworkUtilities.plugin);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(NetworkUtilities.plugin,
                 new Runnable() {
@@ -53,15 +57,18 @@ public abstract class Game implements Listener{
                         tick();
                     }
                 }, 0, 20);
+        logger.log("Events registered and ticks scheduled");
     }
 
     public boolean requireExtension(GameExtension extension){
+        logger.log("Attempting to load extension " + extension.getClass().getName());
         return extension.onEnable();
     }
 
     public GameState getState(){return currentState;}
 
     public Boolean setState(GameState state){
+        logger.log("Attempting to set state to " + state.getName());
         if(currentState != null) {
             //Throw the linked event, and end the action if the event becomes cancelled
             GameSwitchStateEvent event = new GameSwitchStateEvent(this, state);
@@ -72,6 +79,7 @@ public abstract class Game implements Listener{
         }
         if(!state.onStateBegin()) return false;
         currentState = state;
+        logger.log("State changed");
         return true;
     }
 
@@ -104,6 +112,7 @@ public abstract class Game implements Listener{
         player.setGameMode(GameMode.ADVENTURE);
         if(getLobbyLocation() == null) return true;
         player.teleport(getLobbyLocation());
+        logger.log("Player " + player.getName() + " was added to the game");
         return true;
     }
 
@@ -115,6 +124,7 @@ public abstract class Game implements Listener{
 
         players.get(player.getName()).resetData();
         players.remove(player.getName());
+        logger.log("Player " + player.getName() + " was removed from the game");
         return true;
     }
 
@@ -123,11 +133,13 @@ public abstract class Game implements Listener{
         players.get(player.getName()).saveData();
         player.setGameMode(GameMode.SPECTATOR);
         player.teleport(getLobbyLocation());
+        logger.log("Player " + player.getName() + " is now spectating");
     }
 
     public void removeSpectator(Player player){
         spectators.get(player.getName()).resetData();
         spectators.remove(player.getName());
+        logger.log("Player " + player.getName() + " is no longer spectating");
     }
 
     @EventHandler
