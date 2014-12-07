@@ -1,72 +1,47 @@
 package me.olivervscreeper.networkutilities.utils;
 
+import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
 /**
- * Modified implementation of https://code.google.com/p/pastebin-click/
+ * Implementation of the Hastebin API
  */
 public class PasteUtils {
 
-    private static String pasteURL = "http://www.pastebin.com/api/api_post.php";
-
-    public static String makePaste(String type, String key, String title, String text) {
-        try {
-            String content = URLEncoder.encode(text, "UTF-8");
-            String titler = URLEncoder.encode(title, "UTF-8");
-            String data = "api_option=paste&api_user_key=" + key
-                    + "&api_paste_private=0&api_paste_name=" + titler
-                    + "&api_paste_expire_date=N&api_paste_format=" + type
-                    + "&api_dev_key=" + key + "&api_paste_code=" + content;
-            String response = page(pasteURL, data);
-            return response;
-        }catch(Exception ex){
-            return null;
-        }
-    }
-
-    private static String page(String uri, String urlParameters) {
-        URL url;
+    /**
+     * A simple implementation of the Hastebin Client API, allowing
+     * data to be pasted online for players to access.
+     *
+     * @param urlParameters The string to be sent in the body of the POST request
+     * @return A formatted URL which links to the pasted file
+     */
+    public static String paste(String urlParameters) {
         HttpURLConnection connection = null;
         try {
-            // Create connection
-            url = new URL(uri);
+            //Create connection
+            URL url = new URL("http://www.hastebin.com/documents");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-            connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
-            connection.setRequestProperty("Content-Language", "en-US");
-
-            connection.setUseCaches(false);
             connection.setDoInput(true);
             connection.setDoOutput(true);
 
-            // Send request
+            //Send request
             DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
             wr.writeBytes(urlParameters);
             wr.flush();
             wr.close();
 
-            // Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
-            }
-            rd.close();
-            return response.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
+            //Get Response
+            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            return "http://www.hastebin.com/" + new JSONObject(rd.readLine()).getString("key");
+        } catch (Exception ex) {
             return null;
         } finally {
-            if (connection != null) {
+            if (connection == null) return null;
                 connection.disconnect();
-            }
         }
     }
 
