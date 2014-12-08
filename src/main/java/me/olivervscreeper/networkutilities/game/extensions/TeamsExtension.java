@@ -39,15 +39,28 @@ public class TeamsExtension extends GameExtension implements Listener{
         customScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     }
 
+    public Scoreboard getScoreboard(){ return customScoreboard; }
+
     @Override //To prevent players without a team, loading in game is disabled
     public boolean onEnable() {
-        if(gameInstance.players.size() > 0) return false;
-        if(enabled) return false;
+        if(gameInstance.players.size() > 0){
+            gameInstance.logger.log("Teams", "Extension cannot be enabled with players ingame");
+            return false;
+        }
+        if(enabled){
+            gameInstance.logger.log("Teams", "Extension already enabled");
+            return false;
+        }
         registerListener(this);
         teamIterator = teams.iterator();
         enabled = true;
-        gameInstance.logger.log("Team extension enabled");
+        gameInstance.logger.log("Teams", "Team extension enabled");
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return "Team Extension";
     }
 
     public void registerTeam(String name, String display, String prefix, String suffix){
@@ -57,6 +70,7 @@ public class TeamsExtension extends GameExtension implements Listener{
         team.setPrefix(prefix);
         team.setSuffix(suffix);
         teams.add(team);
+        gameInstance.logger.log("Teams", name + " team has been registered into the system");
     }
 
     public Team getTeam(Player player){
@@ -79,7 +93,7 @@ public class TeamsExtension extends GameExtension implements Listener{
         }
         team.addPlayer(event.getPlayer());
         new Message(Message.INFO).addRecipient(event.getPlayer()).send("You were added to the " + team.getDisplayName() + ChatColor.GRAY + " team!");
-        gameInstance.logger.log("Player " + event.getPlayer().getName() + " was added to " + team.getName());
+        gameInstance.logger.log("Teams", "Player " + event.getPlayer().getName() + " was added to " + team.getName());
     }
 
     @EventHandler
@@ -87,7 +101,7 @@ public class TeamsExtension extends GameExtension implements Listener{
         fillFirst.add(getTeam(event.getPlayer()));
         getTeam(event.getPlayer()).removePlayer(event.getPlayer());
         new Message(Message.INFO).addRecipient(event.getPlayer()).send("You were removed from your team.");
-        gameInstance.logger.log("Player " + event.getPlayer().getName() + " was removed from their team");
+        gameInstance.logger.log("Teams", "Player " + event.getPlayer().getName() + " was removed from their team");
     }
 
 }

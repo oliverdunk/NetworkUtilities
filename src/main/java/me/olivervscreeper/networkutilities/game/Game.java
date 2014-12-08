@@ -48,7 +48,7 @@ public abstract class Game implements Listener{
 
     public Game(NULogger logger){
         this.logger = logger;
-        logger.log(getName() + " has been initialized");
+        logger.log("Game", getRawName() + " has been initialized");
         Bukkit.getPluginManager().registerEvents(this, NetworkUtilities.plugin);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(NetworkUtilities.plugin,
                 new Runnable() {
@@ -57,18 +57,20 @@ public abstract class Game implements Listener{
                         tick();
                     }
                 }, 0, 20);
-        logger.log("Events registered and ticks scheduled");
+        logger.log("Game", "Events registered and ticks scheduled");
     }
 
+    protected abstract String getRawName();
+
     public boolean requireExtension(GameExtension extension){
-        logger.log("Attempting to load extension " + extension.getClass().getName());
+        logger.log("Game", "Attempting to load extension " + extension.getName());
         return extension.onEnable();
     }
 
     public GameState getState(){return currentState;}
 
     public Boolean setState(GameState state){
-        logger.log("Attempting to set state to " + state.getName());
+        logger.log("Game", "Attempting to set state to " + state.getName());
         if(currentState != null) {
             //Throw the linked event, and end the action if the event becomes cancelled
             GameSwitchStateEvent event = new GameSwitchStateEvent(this, state);
@@ -79,7 +81,7 @@ public abstract class Game implements Listener{
         }
         if(!state.onStateBegin()) return false;
         currentState = state;
-        logger.log("State changed");
+        logger.log("Game", "State changed to " + getState().getName());
         return true;
     }
 
@@ -110,9 +112,9 @@ public abstract class Game implements Listener{
         players.get(player.getName()).saveData();
         players.get(player.getName()).reset();
         player.setGameMode(GameMode.ADVENTURE);
-        if(getLobbyLocation() == null) return true;
+        logger.log("Game", "Player " + player.getName() + " was added to the game");
+        if (getLobbyLocation() == null) return true;
         player.teleport(getLobbyLocation());
-        logger.log("Player " + player.getName() + " was added to the game");
         return true;
     }
 
@@ -124,22 +126,24 @@ public abstract class Game implements Listener{
 
         players.get(player.getName()).resetData();
         players.remove(player.getName());
-        logger.log("Player " + player.getName() + " was removed from the game");
+        logger.log("Game", "Player " + player.getName() + " was removed from the game");
         return true;
     }
 
     public void addSpectator(Player player){
         spectators.put(player.getName(), new GamePlayer(player.getName(), this));
-        players.get(player.getName()).saveData();
+        spectators.get(player.getName()).saveData();
         player.setGameMode(GameMode.SPECTATOR);
+        logger.log("Game", "Player " + player.getName() + " is now spectating");
+        if (getLobbyLocation() == null) return;
         player.teleport(getLobbyLocation());
-        logger.log("Player " + player.getName() + " is now spectating");
+        return;
     }
 
     public void removeSpectator(Player player){
         spectators.get(player.getName()).resetData();
         spectators.remove(player.getName());
-        logger.log("Player " + player.getName() + " is no longer spectating");
+        logger.log("Game", "Player " + player.getName() + " is no longer spectating");
     }
 
     @EventHandler

@@ -30,12 +30,12 @@ public class GamePlayer {
 
     public void saveData(){
         data = new PlayerData(getPlayer().getName()).prepare();
-        game.logger.log("Player data for " + name + " has been saved");
+        game.logger.log("GamePlayer", "Player data for " + name + " has been saved");
     }
 
     public void resetData(){
         data.revert();
-        game.logger.log("Player data for " + name + " has been reverted");
+        game.logger.log("GamePlayer", "Player data for " + name + " has been reverted");
     }
 
     public UUID getUniqueIdentifier(){

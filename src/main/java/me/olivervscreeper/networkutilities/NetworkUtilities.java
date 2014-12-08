@@ -38,11 +38,11 @@ public class NetworkUtilities extends JavaPlugin {
         log("Version " + version + " now running.");
         log("Working with " + compatibility);
         manager = new CommandManager(this);
-        logger.log("New command manager created");
+        logger.log("NU","New command manager created");
         manager.registerCommands(this);
-        logger.log("Default commands loaded into Bukkit");
+        logger.log("NU","Default commands loaded into Bukkit");
 
-        logger.log("Plugin initialisation complete.");
+        logger.log("NU", "Plugin initialisation complete.");
     }
 
     /**
@@ -57,7 +57,7 @@ public class NetworkUtilities extends JavaPlugin {
         try {
             Metrics metrics = new Metrics(this);
             metrics.start(); //Sends metrics
-            logger.log("Metrics enabled and first packets sent");
+            logger.log("NU", "Metrics enabled and first packets sent");
             return true; //Success
         } catch (Exception e) {
             log("Failed to boot metrics system.");

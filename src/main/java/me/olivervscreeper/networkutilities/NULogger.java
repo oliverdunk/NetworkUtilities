@@ -14,15 +14,15 @@ public class NULogger {
 
     public NULogger(Boolean versionData){
         if(!versionData) return;
-        log("NetworkUtilities generated log file");
-        log("Server running version " + NetworkUtilities.version);
-        log("Confirmed compatible with " + NetworkUtilities.compatibility);
-        log("");
+        log("NU", "NetworkUtilities generated log file");
+        log("NU", "Server running version " + NetworkUtilities.version);
+        log("NU", "Confirmed compatible with " + NetworkUtilities.compatibility);
+        log("NU", "");
     }
 
-    public void log(String toLog){
+    public void log(String from, String toLog){
         if(!(log == "")) log = log + "\n";
-        log = log + getTimePrefix() + " " + toLog;
+        log = log + getTimePrefix() + " " + "[" + from + "] " + toLog;
     }
 
     private String getTimePrefix(){

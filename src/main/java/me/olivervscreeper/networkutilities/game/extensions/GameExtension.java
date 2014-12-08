@@ -27,4 +27,6 @@ public abstract class GameExtension {
         HandlerList.unregisterAll(classInstance);
     }
 
+    public abstract String getName();
+
 }
