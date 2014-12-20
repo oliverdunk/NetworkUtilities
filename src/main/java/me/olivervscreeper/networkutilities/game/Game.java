@@ -127,6 +127,7 @@ public abstract class Game implements Listener{
         players.get(player.getName()).resetData();
         players.remove(player.getName());
         logger.log("Game", "Player " + player.getName() + " was removed from the game");
+        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         return true;
     }
 
