@@ -29,19 +29,13 @@ public class GamePlayer {
     }
 
     public void saveData(){
-        data = new PlayerData().prepare();
+        data = new PlayerData(getPlayer().getName()).prepare();
+        game.getLogger().log("GamePlayer", "Player data for " + name + " has been saved");
     }
 
     public void resetData(){
         data.revert();
-    }
-
-    public UUID getUniqueIdentifier(){
-        return getPlayer().getUniqueId();
-    }
-
-    public String getUniqueIdentifierAsString(){
-        return getPlayer().getUniqueId().toString();
+        game.getLogger().log("GamePlayer", "Player data for " + name + " has been reverted");
     }
 
     //Completely wipes a player of everything
@@ -51,13 +45,15 @@ public class GamePlayer {
         p.getInventory().setArmorContents(null);
         p.setTotalExperience(0);
         p.setHealth(20D);
+        p.setMaxHealth(20D);
+        p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        p.setAllowFlight(false);
+        p.resetPlayerTime();
+        p.resetPlayerWeather();
         p.setFoodLevel(20);
         p.getEnderChest().clear();
         for(PotionEffect effect : p.getActivePotionEffects()){
             p.removePotionEffect(effect.getType());
-        }
-        for(Achievement ach : Achievement.values()){
-            p.removeAchievement(ach);
         }
     }
 

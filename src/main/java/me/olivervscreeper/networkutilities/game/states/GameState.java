@@ -13,7 +13,7 @@ import org.bukkit.event.Listener;
  */
 public abstract class GameState implements Listener{
 
-    private Game gameInstance;
+    public Game gameInstance;
 
     public GameState(Game game){
         this.gameInstance = game;
