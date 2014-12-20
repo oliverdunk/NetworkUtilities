@@ -44,17 +44,17 @@ public class TeamsExtension extends GameExtension implements Listener{
     @Override //To prevent players without a team, loading in game is disabled
     public boolean onEnable() {
         if(gameInstance.players.size() > 0){
-            gameInstance.logger.log("Teams", "Extension cannot be enabled with players ingame");
+            gameInstance.getLogger().log("Teams", "Extension cannot be enabled with players ingame");
             return false;
         }
         if(enabled){
-            gameInstance.logger.log("Teams", "Extension already enabled");
+            gameInstance.getLogger().log("Teams", "Extension already enabled");
             return false;
         }
         registerListener(this);
         teamIterator = teams.iterator();
         enabled = true;
-        gameInstance.logger.log("Teams", "Team extension enabled");
+        gameInstance.getLogger().log("Teams", "Team extension enabled");
         return true;
     }
 
@@ -70,7 +70,7 @@ public class TeamsExtension extends GameExtension implements Listener{
         team.setPrefix(prefix);
         team.setSuffix(suffix);
         teams.add(team);
-        gameInstance.logger.log("Teams", name + " team has been registered into the system");
+        gameInstance.getLogger().log("Teams", name + " team has been registered into the system");
     }
 
     public Team getTeam(Player player){
@@ -93,7 +93,7 @@ public class TeamsExtension extends GameExtension implements Listener{
         }
         team.addPlayer(event.getPlayer());
         new Message(Message.INFO).addRecipient(event.getPlayer()).send("You were added to the " + team.getDisplayName() + ChatColor.GRAY + " team!");
-        gameInstance.logger.log("Teams", "Player " + event.getPlayer().getName() + " was added to " + team.getName());
+        gameInstance.getLogger().log("Teams", "Player " + event.getPlayer().getName() + " was added to " + team.getName());
     }
 
     @EventHandler
@@ -101,7 +101,7 @@ public class TeamsExtension extends GameExtension implements Listener{
         fillFirst.add(getTeam(event.getPlayer()));
         getTeam(event.getPlayer()).removePlayer(event.getPlayer());
         new Message(Message.INFO).addRecipient(event.getPlayer()).send("You were removed from your team.");
-        gameInstance.logger.log("Teams", "Player " + event.getPlayer().getName() + " was removed from their team");
+        gameInstance.getLogger().log("Teams", "Player " + event.getPlayer().getName() + " was removed from their team");
     }
 
 }

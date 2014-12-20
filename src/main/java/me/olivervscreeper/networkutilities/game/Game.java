@@ -3,10 +3,7 @@ package me.olivervscreeper.networkutilities.game;
 import gnu.trove.map.hash.THashMap;
 import me.olivervscreeper.networkutilities.NULogger;
 import me.olivervscreeper.networkutilities.NetworkUtilities;
-import me.olivervscreeper.networkutilities.game.events.GameSwitchStateEvent;
-import me.olivervscreeper.networkutilities.game.events.PlayerDeathInArenaEvent;
-import me.olivervscreeper.networkutilities.game.events.PlayerJoinGameEvent;
-import me.olivervscreeper.networkutilities.game.events.PlayerLeaveGameEvent;
+import me.olivervscreeper.networkutilities.game.events.*;
 import me.olivervscreeper.networkutilities.game.extensions.GameExtension;
 import me.olivervscreeper.networkutilities.game.players.GamePlayer;
 import me.olivervscreeper.networkutilities.game.states.GameState;
@@ -16,6 +13,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -37,7 +35,7 @@ public abstract class Game implements Listener{
 
     GameState currentState = null; //State of the Game
     Iterator stateIterator;
-    public NULogger logger;
+    private NULogger logger;
 
     public HashMap<String, GamePlayer> players = new HashMap<String, GamePlayer>();
     public HashMap<String, GamePlayer> spectators = new HashMap<String, GamePlayer>();
@@ -59,6 +57,8 @@ public abstract class Game implements Listener{
                 }, 0, 20);
         logger.log("Game", "Events registered and ticks scheduled");
     }
+
+    public NULogger getLogger(){return logger;}
 
     protected abstract String getRawName();
 
@@ -131,23 +131,32 @@ public abstract class Game implements Listener{
         return true;
     }
 
-    public void addSpectator(Player player){
+    public Boolean addSpectator(Player player){
+        //Throw the linked event, and end the action if the event becomes cancelled
+        PlayerStartSpectatingGameEvent event = new PlayerStartSpectatingGameEvent(this, player, currentState);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return false;
         spectators.put(player.getName(), new GamePlayer(player.getName(), this));
         spectators.get(player.getName()).saveData();
         player.setGameMode(GameMode.SPECTATOR);
         logger.log("Game", "Player " + player.getName() + " is now spectating");
-        if (getLobbyLocation() == null) return;
+        if (getLobbyLocation() == null) return true;
         player.teleport(getLobbyLocation());
-        return;
+        return true;
     }
 
-    public void removeSpectator(Player player){
+    public Boolean removeSpectator(Player player){
+        //Throw the linked event, and end the action if the event becomes cancelled
+        PlayerStopSpectatingGameEvent event = new PlayerStopSpectatingGameEvent(this, player, currentState);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return false;
         spectators.get(player.getName()).resetData();
         spectators.remove(player.getName());
         logger.log("Game", "Player " + player.getName() + " is no longer spectating");
+        return true;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamage(EntityDamageEvent event){
         if(!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
