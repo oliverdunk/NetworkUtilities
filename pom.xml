@@ -14,8 +14,8 @@
             <url>http://repo.mcstats.org/content/repositories/public</url>
         </repository>
         <repository>
-            <id>Bukkit</id>
-            <url>http://olivervscreeper.co.uk/maven2/</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
     </repositories>
 
