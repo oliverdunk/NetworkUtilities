@@ -6,7 +6,7 @@
 
     <groupId>OVC-Public</groupId>
     <artifactId>NetworkUtilities</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2-RELEASE</version>
 
     <repositories>
         <repository>
@@ -21,8 +21,13 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8-R0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
+            <artifactId>craftbukkit</artifactId>
             <version>1.8-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
