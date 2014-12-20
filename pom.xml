@@ -15,7 +15,7 @@
         </repository>
         <repository>
             <id>Bukkit</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <url>http://olivervscreeper.co.uk/maven2/</url>
         </repository>
     </repositories>
 
