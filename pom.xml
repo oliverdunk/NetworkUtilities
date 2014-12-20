@@ -6,7 +6,7 @@
 
     <groupId>OVC-Public</groupId>
     <artifactId>NetworkUtilities</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2-RELEASE</version>
 
     <repositories>
         <repository>
@@ -14,15 +14,20 @@
             <url>http://repo.mcstats.org/content/repositories/public</url>
         </repository>
         <repository>
-            <id>Bukkit</id>
-            <url>http://olivervscreeper.co.uk/maven2/</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
     </repositories>
 
     <dependencies>
         <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8-R0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
+            <artifactId>craftbukkit</artifactId>
             <version>1.8-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

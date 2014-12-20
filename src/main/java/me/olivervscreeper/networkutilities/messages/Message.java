@@ -40,7 +40,7 @@ public class Message {
     }
 
     public Message addRecipient(GamePlayer player){
-        recipients.add(player.getUniqueIdentifier());
+        recipients.add(player.getPlayer().getUniqueId());
         return this;
     }
 
