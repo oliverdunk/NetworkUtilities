@@ -69,6 +69,7 @@ public abstract class Game implements Listener{
 
     public GameState getState(){return currentState;}
 
+    @Deprecated //Deprecated to stop usage instead of nextState()
     public Boolean setState(GameState state){
         logger.log("Game", "Attempting to set state to " + state.getName());
         if(currentState != null) {
@@ -160,14 +161,19 @@ public abstract class Game implements Listener{
     public void onEntityDamage(EntityDamageEvent event){
         if(!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
-        if(!(players.keySet().contains(player.getName()))) return;
-        if(!((player.getHealth() - event.getDamage() <= 0))) return;
-        event.setCancelled(true);
-        player.setHealth(20D);
+        if((players.keySet().contains(player.getName()))) {
+            if (!((player.getHealth() - event.getDamage() <= 0))) return;
+            event.setCancelled(true);
+            player.setHealth(20D);
 
-        //Throw the linked event - cannot be cancelled
-        PlayerDeathInArenaEvent newEvent = new PlayerDeathInArenaEvent(this, player);
-        Bukkit.getPluginManager().callEvent(newEvent);
+            //Throw the linked event - cannot be cancelled
+            PlayerDeathInArenaEvent newEvent = new PlayerDeathInArenaEvent(this, player);
+            Bukkit.getPluginManager().callEvent(newEvent);
+        }else if(spectators.keySet().contains(player.getName())){
+            event.setCancelled(true);
+            player.setHealth(20D);
+            player.teleport(getLobbyLocation());
+        }
     }
 
     @EventHandler

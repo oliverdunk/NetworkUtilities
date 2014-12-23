@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class NetworkUtilities extends JavaPlugin {
 
-    public static String version = "1.2-RELEASE";
+    public static String version = "1.3-SNAPSHOT";
     public static String compatibility = "Spigot 1.8-R0.1-SNAPSHOT";
 
     public static Plugin plugin;
