@@ -6,17 +6,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created on 28/11/2014.
- * Basic interface holding the command Annotation.
- * Requires a command name, and a permission set.
+ * Created on 28/11/2014. Basic interface holding the command Annotation. Requires a command name,
+ * and a permission set.
  *
  * @author OliverVsCreeper
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
-    public String command();
-    public String permission() default "none";
-    public int priority() default 0;
-    public String deprecated() default "";
+
+  public String command();
+
+  public String permission() default "none";
+
+  public int priority() default 0;
+
+  public String deprecated() default "";
 }

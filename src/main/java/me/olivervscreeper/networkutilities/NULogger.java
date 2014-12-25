@@ -10,29 +10,33 @@ import java.util.Calendar;
  */
 public class NULogger {
 
-    public String log = "";
+  public String log = "";
 
-    public NULogger(Boolean versionData){
-        if(!versionData) return;
-        log("NU", "NetworkUtilities generated log file");
-        log("NU", "Server running version " + NetworkUtilities.version);
-        log("NU", "Confirmed compatible with " + NetworkUtilities.compatibility);
-        log("NU", "");
+  public NULogger(Boolean versionData) {
+    if (!versionData) {
+      return;
     }
+    log("NU", "NetworkUtilities generated log file");
+    log("NU", "Server running version " + NetworkUtilities.version);
+    log("NU", "Confirmed compatible with " + NetworkUtilities.compatibility);
+    log("NU", "");
+  }
 
-    public void log(String from, String toLog){
-        if(!(log == "")) log = log + "\n";
-        log = log + getTimePrefix() + " " + "[" + from + "] " + toLog;
+  public void log(String from, String toLog) {
+    if (!(log == "")) {
+      log = log + "\n";
     }
+    log = log + getTimePrefix() + " " + "[" + from + "] " + toLog;
+  }
 
-    private String getTimePrefix(){
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("[HH:mm:ss]");
-        return sdf.format(cal.getTime());
-    }
+  private String getTimePrefix() {
+    Calendar cal = Calendar.getInstance();
+    SimpleDateFormat sdf = new SimpleDateFormat("[HH:mm:ss]");
+    return sdf.format(cal.getTime());
+  }
 
-    public String getLog(){
-        return PasteUtils.paste(log);
-    }
+  public String getLog() {
+    return PasteUtils.paste(log);
+  }
 
 }

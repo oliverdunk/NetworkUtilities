@@ -7,8 +7,12 @@ package me.olivervscreeper.networkutilities.utils;
  */
 public class MathUtils {
 
-    public static int secondsToTick(int seconds){return seconds * 20;}
+  public static int secondsToTick(int seconds) {
+    return seconds * 20;
+  }
 
-    public static int ticksToSeconds(int seconds){return seconds / 20;}
+  public static int ticksToSeconds(int seconds) {
+    return seconds / 20;
+  }
 
 }
