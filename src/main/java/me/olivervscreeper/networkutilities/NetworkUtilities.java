@@ -75,12 +75,19 @@ public class NetworkUtilities extends JavaPlugin {
     plugin.getServer().getLogger().info("[NetworkUtilities] - " + message);
   }
 
+  /**
+   * Simple method to get the default CommandManager which is created and used by the
+   * NetworkUtilities commands
+   *
+   * @return The instance of CommandManager in use by NetworkUtilities
+   */
   public static CommandManager getCommandManager() {
     return manager;
   }
 
+
   @Command(command = "nu", permission = "none", priority = 1)
-  public void nuVersionCommand(Player player, List<String> args) {
+  private void nuVersionCommand(Player player, List<String> args) {
     new Message(Message.BLANK).addRecipient(player)
         .send("Using NetworkUtilities", MessageDisplay.TITLE);
     new Message(Message.BLANK).addRecipient(player)
@@ -90,7 +97,7 @@ public class NetworkUtilities extends JavaPlugin {
   }
 
   @Command(command = "nu-log", permission = "nu.all")
-  public void nuLogCommand(Player player, List<String> args) {
+  private void nuLogCommand(Player player, List<String> args) {
     new Message(Message.INFO).addRecipient(player).send("Log File: " + logger.getLog());
   }
 

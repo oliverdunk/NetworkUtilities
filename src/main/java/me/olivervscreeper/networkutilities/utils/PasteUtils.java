@@ -18,7 +18,7 @@ public class PasteUtils {
    * @param urlParameters The string to be sent in the body of the POST request
    * @return A formatted URL which links to the pasted file
    */
-  public static String paste(String urlParameters) {
+  public synchronized static String paste(String urlParameters) {
     HttpURLConnection connection = null;
     try {
       //Create connection

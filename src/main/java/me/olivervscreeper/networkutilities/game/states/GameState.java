@@ -16,6 +16,10 @@ public abstract class GameState implements Listener {
 
   public Game gameInstance;
 
+  /**
+   * Default constructor for a GameState
+   * @param game
+   */
   public GameState(Game game) {
     this.gameInstance = game;
   }

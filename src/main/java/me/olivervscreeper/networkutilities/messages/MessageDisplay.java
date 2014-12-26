@@ -1,7 +1,7 @@
 package me.olivervscreeper.networkutilities.messages;
 
 /**
- * Created on 30/11/2014.
+ * A set of enums specifying the display formats supported by the Message class
  *
  * @author OliverVsCreeper
  */

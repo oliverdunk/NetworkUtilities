@@ -48,6 +48,11 @@ public abstract class Game implements Listener {
 
   public abstract Location getLobbyLocation();
 
+  /**
+   * Default constructor for any Game instance
+   *
+   * @param logger Logger in which to write game debug information - cannot be null
+   */
   public Game(NULogger logger) {
     this.logger = logger;
     logger.log("Game", getRawName() + " has been initialized");
@@ -62,21 +67,41 @@ public abstract class Game implements Listener {
     logger.log("Game", "Events registered and ticks scheduled");
   }
 
+  /**
+   * @return Debug logger in use by the Game instance
+   */
   public NULogger getLogger() {
     return logger;
   }
 
   protected abstract String getRawName();
 
+  /**
+   * Require the Game instance to use a GameExtensions, and trigger it to be loaded immediately.
+   *
+   * @param extension GameExtension that is required
+   * @return If the GameExtension has reported a successful initialization
+   */
   public boolean requireExtension(GameExtension extension) {
     logger.log("Game", "Attempting to load extension " + extension.getName());
     return extension.onEnable();
   }
 
+  /**
+   * @return Returns the state of the Game instance
+   */
   public GameState getState() {
     return currentState;
   }
 
+  /**
+   * Calls the GameSwitchStateEvent. If this is successful, a state switch is attempted. However,
+   * both the current state and next state could end this by returning false on initialization or
+   * unloading
+   *
+   * @param state The state in which the game should become
+   * @return If the state change was successful
+   */
   @Deprecated //Deprecated to stop usage instead of nextState()
   public Boolean setState(GameState state) {
     logger.log("Game", "Attempting to set state to " + state.getName());
@@ -100,6 +125,10 @@ public abstract class Game implements Listener {
     return true;
   }
 
+  /**
+   * Simple tick method used in a one second interval. If a state is not currently loaded, a state
+   * change is attempted. The tick method inside each state is also called here
+   */
   public void tick() {
     if (currentState == null) {
       nextState();
@@ -108,6 +137,11 @@ public abstract class Game implements Listener {
     currentState.incrementRuntime();
   }
 
+  /**
+   * Rotates the state of the Game instance using an iterator, which is recreated and looped if no
+   * more states are available
+   * @return If the state change was successful
+   */
   public Boolean nextState() {
     if (stateIterator == null) {
       stateIterator = getAllStates().iterator();
@@ -118,6 +152,15 @@ public abstract class Game implements Listener {
     return setState((GameState) stateIterator.next()); //Set state to the next possible state
   }
 
+  /**
+   * Attempts to add a player to the game. If the PlayerJoinGameEvent is cancelled, the player is
+   * not added to the game. If it succeeds, the player is made into a new GamePlayer instance and
+   * their PlayerData reset. They are set to Adventure mode and if it is available, moved to
+   * the specified lobbyLocation
+   *
+   * @param player The player to add to the game
+   * @return If the player was successfully added to the game
+   */
   public Boolean addPlayer(Player player) {
     if (players.containsKey(player.getName())) {
       return false;
@@ -141,6 +184,13 @@ public abstract class Game implements Listener {
     return true;
   }
 
+  /**
+   * Attempts to remove a player from the game. If the PlayerLeaveGameEvent is cancelled, the player
+   * is not removed from the game. The player is reverted to their original PlayerData, and this is
+   * logged.
+   * @param player The player to remove from the game
+   * @return If the player was successfully removed from the game
+   */
   public Boolean removePlayer(Player player) {
     //Throw the linked event, and end the action if the event becomes cancelled
     PlayerLeaveGameEvent event = new PlayerLeaveGameEvent(this, player, currentState);
@@ -152,14 +202,20 @@ public abstract class Game implements Listener {
     players.get(player.getName()).resetData();
     players.remove(player.getName());
     logger.log("Game", "Player " + player.getName() + " was removed from the game");
-    player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
     return true;
   }
 
+  /**
+   * Attempts to add a spectator the game. If the PlayerStartSpectatingGameEvent is cancelled, the
+   * player is not changed to a spectator. The player is also moved the the lobbyLocation if it
+   * is specified
+   *
+   * @param player The player to add to the game
+   * @return If the player was successfully set to a spectator
+   */
   public Boolean addSpectator(Player player) {
     //Throw the linked event, and end the action if the event becomes cancelled
-    PlayerStartSpectatingGameEvent
-        event =
+    PlayerStartSpectatingGameEvent event =
         new PlayerStartSpectatingGameEvent(this, player, currentState);
     Bukkit.getPluginManager().callEvent(event);
     if (event.isCancelled()) {
@@ -176,10 +232,16 @@ public abstract class Game implements Listener {
     return true;
   }
 
+  /**
+   * Attempts to remove a spectator from the game. If the PlayerStopSpectatingEvent is cancelled,
+   * the player is not stopped from spectating. PlayerData is also reverted during this
+   *
+   * @param player The player to add to the game
+   * @return If the player was successfully stopped from spectating
+   */
   public Boolean removeSpectator(Player player) {
     //Throw the linked event, and end the action if the event becomes cancelled
-    PlayerStopSpectatingGameEvent
-        event =
+    PlayerStopSpectatingGameEvent event =
         new PlayerStopSpectatingGameEvent(this, player, currentState);
     Bukkit.getPluginManager().callEvent(event);
     if (event.isCancelled()) {
