@@ -17,10 +17,12 @@ public class PlayerDeathInArenaEvent extends Event{
 
     private Game game;
     private Player player;
+    private boolean forced;
 
-    public PlayerDeathInArenaEvent(Game game, Player player){
+    public PlayerDeathInArenaEvent(Game game, Player player, boolean forced){
         this.game = game;
         this.player = player;
+        this.forced = forced;
     }
 
     @Override
@@ -38,6 +40,10 @@ public class PlayerDeathInArenaEvent extends Event{
 
     public Player getPlayer() {
         return player;
+    }
+
+    public boolean wasForced(){
+        return forced;
     }
 
 }
