@@ -15,11 +15,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
 
-  public String command();
+  public String label();
 
   public String permission() default "none";
 
   public int priority() default 0;
 
-  public String deprecated() default "";
 }

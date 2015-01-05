@@ -32,7 +32,7 @@ public class TeamsExtension extends GameExtension implements Listener {
   List<Team> fillFirst = new ArrayList<Team>();
 
   public TeamsExtension(Game gameInstance) {
-    super(gameInstance);
+    super(gameInstance, "Team Extension");
     createScoreboard();
   }
 
@@ -61,11 +61,6 @@ public class TeamsExtension extends GameExtension implements Listener {
     enabled = true;
     gameInstance.getLogger().log("Teams", "Team extension enabled");
     return true;
-  }
-
-  @Override
-  public String getName() {
-    return "Team Extension";
   }
 
   public void registerTeam(String name, String display, String prefix, String suffix) {

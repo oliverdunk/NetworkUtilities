@@ -86,7 +86,7 @@ public class NetworkUtilities extends JavaPlugin {
   }
 
 
-  @Command(command = "nu", permission = "none", priority = 1)
+  @Command(label = "nu", permission = "none", priority = 1)
   private void nuVersionCommand(Player player, List<String> args) {
     new Message(Message.BLANK).addRecipient(player)
         .send("Using NetworkUtilities", MessageDisplay.TITLE);
@@ -96,7 +96,7 @@ public class NetworkUtilities extends JavaPlugin {
         .send("Intended for " + compatibility, MessageDisplay.ACTIONBAR);
   }
 
-  @Command(command = "nu-log", permission = "nu.all")
+  @Command(label = "nu-log", permission = "nu.all")
   private void nuLogCommand(Player player, List<String> args) {
     new Message(Message.INFO).addRecipient(player).send("Log File: " + logger.getLog());
   }

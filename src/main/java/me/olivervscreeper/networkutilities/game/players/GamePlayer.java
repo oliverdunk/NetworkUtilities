@@ -19,6 +19,7 @@ public class GamePlayer {
   String name;
   Game game;
   PlayerData data;
+  int deaths = 0;
 
   public GamePlayer(String name, Game game) {
     this.name = name;
@@ -39,6 +40,10 @@ public class GamePlayer {
     game.getLogger().log("GamePlayer", "Player data for " + name + " has been reverted");
   }
 
+  public boolean hasData(){
+    return data != null;
+  }
+
   //Completely wipes a player of everything
   public void reset() {
     Player p = getPlayer();
@@ -57,6 +62,14 @@ public class GamePlayer {
     for (PotionEffect effect : p.getActivePotionEffects()) {
       p.removePotionEffect(effect.getType());
     }
+  }
+
+  public void addDeath(){
+    deaths =+ 1;
+  }
+
+  public int getDeaths(){
+    return deaths;
   }
 
 }

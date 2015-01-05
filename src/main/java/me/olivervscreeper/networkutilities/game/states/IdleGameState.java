@@ -10,27 +10,17 @@ import me.olivervscreeper.networkutilities.game.Game;
 public class IdleGameState extends GameState {
 
   public IdleGameState(Game game) {
-    super(game);
+    super(game, "idle", "Idle");
   }
 
   @Override
-  public String getName() {
-    return "idle";
-  }
-
-  @Override
-  public String getDisplayName() {
-    return "Idle";
-  }
-
-  @Override
-  public Boolean onStateBegin() {
+  public boolean onStateBegin() {
     registerListener(this);
     return true;
   }
 
   @Override
-  public Boolean onStateEnd() {
+  public boolean onStateEnd() {
     unregisterListener(this);
     return true;
   }

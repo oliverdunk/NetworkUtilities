@@ -15,13 +15,20 @@ import org.bukkit.event.Listener;
 public abstract class GameState implements Listener {
 
   public Game gameInstance;
+  private String name;
+  private String displayName;
 
   /**
    * Default constructor for a GameState
-   * @param game
+   *
+   * @param game Instance of the game which is handling the state
+   * @param name Raw name of the state for display in log files
+   * @param displayName Formatted display name for use in chat messages
    */
-  public GameState(Game game) {
+  public GameState(Game game, String name, String displayName) {
     this.gameInstance = game;
+    this.name = name;
+    this.displayName = displayName;
   }
 
   int runtime = 0;
@@ -34,14 +41,18 @@ public abstract class GameState implements Listener {
     runtime++;
   }
 
-  public abstract String getName();
+  public String getName(){
+    return name;
+  }
 
-  public abstract String getDisplayName();
+  public String getDisplayName(){
+    return displayName;
+  }
 
   //If either return false, a GameState change can not take place
-  public abstract Boolean onStateBegin();
+  public abstract boolean onStateBegin();
 
-  public abstract Boolean onStateEnd();
+  public abstract boolean onStateEnd();
 
   public abstract void tick();
 

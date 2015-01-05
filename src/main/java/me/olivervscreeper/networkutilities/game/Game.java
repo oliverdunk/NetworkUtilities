@@ -38,24 +38,34 @@ public abstract class Game implements Listener {
   GameState currentState = null; //State of the Game
   Iterator stateIterator;
   private NULogger logger;
+  private String rawName;
+  private String name;
 
   public HashMap<String, GamePlayer> players = new HashMap<String, GamePlayer>();
   public HashMap<String, GamePlayer> spectators = new HashMap<String, GamePlayer>();
 
-  public abstract String getName();
-
   public abstract List<GameState> getAllStates();
 
   public abstract Location getLobbyLocation();
+
+  public String getName(){
+    return name;
+  }
+
+  public String getRawName(){
+    return rawName;
+  }
 
   /**
    * Default constructor for any Game instance
    *
    * @param logger Logger in which to write game debug information - cannot be null
    */
-  public Game(NULogger logger) {
+  public Game(NULogger logger, String rawName, String name) {
     this.logger = logger;
-    logger.log("Game", getRawName() + " has been initialized");
+    this.rawName = rawName;
+    this.name = name;
+    logger.log("Game", rawName + " has been initialized");
     Bukkit.getPluginManager().registerEvents(this, NetworkUtilities.plugin);
     Bukkit.getScheduler().scheduleSyncRepeatingTask(NetworkUtilities.plugin,
                                                     new Runnable() {
@@ -73,8 +83,6 @@ public abstract class Game implements Listener {
   public NULogger getLogger() {
     return logger;
   }
-
-  protected abstract String getRawName();
 
   /**
    * Require the Game instance to use a GameExtensions, and trigger it to be loaded immediately.
@@ -103,7 +111,7 @@ public abstract class Game implements Listener {
    * @return If the state change was successful
    */
   @Deprecated //Deprecated to stop usage instead of nextState()
-  public Boolean setState(GameState state) {
+  public boolean setState(GameState state) {
     logger.log("Game", "Attempting to set state to " + state.getName());
     if (currentState != null) {
       //Throw the linked event, and end the action if the event becomes cancelled
@@ -142,7 +150,7 @@ public abstract class Game implements Listener {
    * more states are available
    * @return If the state change was successful
    */
-  public Boolean nextState() {
+  public boolean nextState() {
     if (stateIterator == null) {
       stateIterator = getAllStates().iterator();
     }
@@ -161,7 +169,7 @@ public abstract class Game implements Listener {
    * @param player The player to add to the game
    * @return If the player was successfully added to the game
    */
-  public Boolean addPlayer(Player player) {
+  public boolean addPlayer(Player player) {
     if (players.containsKey(player.getName())) {
       return false;
     }
@@ -191,7 +199,7 @@ public abstract class Game implements Listener {
    * @param player The player to remove from the game
    * @return If the player was successfully removed from the game
    */
-  public Boolean removePlayer(Player player) {
+  public boolean removePlayer(Player player) {
     //Throw the linked event, and end the action if the event becomes cancelled
     PlayerLeaveGameEvent event = new PlayerLeaveGameEvent(this, player, currentState);
     Bukkit.getPluginManager().callEvent(event);
@@ -213,7 +221,7 @@ public abstract class Game implements Listener {
    * @param player The player to add to the game
    * @return If the player was successfully set to a spectator
    */
-  public Boolean addSpectator(Player player) {
+  public boolean addSpectator(Player player) {
     //Throw the linked event, and end the action if the event becomes cancelled
     PlayerStartSpectatingGameEvent event =
         new PlayerStartSpectatingGameEvent(this, player, currentState);
@@ -239,7 +247,7 @@ public abstract class Game implements Listener {
    * @param player The player to add to the game
    * @return If the player was successfully stopped from spectating
    */
-  public Boolean removeSpectator(Player player) {
+  public boolean removeSpectator(Player player) {
     //Throw the linked event, and end the action if the event becomes cancelled
     PlayerStopSpectatingGameEvent event =
         new PlayerStopSpectatingGameEvent(this, player, currentState);
@@ -265,14 +273,36 @@ public abstract class Game implements Listener {
       }
       event.setCancelled(true);
       player.setHealth(20D);
+      players.get(player.getName()).addDeath();
 
       //Throw the linked event - cannot be cancelled
-      PlayerDeathInArenaEvent newEvent = new PlayerDeathInArenaEvent(this, player);
+      PlayerDeathInArenaEvent newEvent = new PlayerDeathInArenaEvent(this, player, false);
       Bukkit.getPluginManager().callEvent(newEvent);
     } else if (spectators.keySet().contains(player.getName())) {
       event.setCancelled(true);
       player.setHealth(20D);
       player.teleport(getLobbyLocation());
+    }
+  }
+
+  /**
+   * Forcefully kills a player with a simulation of the usual mechanics of the game. Also triggers the
+   * PlayerDeathInArenaEvent as if the death was usual.
+   *
+   * @param player the player to kill
+   */
+  public void killPlayer(Player player){
+    if(players.containsKey(player.getName())){
+      player.setHealth(20D);
+      player.teleport(getLobbyLocation());
+      players.get(player.getName()).addDeath();
+
+      //Throw the linked event - cannot be cancelled
+      PlayerDeathInArenaEvent newEvent = new PlayerDeathInArenaEvent(this, player, true);
+      Bukkit.getPluginManager().callEvent(newEvent);
+      logger.log("Game", "Forcefully killed " + player.getName() + ".");
+    }else{
+        logger.log("Game", "Attempted to kill " + player.getName() + ", but the player was not playing.");
     }
   }
 

@@ -28,9 +28,10 @@ public class Message {
   private int titleOut = 15;
   private int titleStay = 60;
 
+  public static final String BLANK = "%m";
   public static final String NETWORK = "&8[&bNetworkUtilities&8] &7%m";
   public static final String INFO = "&8[&2Info&8] &7%m";
-  public static final String BLANK = "%m";
+  public static final String WARNING = "&8[&cWarning&8] &c%m";
 
   /**
    * Default constructor for the Message class

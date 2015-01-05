@@ -99,7 +99,7 @@ public class CommandManager implements Listener {
         continue;
       }
       Command command = ((Command) method.getAnnotation(Command.class));
-      String commandName = command.command();
+      String commandName = command.label();
       if (commandName == null) {
         continue;
       }

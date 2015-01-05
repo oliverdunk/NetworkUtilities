@@ -13,9 +13,11 @@ import org.bukkit.event.Listener;
 public abstract class GameExtension {
 
   public Game gameInstance;
+  private String name;
 
-  public GameExtension(Game gameInstance) {
+  public GameExtension(Game gameInstance, String name) {
     this.gameInstance = gameInstance;
+    this.name = name;
   }
 
   public abstract boolean onEnable();
@@ -28,6 +30,8 @@ public abstract class GameExtension {
     HandlerList.unregisterAll(classInstance);
   }
 
-  public abstract String getName();
+  public String getName(){
+    return name;
+  }
 
 }
