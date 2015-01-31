@@ -1,7 +1,5 @@
 package me.olivervscreeper.networkutilities.command;
 
-import me.olivervscreeper.networkutilities.utils.ListUtils;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
@@ -17,11 +15,8 @@ import org.bukkit.plugin.SimplePluginManager;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
+import java.sql.Array;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -133,12 +128,10 @@ public class CommandManager implements Listener{
     	{
     		Entry<String, ArrayList<MethodPair>> e = ite1.next();
     		ArrayList<MethodPair> methods = e.getValue();
-    		methods.sort(new Comparator<MethodPair>() {
-
+			Collections.sort(methods, new Comparator<MethodPair>() {
 				public int compare(MethodPair arg0, MethodPair arg1) {
 					return -Integer.compare(arg0.getPriority(), arg1.getPriority());
-				}
-			});
+				} });
     	}
     }
 
@@ -265,7 +258,7 @@ public class CommandManager implements Listener{
      */
     @EventHandler
     public void onCommandPre(PlayerCommandPreprocessEvent event){
-        List<String> messageArgs = ListUtils.splitString(event.getMessage(), " ");
+        List<String> messageArgs = Arrays.asList(event.getMessage().split(" "));
         String command = messageArgs.iterator().next();
         messageArgs.remove(command);
         Boolean success = parseCommand(event.getPlayer(), command.replace("/", ""), messageArgs);

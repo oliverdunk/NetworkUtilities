@@ -2,13 +2,9 @@ package me.olivervscreeper.networkutilities;
 
 import me.olivervscreeper.networkutilities.command.Command;
 import me.olivervscreeper.networkutilities.command.CommandManager;
-import me.olivervscreeper.networkutilities.inventory.Menu;
-import me.olivervscreeper.networkutilities.inventory.MenuItem;
 import me.olivervscreeper.networkutilities.messages.Message;
 import me.olivervscreeper.networkutilities.messages.MessageDisplay;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
