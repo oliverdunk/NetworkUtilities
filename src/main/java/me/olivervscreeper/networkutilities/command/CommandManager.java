@@ -21,13 +21,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created on 28/11/2014. Template CommandManager. Handles the loading and monitoring of commands
- * and executes methods with permission checks where neccessary.
+ * and executes methods with permission checks where necessary.
  *
  * @author OliverVsCreeper
  */
 public class CommandManager implements Listener {
 
   ConcurrentHashMap<Object, ConcurrentHashMap<String, ArrayList<MethodPair>>> commands;
+  ConcurrentHashMap<String, String> aliases;
 
   /**
    * Store a method with its permission and priority
@@ -60,15 +61,26 @@ public class CommandManager implements Listener {
     }
   }
 
-  public String permissionMessage = ChatColor.RED + "It seems that you can't do this right now!";
-  public String errorMessage = ChatColor.RED + "BOOM! It seems that command didn't work.";
+  private String permissionMessage = ChatColor.RED + "It seems that you can't do this right now!";
+  private String errorMessage = ChatColor.RED + "BOOM! It seems that command didn't work.";
 
   Plugin plugin;
 
   public CommandManager(Plugin plugin) {
     this.plugin = plugin;
     commands = new ConcurrentHashMap<Object, ConcurrentHashMap<String, ArrayList<MethodPair>>>();
+    aliases = new ConcurrentHashMap<>();
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  }
+
+  public CommandManager(Plugin plugin, String permissionMessage, String errorMessage) {
+    this.plugin = plugin;
+    commands = new ConcurrentHashMap<Object, ConcurrentHashMap<String, ArrayList<MethodPair>>>();
+    aliases = new ConcurrentHashMap<>();
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
+    this.permissionMessage = permissionMessage;
+    this.errorMessage = errorMessage;
   }
 
   /**
@@ -114,6 +126,15 @@ public class CommandManager implements Listener {
       registerCommand(commandName);//It's alright if the command already exist.
       methods.add(new MethodPair(method, permission, priority));
     }
+  }
+
+  public void addAlias(String alias, String command){
+    aliases.put(alias, command);
+    registerCommandIntoBukkit(alias);
+  }
+
+  public void removeAlias(String alias, String command){
+    aliases.remove(alias);
   }
 
   /**
@@ -222,7 +243,12 @@ public class CommandManager implements Listener {
       Object object = e.getKey();
       ArrayList<MethodPair> methods = map.get(command);
       if (methods == null) {
-        continue;
+        if(aliases.containsKey(command)){
+          methods = map.get(aliases.get(command));
+        }
+        if(methods == null) {
+          continue;
+        }
       }
       found = true;
       for (MethodPair pair : methods) {
