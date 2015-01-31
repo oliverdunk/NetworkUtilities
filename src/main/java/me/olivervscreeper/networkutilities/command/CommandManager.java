@@ -19,6 +19,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -36,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CommandManager implements Listener{
 
     ConcurrentHashMap<Object, ConcurrentHashMap<String, ArrayList<MethodPair>>> commands;
+    ConcurrentHashMap<String, ArrayList<MethodPair>> commandsOrderedByPrioirity;
     
     /**
      * Store a method with its permission and priority
@@ -45,18 +47,24 @@ public class CommandManager implements Listener{
     private class MethodPair
     {
     	Method method;
+    	Object object;
     	String permission;
     	int priority;
     	
-    	public MethodPair(Method method, String permission, int priority)
+    	public MethodPair(Method method, Object object, String permission, int priority)
     	{
     		this.method = method;
+    		this.object = object;
     		this.permission = permission;
     		this.priority = priority;
     	}
     	
 		public int getPriority() {
 			return priority;
+		}
+		
+		public Object getObject(){
+			return object;
 		}
 
 
@@ -77,7 +85,44 @@ public class CommandManager implements Listener{
     public CommandManager(Plugin plugin) {
     	this.plugin = plugin;
     	commands = new ConcurrentHashMap<Object, ConcurrentHashMap<String,ArrayList<MethodPair>>>();
+    	loadCommandsByPrioirity();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+    
+    private void loadCommandsByPrioirity()
+    {
+    	commandsOrderedByPrioirity = new ConcurrentHashMap<String, ArrayList<MethodPair>>();
+    	Iterator<Entry<Object, ConcurrentHashMap<String, ArrayList<MethodPair>>>> ite = commands.entrySet().iterator();
+    	while(ite.hasNext())
+    	{
+    		Entry<Object, ConcurrentHashMap<String, ArrayList<MethodPair>>> e = ite.next();
+    		Iterator<Entry<String, ArrayList<MethodPair>>> ite1 = e.getValue().entrySet().iterator();
+    		while(ite1.hasNext())
+    		{
+    			Entry<String, ArrayList<MethodPair>> e1 = ite1.next();
+    			String cmdName = e1.getKey();
+    			ArrayList<MethodPair> array = e1.getValue();
+    			ArrayList<MethodPair> array1 = commandsOrderedByPrioirity.get(cmdName);
+    			if(array1 == null)
+    			{
+    				array1 = new ArrayList<CommandManager.MethodPair>();
+    				commandsOrderedByPrioirity.put(cmdName, array1);
+    			}
+    			array1.addAll(array);
+    		}
+    	}
+    	Iterator<Entry<String, ArrayList<MethodPair>>> ite1 = commandsOrderedByPrioirity.entrySet().iterator();
+    	while(ite1.hasNext())
+    	{
+    		Entry<String, ArrayList<MethodPair>> e = ite1.next();
+    		ArrayList<MethodPair> methods = e.getValue();
+    		methods.sort(new Comparator<MethodPair>() {
+
+				public int compare(MethodPair arg0, MethodPair arg1) {
+					return -Integer.compare(arg0.getPriority(), arg1.getPriority());
+				}
+			});
+    	}
     }
 
     /**
@@ -90,6 +135,7 @@ public class CommandManager implements Listener{
     public void unregisterCommands(Object object)
     {
     	commands.remove(object);
+    	loadCommandsByPrioirity();
     }
     /**
      * Register a new command object
@@ -120,14 +166,9 @@ public class CommandManager implements Listener{
     		String permission = command.permission();
     		int priority = command.priority();
     		registerCommand(commandName);//It's alright if the command already exist.
-    		methods.add(new MethodPair(method, permission, priority));
-    		methods.sort(new Comparator<MethodPair>() {
-
-				public int compare(MethodPair arg0, MethodPair arg1) {
-					return -Integer.compare(arg0.getPriority(), arg1.getPriority());
-				}
-			});
+    		methods.add(new MethodPair(method, object, permission, priority));
     	}
+    	loadCommandsByPrioirity();
     }
     
     /**
@@ -226,22 +267,20 @@ public class CommandManager implements Listener{
      */
     private Boolean parseCommand(Player player, String command, List<String> args){
     	command = command.toLowerCase();
-    	Iterator<Entry<Object,ConcurrentHashMap<String, ArrayList<MethodPair>>>> ite = commands.entrySet().iterator();
+    	Iterator<Entry<String, ArrayList<MethodPair>>> ite = commandsOrderedByPrioirity.entrySet().iterator();
     	boolean found = false, good = false;
     	while(ite.hasNext())
     	{
-    		Entry<Object,ConcurrentHashMap<String, ArrayList<MethodPair>>> e = ite.next();
-    		ConcurrentHashMap<String, ArrayList<MethodPair>> map = e.getValue();
-    		Object object = e.getKey();
-    		ArrayList<MethodPair> methods = map.get(command);
-    		if(methods == null)continue;
+    		Entry<String, ArrayList<MethodPair>> e = ite.next();
+    		ArrayList<MethodPair> methods = e.getValue();
+    		if(!e.getKey().equals(command))continue;
     		found = true;
     		for(MethodPair pair : methods)
     		{
     			if(!player.hasPermission(pair.permission) && !pair.permission.equalsIgnoreCase("none"))continue;
     			good = true;
     			try {
-					pair.method.invoke(object, player, args);
+					pair.method.invoke(pair.getObject(), player, args);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					player.sendMessage(errorMessage);
