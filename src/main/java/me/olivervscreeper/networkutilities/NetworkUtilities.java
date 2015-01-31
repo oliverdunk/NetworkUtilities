@@ -2,10 +2,13 @@ package me.olivervscreeper.networkutilities;
 
 import me.olivervscreeper.networkutilities.command.Command;
 import me.olivervscreeper.networkutilities.command.CommandManager;
+import me.olivervscreeper.networkutilities.inventory.Menu;
+import me.olivervscreeper.networkutilities.inventory.MenuItem;
 import me.olivervscreeper.networkutilities.messages.Message;
 import me.olivervscreeper.networkutilities.messages.MessageDisplay;
-import me.olivervscreeper.networkutilities.utils.PasteUtils;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -87,7 +90,7 @@ public class NetworkUtilities extends JavaPlugin {
 
 
   @Command(label = "nu", permission = "none", priority = 1)
-  private void nuVersionCommand(Player player, List<String> args) {
+  public void nuVersionCommand(Player player, List<String> args) {
     new Message(Message.BLANK).addRecipient(player)
         .send("Using NetworkUtilities", MessageDisplay.TITLE);
     new Message(Message.BLANK).addRecipient(player)
@@ -97,7 +100,7 @@ public class NetworkUtilities extends JavaPlugin {
   }
 
   @Command(label = "nu-log", permission = "nu.all")
-  private void nuLogCommand(Player player, List<String> args) {
+  public void nuLogCommand(Player player, List<String> args) {
     new Message(Message.INFO).addRecipient(player).send("Log File: " + logger.getLog());
   }
 
