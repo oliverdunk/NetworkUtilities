@@ -31,6 +31,8 @@ public class NetworkUtilities extends JavaPlugin {
    */
   public void onEnable() {
     plugin = this;
+
+    saveDefaultConfig();
     logger = new NULogger(true);
     log("Version " + version + " now running.");
     log("Working with " + compatibility);

@@ -1,5 +1,6 @@
 package me.olivervscreeper.networkutilities.utils;
 
+import me.olivervscreeper.networkutilities.NetworkUtilities;
 import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
 
 import java.io.*;
@@ -19,6 +20,10 @@ public class PasteUtils {
    * @return A formatted URL which links to the pasted file
    */
   public synchronized static String paste(String urlParameters) {
+    if(NetworkUtilities.plugin.getConfig().getBoolean("hasteEnabled") == false){
+      NetworkUtilities.logger.log("PasteUtils", "Attempted to paste a String, but this feature is disabled.");
+      return null;
+    }
     HttpURLConnection connection = null;
     try {
       //Create connection
