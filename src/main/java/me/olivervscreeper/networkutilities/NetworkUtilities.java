@@ -8,7 +8,6 @@ import me.olivervscreeper.networkutilities.messages.MessageDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class NetworkUtilities extends JavaPlugin {
   public void onEnable() {
     plugin = this;
     logger = new NULogger(true);
-    bootPluginMetrics(); //Attempts to boot metrics system
     log("Version " + version + " now running.");
     log("Working with " + compatibility);
     manager = new CommandManager(this);
@@ -42,25 +40,6 @@ public class NetworkUtilities extends JavaPlugin {
     logger.log("NU", "Default commands loaded into Bukkit");
 
     logger.log("NU", "Plugin initialisation complete.");
-  }
-
-  /**
-   * Attempts to send basic statistics to the Metrics service. The method will return after a short
-   * delay, based on a connection the Metrics servers.
-   *
-   * @return status of the stat submission
-   * @see "http://mcstats.org/"
-   */
-  public boolean bootPluginMetrics() {
-    try {
-      Metrics metrics = new Metrics(this);
-      metrics.start(); //Sends metrics
-      logger.log("NU", "Metrics enabled and first packets sent");
-      return true; //Success
-    } catch (Exception e) {
-      log("Failed to boot metrics system.");
-      return false; //Send failure
-    }
   }
 
   /**
