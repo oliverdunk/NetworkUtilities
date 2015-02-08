@@ -20,7 +20,7 @@ public class Menu implements Listener{
 
     String title;
     int rows;
-    HashMap<Integer, MenuItem> items = new HashMap<>();
+    HashMap<Integer, MenuItem> items = new HashMap<Integer, MenuItem>();
     List<Player> hasOpen = new ArrayList<Player>();
     boolean closeOnClick = true;
 
