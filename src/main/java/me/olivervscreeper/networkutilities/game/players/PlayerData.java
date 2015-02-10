@@ -1,6 +1,7 @@
 package me.olivervscreeper.networkutilities.game.players;
 
 import me.olivervscreeper.networkutilities.NetworkUtilities;
+import me.olivervscreeper.networkutilities.nbtserialization.PlayerSerializer;
 import me.olivervscreeper.networkutilities.serialization.LocationSerialization;
 import me.olivervscreeper.networkutilities.serialization.PlayerSerialization;
 
@@ -16,8 +17,7 @@ import org.bukkit.entity.Player;
 public class PlayerData {
 
   String name;
-  String serializedPlayer;
-  String serializedLocation;
+  byte[] data;
 
   GameMode gameMode;
 
@@ -27,18 +27,14 @@ public class PlayerData {
 
   public PlayerData prepare() {
     Player player = Bukkit.getPlayer(name);
-    serializedPlayer = PlayerSerialization.serializePlayerAsString(player);
-    serializedLocation = LocationSerialization.serializeLocationAsString(player.getLocation());
-    gameMode = player.getGameMode();
+    data = NetworkUtilities.playerSerializer.serializePlayer(player, PlayerSerializer.PLAYER_DATA_KEYS, false);
     return this;
   }
 
   public PlayerData revert() {
     try {
       Player player = Bukkit.getPlayer(name);
-      PlayerSerialization.setPlayer(serializedPlayer, player);
-      player.teleport(LocationSerialization.getLocationMeta(serializedLocation));
-      player.setGameMode(gameMode);
+      NetworkUtilities.playerSerializer.deserializePlayer(player, data, false);
       return this;
     } catch (Exception ex) {
       NetworkUtilities.logger
@@ -46,6 +42,4 @@ public class PlayerData {
       return null;
     }
   }
-
-
 }
