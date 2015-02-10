@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
+import me.olivervscreeper.networkutilities.nbtserialization.PlayerSerializer;
 
 /**
  * Created on 23/11/2014.
@@ -24,6 +25,7 @@ public class NetworkUtilities extends JavaPlugin {
   public static Plugin plugin;
   public static CommandManager manager;
   public static NULogger logger;
+  public static PlayerSerializer playerSerializer;
 
   /**
    * Default bukkit onEnable() method. Triggers the plugin launch one the Bukkit wrapper has loaded
@@ -31,7 +33,7 @@ public class NetworkUtilities extends JavaPlugin {
    */
   public void onEnable() {
     plugin = this;
-
+    playerSerializer = new PlayerSerializer(plugin);
     saveDefaultConfig();
     logger = new NULogger(true);
     log("Version " + version + " now running.");
