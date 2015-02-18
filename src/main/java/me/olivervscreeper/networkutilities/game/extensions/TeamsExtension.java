@@ -112,4 +112,12 @@ public class TeamsExtension extends GameExtension implements Listener {
         .log("Teams", "Player " + event.getPlayer().getName() + " was removed from their team");
   }
 
+  public boolean isInTeam(Player player){
+    return customScoreboard.getPlayerTeam(player) == null;
+  }
+
+  public boolean isInTeam(GamePlayer player){
+    return customScoreboard.getPlayerTeam(player.getPlayer()) == null;
+  }
+
 }
