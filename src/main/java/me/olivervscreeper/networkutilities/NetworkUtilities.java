@@ -2,17 +2,12 @@ package me.olivervscreeper.networkutilities;
 
 import me.olivervscreeper.networkutilities.command.Command;
 import me.olivervscreeper.networkutilities.command.CommandManager;
-import me.olivervscreeper.networkutilities.inventory.Menu;
-import me.olivervscreeper.networkutilities.inventory.MenuItem;
 import me.olivervscreeper.networkutilities.messages.Message;
 import me.olivervscreeper.networkutilities.messages.MessageDisplay;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 import java.util.List;
 
@@ -23,7 +18,7 @@ import java.util.List;
  */
 public class NetworkUtilities extends JavaPlugin {
 
-  public static String version = "1.3-RELEASE";
+  public static String version = "1.4-RELEASE";
   public static String compatibility = "Spigot 1.8-R0.1-SNAPSHOT";
 
   public static Plugin plugin;
@@ -36,8 +31,9 @@ public class NetworkUtilities extends JavaPlugin {
    */
   public void onEnable() {
     plugin = this;
+
+    saveDefaultConfig();
     logger = new NULogger(true);
-    bootPluginMetrics(); //Attempts to boot metrics system
     log("Version " + version + " now running.");
     log("Working with " + compatibility);
     manager = new CommandManager(this);
@@ -46,25 +42,6 @@ public class NetworkUtilities extends JavaPlugin {
     logger.log("NU", "Default commands loaded into Bukkit");
 
     logger.log("NU", "Plugin initialisation complete.");
-  }
-
-  /**
-   * Attempts to send basic statistics to the Metrics service. The method will return after a short
-   * delay, based on a connection the Metrics servers.
-   *
-   * @return status of the stat submission
-   * @see "http://mcstats.org/"
-   */
-  public boolean bootPluginMetrics() {
-    try {
-      Metrics metrics = new Metrics(this);
-      metrics.start(); //Sends metrics
-      logger.log("NU", "Metrics enabled and first packets sent");
-      return true; //Success
-    } catch (Exception e) {
-      log("Failed to boot metrics system.");
-      return false; //Send failure
-    }
   }
 
   /**
