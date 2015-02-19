@@ -258,7 +258,7 @@ public class CommandManager implements Listener{
      */
     @EventHandler
     public void onCommandPre(PlayerCommandPreprocessEvent event){
-        List<String> messageArgs = Arrays.asList(event.getMessage().split(" "));
+        List<String> messageArgs = new ArrayList(Arrays.asList(event.getMessage().split(" ")));
         String command = messageArgs.iterator().next();
         messageArgs.remove(command);
         Boolean success = parseCommand(event.getPlayer(), command.replace("/", ""), messageArgs);
