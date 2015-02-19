@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class NetworkUtilities extends JavaPlugin {
 
-  public static String version = "1.4-RELEASE";
+  public static String version = "1.4-SNAPSHOT";
   public static String compatibility = "Spigot 1.8-R0.1-SNAPSHOT";
 
   public static Plugin plugin;
@@ -42,6 +42,7 @@ public class NetworkUtilities extends JavaPlugin {
     logger.log("NU", "Default commands loaded into Bukkit");
 
     logger.log("NU", "Plugin initialisation complete.");
+
   }
 
   /**
