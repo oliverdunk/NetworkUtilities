@@ -23,7 +23,6 @@ public class CommunicationUtils implements Listener{
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             return reader.readLine();
         } catch (Exception e) {
-            e.printStackTrace();
             return "";
         }
     }
