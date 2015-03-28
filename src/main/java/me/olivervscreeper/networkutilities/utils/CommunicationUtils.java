@@ -7,8 +7,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 public class CommunicationUtils implements Listener{
 
@@ -16,7 +16,8 @@ public class CommunicationUtils implements Listener{
         String URLString = "http://olivervscreeper.co.uk/api/NetworkUtilities.html";
         try {
             URL URL = new URL(URLString);
-            URLConnection connection = URL.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) URL.openConnection();
+            connection.setDoInput(true);
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             return reader.readLine();
         } catch (Exception e) {
