@@ -1,7 +1,7 @@
 package me.olivervscreeper.networkutilities.utils;
 
 import me.olivervscreeper.networkutilities.messages.Message;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
