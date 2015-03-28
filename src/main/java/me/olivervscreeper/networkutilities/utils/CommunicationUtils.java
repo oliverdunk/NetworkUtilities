@@ -21,8 +21,9 @@ public class CommunicationUtils implements Listener{
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
             connection.setDoInput(true);
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            if(reader.readLine() == null) return "";
-            return reader.readLine();
+            String line = reader.readLine();
+            if(line == null) return "";
+            return line;
         } catch (Exception e) {
             return "";
         }
