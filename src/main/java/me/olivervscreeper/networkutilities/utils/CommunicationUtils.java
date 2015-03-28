@@ -1,6 +1,7 @@
 package me.olivervscreeper.networkutilities.utils;
 
 import me.olivervscreeper.networkutilities.messages.Message;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -31,7 +32,7 @@ public class CommunicationUtils implements Listener{
     public void onJoin(PlayerJoinEvent event){
         if(!event.getPlayer().isOp()) return;
         if(getNotice().equals("")) return;
-        new Message(Message.NETWORK).addRecipient(event.getPlayer()).send(getNotice());
+        new Message(Message.NETWORK).addRecipient(event.getPlayer()).send(ChatColor.translateAlternateColorCodes('&', getNotice()));
     }
 
 }
