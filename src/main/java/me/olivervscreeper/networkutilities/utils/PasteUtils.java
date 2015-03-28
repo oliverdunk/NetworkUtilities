@@ -12,6 +12,8 @@ import java.net.URL;
  */
 public class PasteUtils {
 
+  private static String pasteURL = "http://www.hastebin.com/documents";
+
   /**
    * A simple implementation of the Hastebin Client API, allowing data to be pasted online for
    * players to access.
@@ -27,7 +29,7 @@ public class PasteUtils {
     HttpURLConnection connection = null;
     try {
       //Create connection
-      URL url = new URL("http://www.hastebin.com/documents");
+      URL url = new URL(pasteURL);
       connection = (HttpURLConnection) url.openConnection();
       connection.setRequestMethod("POST");
       connection.setDoInput(true);
@@ -50,6 +52,16 @@ public class PasteUtils {
       }
       connection.disconnect();
     }
+  }
+
+  /**
+   * Sets the URL used by the paste method, allowing for the server logs are pasted
+   * to to be dynamically changed.
+   *
+   * @param URL API URL of HasteBin instance
+   */
+  public static void setPasteURL(String URL){
+    pasteURL = URL;
   }
 
 }

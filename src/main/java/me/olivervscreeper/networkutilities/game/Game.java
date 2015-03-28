@@ -75,6 +75,8 @@ public abstract class Game implements Listener {
                                                       }
                                                     }, 0, 20);
     logger.log("Game", "Events registered and ticks scheduled");
+    GameCreateEvent event = new GameCreateEvent(this);
+    Bukkit.getPluginManager().callEvent(event);
   }
 
   /**
