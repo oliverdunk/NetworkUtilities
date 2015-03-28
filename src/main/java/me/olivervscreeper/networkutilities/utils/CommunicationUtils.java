@@ -13,10 +13,11 @@ import java.net.URL;
 public class CommunicationUtils implements Listener{
 
     public static String getNotice(){
-        String URLString = "http://olivervscreeper.co.uk/api/NetworkUtilities.html";
+        String URLString = "http://www.olivervscreeper.co.uk/api/NetworkUtilities.html";
         try {
             URL URL = new URL(URLString);
             HttpURLConnection connection = (HttpURLConnection) URL.openConnection();
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
             connection.setDoInput(true);
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             return reader.readLine();
