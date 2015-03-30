@@ -17,6 +17,13 @@ public abstract class MenuItem {
     List<String> lore;
     int data = 0;
 
+    public MenuItem(ItemStack item) {
+        this.displayName = ((item.hasItemMeta() && item.getItemMeta().hasDisplayName()) ? item.getItemMeta().getDisplayName() : null);
+        this.displayItem = item.getType();
+        this.lore = ((item.hasItemMeta() && item.getItemMeta().hasLore()) ? item.getItemMeta().getLore() : null);
+        this.data = item.getDurability();
+    }
+
     public MenuItem(String displayName, Material displayItem){
         this.displayName = displayName;
         this.displayItem = displayItem;
@@ -39,7 +46,7 @@ public abstract class MenuItem {
         ItemStack stack = new ItemStack(displayItem, 1, (byte) data);
 
         ItemMeta meta = stack.getItemMeta();
-        meta.setDisplayName(displayName);
+        if(displayName != null) meta.setDisplayName(displayName);
         if(lore != null) meta.setLore(lore);
         stack.setItemMeta(meta);
 
