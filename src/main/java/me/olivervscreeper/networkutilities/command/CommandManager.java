@@ -40,15 +40,13 @@ public class CommandManager implements Listener{
      * @author scipio3000
      *
      */
-    private class MethodPair
-    {
+    private class MethodPair {
     	Method method;
     	Object object;
     	String permission;
     	int priority;
     	
-    	public MethodPair(Method method, Object object, String permission, int priority)
-    	{
+    	public MethodPair(Method method, Object object, String permission, int priority) {
     		this.method = method;
     		this.object = object;
     		this.permission = permission;
@@ -101,8 +99,7 @@ public class CommandManager implements Listener{
         aliases.remove(alias);
 	}
     
-    private void loadCommandsByPriority()
-    {
+    private void loadCommandsByPriority() {
     	commandsOrderedByPrioirity = new ConcurrentHashMap<String, ArrayList<MethodPair>>();
     	Iterator<Entry<Object, ConcurrentHashMap<String, ArrayList<MethodPair>>>> ite = commands.entrySet().iterator();
     	while(ite.hasNext())
@@ -124,8 +121,7 @@ public class CommandManager implements Listener{
     		}
     	}
     	Iterator<Entry<String, ArrayList<MethodPair>>> ite1 = commandsOrderedByPrioirity.entrySet().iterator();
-    	while(ite1.hasNext())
-    	{
+    	while(ite1.hasNext()) {
     		Entry<String, ArrayList<MethodPair>> e = ite1.next();
     		ArrayList<MethodPair> methods = e.getValue();
 			Collections.sort(methods, new Comparator<MethodPair>() {
@@ -142,8 +138,7 @@ public class CommandManager implements Listener{
      * 
      * @author scipio3000
      */
-    public void unregisterCommands(Object object)
-    {
+    public void unregisterCommands(Object object) {
     	commands.remove(object);
     	loadCommandsByPriority();
     }
@@ -154,22 +149,19 @@ public class CommandManager implements Listener{
      * @author scipio3000
      */
     public void registerCommands(Object object){
-    	for(Method method : object.getClass().getDeclaredMethods())//Declared output private methods too
-    	{
+    	for(Method method : object.getClass().getDeclaredMethods()){//Declared output private methods too
     		if(method.getAnnotation(Command.class) == null) continue;
     		Command command = ((Command)method.getAnnotation(Command.class));
     		String commandName = command.label();
     		if(commandName == null)continue;
     		commandName = commandName.toLowerCase();
     		ConcurrentHashMap<String, ArrayList<MethodPair>> methodList = commands.get(object);
-    		if(methodList == null)
-    		{
+    		if(methodList == null) {
     			methodList = new ConcurrentHashMap<String, ArrayList<MethodPair>>();
     			commands.put(object, methodList);
     		}
     		ArrayList<MethodPair> methods = methodList.get(commandName);
-    		if(methods == null)
-    		{
+    		if(methods == null) {
     			methods = new ArrayList<MethodPair>();
     			methodList.put(commandName, methods);
     		}
@@ -187,8 +179,7 @@ public class CommandManager implements Listener{
      * 
      * @author scipio3000
      */
-    private void registerCommandIntoBukkit(String name)
-    {
+    private void registerCommandIntoBukkit(String name) {
 		PluginCommand command = getCommand(name);
 		SimpleCommandMap map = (SimpleCommandMap) getCommandMap();
 		map.register(plugin.getDescription().getName(), command);
@@ -212,8 +203,7 @@ public class CommandManager implements Listener{
 	 * 
 	 * @author scipio3000
 	 */
-	private CommandMap getCommandMap()
-	{
+	private CommandMap getCommandMap() {
 		CommandMap commandMap = null;
 		try {
 			if (Bukkit.getPluginManager() instanceof SimplePluginManager) {
@@ -235,8 +225,7 @@ public class CommandManager implements Listener{
 	 * 
 	 * @author scipio3000
 	 */
-	private PluginCommand getCommand(String name)
-	{
+	private PluginCommand getCommand(String name) {
 		PluginCommand command = null;
 		try {
 			Constructor<PluginCommand> c = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
@@ -279,13 +268,11 @@ public class CommandManager implements Listener{
     	command = command.toLowerCase();
     	ArrayList<MethodPair> methods = commandsOrderedByPrioirity.get(command);
     	boolean found = false, good = false;
-    	if(methods == null)
-    	{
+    	if(methods == null) {
     		if(aliases.contains(command))
     			methods = commandsOrderedByPrioirity.get(aliases.get(command));
     	}
-    	if(methods != null)
-    	{
+    	if(methods != null) {
     		for(MethodPair pair : methods)
     		{
     			if(!player.hasPermission(pair.permission) && !pair.permission.equalsIgnoreCase("none"))continue;
@@ -299,10 +286,8 @@ public class CommandManager implements Listener{
     		}
     		found = true;
     	}
-    	if(found)
-    	{
-    		if(!good)
-    		{
+    	if(found) {
+    		if(!good) {
 				new Message(Message.INFO).addRecipient(player).send(permissionMessage);
         		return false;
     		}
