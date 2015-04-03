@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,6 +35,13 @@ public abstract class MenuItem {
         this.displayName = displayName;
         this.displayItem = displayItem;
         this.data = data;
+    }
+
+    public MenuItem(String displayName, Material displayItem, int data, String... lore){
+        this.displayName = displayName;
+        this.displayItem = displayItem;
+        this.data = data;
+        this.lore = Arrays.asList(lore);
     }
 
     public MenuItem(String displayName, Material displayItem, int data, List<String> lore){

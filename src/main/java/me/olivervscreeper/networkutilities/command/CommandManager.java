@@ -273,8 +273,7 @@ public class CommandManager implements Listener{
     			methods = commandsOrderedByPrioirity.get(aliases.get(command));
     	}
     	if(methods != null) {
-    		for(MethodPair pair : methods)
-    		{
+    		for(MethodPair pair : methods) {
     			if(!player.hasPermission(pair.permission) && !pair.permission.equalsIgnoreCase("none"))continue;
     			good = true;
     			try {

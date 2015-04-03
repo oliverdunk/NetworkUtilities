@@ -10,12 +10,14 @@ import me.olivervscreeper.networkutilities.game.players.GamePlayer;
 import me.olivervscreeper.networkutilities.game.states.GameState;
 import me.olivervscreeper.networkutilities.game.states.IdleGameState;
 
+import me.olivervscreeper.networkutilities.messages.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -314,6 +316,37 @@ public abstract class Game implements Listener {
       return;
     }
     removePlayer(event.getPlayer());
+  }
+
+  /**
+   * Calls the destroy method without force.
+   */
+  public void destroy(){
+    destroy(false);
+  }
+
+  /**
+   * Safely removes all players from a game and removes any listeners or tasks running inside of it.
+   * Useful for the deletion of games in large setups.
+   *
+   * @param force If the event should be cancellable
+   */
+  public void destroy(boolean force){
+    logger.log("Game", "Beginning " + (force ? "forceful" : "soft") + " destroy sequence...");
+    GameDestroyEvent event = new GameDestroyEvent(this);
+    if(!force) Bukkit.getPluginManager().callEvent(event);
+    if(event.isCancelled()){
+      logger.log("Game", "Destroy sequence cancelled.");
+      return;
+    }
+    for(GamePlayer player : players.values()){
+      player.resetData();
+      new Message(Message.WARNING).addRecipient(player).send("The game you were in was removed.");
+    }
+    logger.log("Game", "Player data reset.");
+    HandlerList.unregisterAll(this);
+    logger.log("Game", "Events unregistered.");
+    logger.log("Game", "Game successfully destroyed.");
   }
 
 }
