@@ -1,7 +1,10 @@
 package me.olivervscreeper.networkutilities.messages;
 
-import net.minecraft.server.v1_8_R1.*;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
+import net.minecraft.server.v1_8_R2.IChatBaseComponent;
+import net.minecraft.server.v1_8_R2.PacketPlayOutChat;
+import net.minecraft.server.v1_8_R2.PacketPlayOutTitle;
+import net.minecraft.server.v1_8_R2.PlayerConnection;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class MessageUtils {
@@ -10,13 +13,13 @@ public class MessageUtils {
         PlayerConnection titleConnection = ((CraftPlayer) player).getHandle().playerConnection;
         PacketPlayOutTitle
                 titlePacketPlayOutTimes =
-                new PacketPlayOutTitle(EnumTitleAction.TIMES, null, in, stay, out);
+                new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, in, stay, out);
         titleConnection.sendPacket(titlePacketPlayOutTimes);
 
-        IChatBaseComponent titleMain = ChatSerializer.a("{\"text\": \"" + title + "\"}");
+        IChatBaseComponent titleMain = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + title + "\"}");
         PacketPlayOutTitle
                 packetPlayOutTitle =
-                new PacketPlayOutTitle(EnumTitleAction.TITLE, titleMain);
+                new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, titleMain);
         titleConnection.sendPacket(packetPlayOutTitle);
     }
 
@@ -24,18 +27,18 @@ public class MessageUtils {
         PlayerConnection subtitleConnection = ((CraftPlayer) player).getHandle().playerConnection;
         PacketPlayOutTitle
                 subtitlePacketPlayOutTimes =
-                new PacketPlayOutTitle(EnumTitleAction.TIMES, null, in, stay, out);
+                new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, in, stay, out);
         subtitleConnection.sendPacket(subtitlePacketPlayOutTimes);
 
-        IChatBaseComponent subtitleSub = ChatSerializer.a("{\"text\": \"" + title + "\"}");
+        IChatBaseComponent subtitleSub = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + title + "\"}");
         PacketPlayOutTitle
                 subtitlePacketPlayOutSubTitle =
-                new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, subtitleSub);
+                new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, subtitleSub);
         subtitleConnection.sendPacket(subtitlePacketPlayOutSubTitle);
     }
 
     public static void sendActionbar(Player player, String message){
-        IChatBaseComponent icbc = ChatSerializer.a("{\"text\": \"" + message + "\"}");
+        IChatBaseComponent icbc = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + message + "\"}");
         PacketPlayOutChat bar = new PacketPlayOutChat(icbc, (byte) 2);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(bar);
     }
