@@ -50,7 +50,7 @@ public class GamePlayer {
     p.getInventory().clear();
     p.getInventory().setArmorContents(null);
     p.setTotalExperience(0);
-    getPlayer().setExp(0F);
+    p.setExp(0);
     p.setHealth(20D);
     p.setMaxHealth(20D);
     p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());

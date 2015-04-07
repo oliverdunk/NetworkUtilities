@@ -35,8 +35,6 @@ import java.util.List;
  */
 public abstract class Game implements Listener {
 
-  //TODO: Add basic system for Arenas
-
   GameState currentState = null; //State of the Game
   Iterator stateIterator;
   private NULogger logger;

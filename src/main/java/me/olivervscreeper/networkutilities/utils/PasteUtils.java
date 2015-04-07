@@ -47,9 +47,7 @@ public class PasteUtils {
     } catch (Exception ex) {
       return null;
     } finally {
-      if (connection == null) {
-        return null;
-      }
+      if (connection == null) return null;
       connection.disconnect();
     }
   }

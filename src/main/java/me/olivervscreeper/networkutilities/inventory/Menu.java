@@ -53,12 +53,20 @@ public class Menu implements Listener{
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event){
+    public void onInventoryClick(final InventoryClickEvent event){
         if(!event.getInventory().getTitle().equals(title)) return;
         if(!hasOpen.contains(event.getWhoClicked().getUniqueId())) return;
         event.setCancelled(true);
         if(items.get(event.getSlot()) == null) return;
-        if(closeOnClick) event.getWhoClicked().closeInventory();
+        if(closeOnClick){
+            Bukkit.getScheduler().runTaskLater(NetworkUtilities.plugin,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            event.getWhoClicked().closeInventory();
+                        }
+                    }, 1);
+        }
 
         items.get(event.getSlot()).onClick((Player) event.getWhoClicked());
         hasOpen.remove(event.getWhoClicked().getUniqueId());
