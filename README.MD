@@ -3,6 +3,8 @@
 CONTENTS OF THIS FILE
 ---------------------
 
+[![Join the chat at https://gitter.im/olivervscreeper/NetworkUtilities](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/olivervscreeper/NetworkUtilities?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 * Introduction
 * Requirements
 * Recommended modules
