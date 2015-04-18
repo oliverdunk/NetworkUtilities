@@ -66,19 +66,16 @@ public class Menu implements Listener{
                             event.getWhoClicked().closeInventory();
                         }
                     }, 1);
+            hasOpen.remove(event.getWhoClicked().getUniqueId());
         }
 
-        items.get(event.getSlot()).onClick((Player) event.getWhoClicked());
-        hasOpen.remove(event.getWhoClicked().getUniqueId());
     }
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
 
-        if(hasOpen.contains(player.getUniqueId())) {
-            hasOpen.remove(player.getUniqueId());
-        }
+        if(hasOpen.contains(player.getUniqueId())) hasOpen.remove(player.getUniqueId());
     }
 
     public void unregister(){
