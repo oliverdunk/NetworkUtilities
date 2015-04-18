@@ -68,6 +68,7 @@ public class Menu implements Listener{
                     }, 1);
             hasOpen.remove(event.getWhoClicked().getUniqueId());
         }
+        items.get(event.getSlot()).onClick((Player) event.getWhoClicked());
 
     }
 
