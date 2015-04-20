@@ -22,10 +22,6 @@ public class PasteUtils {
    * @return A formatted URL which links to the pasted file
    */
   public synchronized static String paste(String urlParameters) {
-    if(NetworkUtilities.plugin.getConfig().getBoolean("hasteEnabled") == false){
-      NetworkUtilities.logger.log("PasteUtils", "Attempted to paste a String, but this feature is disabled.");
-      return null;
-    }
     HttpURLConnection connection = null;
     try {
       //Create connection
@@ -60,6 +56,15 @@ public class PasteUtils {
    */
   public static void setPasteURL(String URL){
     pasteURL = URL;
+  }
+
+  /**
+   * Returns the URL of the server being used.
+   *
+   * @return API to use for posting data
+   */
+  public static String getPasteURL(){
+    return pasteURL;
   }
 
 }

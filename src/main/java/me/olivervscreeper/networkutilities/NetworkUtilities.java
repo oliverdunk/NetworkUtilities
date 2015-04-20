@@ -28,7 +28,7 @@ public class NetworkUtilities extends JavaPlugin {
   public static NULogger logger;
 
   /**
-   * Default bukkit onEnable() method. Triggers the plugin launch one the Bukkit wrapper has loaded
+   * Default Bukkit onEnable() method. Triggers the plugin launch one the Bukkit wrapper has loaded
    * and is ready to begin the handling of plugins.
    */
   public void onEnable() {

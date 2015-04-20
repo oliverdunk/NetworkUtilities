@@ -142,13 +142,18 @@ public class CommandManager implements Listener{
     	commands.remove(object);
     	loadCommandsByPriority();
     }
+
+	public void registerCommands(Object object){
+		registerCommands(object, true);
+	}
+
     /**
      * Register a new command object
      * @param object The object
      * 
      * @author scipio3000
      */
-    public void registerCommands(Object object){
+    public void registerCommands(Object object, boolean registerIntoBukkit){
     	for(Method method : object.getClass().getDeclaredMethods()){//Declared output private methods too
     		if(method.getAnnotation(Command.class) == null) continue;
     		Command command = ((Command)method.getAnnotation(Command.class));
@@ -167,7 +172,7 @@ public class CommandManager implements Listener{
     		}
     		String permission = command.permission();
     		int priority = command.priority();
-    		registerCommand(commandName);//It's alright if the command already exist.
+    		if(registerIntoBukkit) registerCommand(commandName);//It's alright if the command already exist.
     		methods.add(new MethodPair(method, object, permission, priority));
     	}
     	loadCommandsByPriority();
@@ -190,7 +195,7 @@ public class CommandManager implements Listener{
      * 
      * @author scipio3000
      */
-	private void registerCommand(String name) {
+	 public void registerCommand(String name) {
 		PluginCommand command = getCommand(name);
 		SimpleCommandMap map = (SimpleCommandMap) getCommandMap();
 		map.register(plugin.getDescription().getName(), command);
@@ -206,7 +211,7 @@ public class CommandManager implements Listener{
 	private CommandMap getCommandMap() {
 		CommandMap commandMap = null;
 		try {
-			if (Bukkit.getPluginManager() instanceof SimplePluginManager) {
+			if (plugin.getServer().getPluginManager() instanceof SimplePluginManager) {
 				Field f = SimplePluginManager.class.getDeclaredField("commandMap");
 				f.setAccessible(true);
 				commandMap = (CommandMap) f.get(Bukkit.getPluginManager());
@@ -264,7 +269,7 @@ public class CommandManager implements Listener{
      * @param args arguments used by the executor
      * @return boolean If a command as executed.
      */
-    private Boolean parseCommand(Player player, String command, List<String> args){
+    public Boolean parseCommand(Player player, String command, List<String> args){
     	command = command.toLowerCase();
     	ArrayList<MethodPair> methods = commandsOrderedByPrioirity.get(command);
     	boolean found = false, good = false;

@@ -26,6 +26,8 @@ public class Menu implements Listener{
     List<UUID> hasOpen = new ArrayList<UUID>();
     boolean closeOnClick = true;
 
+    Inventory inventory;
+
     public Menu(String title, int rows){
         this.title = title;
         this.rows = rows;
@@ -44,12 +46,18 @@ public class Menu implements Listener{
     }
 
     public void open(Player player){
-        Inventory inventory = Bukkit.createInventory(null, rows * 9, title);
+        inventory = Bukkit.createInventory(null, rows * 9, title);
         for(int slot : items.keySet()){
             inventory.setItem(slot, items.get(slot).constructItem());
         }
         player.openInventory(inventory);
         hasOpen.add(player.getUniqueId());
+    }
+
+    public void update(){
+        for(int slot : items.keySet()){
+            inventory.setItem(slot, items.get(slot).constructItem());
+        }
     }
 
     @EventHandler
