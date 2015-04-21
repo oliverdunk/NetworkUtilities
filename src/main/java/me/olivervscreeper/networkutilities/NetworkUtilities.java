@@ -6,11 +6,13 @@ import me.olivervscreeper.networkutilities.messages.Message;
 import me.olivervscreeper.networkutilities.messages.MessageDisplay;
 
 import me.olivervscreeper.networkutilities.utils.CommunicationUtils;
+import me.olivervscreeper.networkutilities.utils.compiler.CompilerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.tools.ToolProvider;
 import java.util.List;
 
 /**
@@ -20,12 +22,12 @@ import java.util.List;
  */
 public class NetworkUtilities extends JavaPlugin {
 
-  public static String version = "1.4-SNAPSHOT";
+  public static String version = "1.4-PRE";
   public static String compatibility = "Spigot 1.8.3-R0.1-SNAPSHOT";
 
   public static Plugin plugin;
   public static CommandManager manager;
-  public static NULogger logger;
+  public static NULogger logger = new NULogger(true);
 
   /**
    * Default Bukkit onEnable() method. Triggers the plugin launch one the Bukkit wrapper has loaded
@@ -84,5 +86,23 @@ public class NetworkUtilities extends JavaPlugin {
   public void nuLogCommand(Player player, List<String> args) {
     new Message(Message.INFO).addRecipient(player).send("Log File: " + logger.getLog());
   }
+
+  @Command(label = "nu-run", permission = "nu.all")
+  public void onRunCommand(Player player, List<String> args){
+    if(args.size() == 1){
+      new Message(Message.WARNING).addRecipient(player).send("This is a powerful command! Use with caution.");
+      new Message(Message.NETWORK).addRecipient(player).send("Attempting to run Haste ID: " + args.get(0));
+      if(CompilerUtils.runString(args.get(0))){
+        new Message(Message.NETWORK).addRecipient(player).send("Successfully executed!");
+      }else{
+        new Message(Message.WARNING).addRecipient(player).send((ToolProvider.getSystemJavaCompiler() == null)
+                ? "Server is not running in a JDK!" : "An error occurred while executing!");
+      }
+      return;
+    }
+    new Message(Message.WARNING).addRecipient(player).send("Usage: /run <HasteID>");
+  }
+
+
 
 }

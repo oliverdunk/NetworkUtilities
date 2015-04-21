@@ -6,13 +6,14 @@ import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
 
 /**
  * Implementation of the Hastebin API
  */
 public class PasteUtils {
 
-  private static String pasteURL = "http://www.hastebin.com/documents";
+  private static String pasteURL = "http://hastebin.com/";
 
   /**
    * A simple implementation of the Hastebin Client API, allowing data to be pasted online for
@@ -66,5 +67,34 @@ public class PasteUtils {
   public static String getPasteURL(){
     return pasteURL;
   }
+
+  /**
+   * Grabs a HasteBin file from the internet and attempts to
+   * return the file with formatting intact.
+   *
+   * @return String HasteBin Raw Text
+   */
+  public static String getPaste(String ID){
+    String URLString = pasteURL + "raw/" + ID + "/";
+    try {
+      URL URL = new URL(URLString);
+      HttpURLConnection connection = (HttpURLConnection) URL.openConnection();
+      connection.setDoOutput(true);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+      String paste = "";
+      while(reader.ready()){
+        String line = reader.readLine();
+        if(line.contains("package")) continue;
+        if(paste == "") paste = line;
+        else paste = paste + "\n" + line;
+      }
+      if(paste == null) throw new Exception();
+      return paste;
+    } catch (Exception e) {
+      return "";
+    }
+  }
+
+
 
 }
