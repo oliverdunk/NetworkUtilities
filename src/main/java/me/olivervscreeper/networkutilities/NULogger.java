@@ -19,9 +19,7 @@ public class NULogger {
    *                    lines based on version information for debug purposes
    */
   public NULogger(Boolean versionData) {
-    if (!versionData) {
-      return;
-    }
+    if (!versionData) return;
     log("NU", "NetworkUtilities generated log file");
     log("NU", "Server running version " + NetworkUtilities.version);
     log("NU", "Confirmed compatible with " + NetworkUtilities.compatibility + "\n");
@@ -34,9 +32,7 @@ public class NULogger {
    * @param logMessage The message which should be logged
    */
   public void log(String from, String logMessage) {
-    if (!(log == "")) {
-      log = log + "\n";
-    }
+    if (!(log == "")) log = log + "\n";
     log = log + getTimePrefix() + " " + "[" + from + "] " + logMessage;
   }
 
@@ -46,7 +42,7 @@ public class NULogger {
    *
    * @return Date in the format "[HH:mm:ss]"
    */
-  private String getTimePrefix() {
+  public String getTimePrefix() {
     Calendar cal = Calendar.getInstance();
     SimpleDateFormat sdf = new SimpleDateFormat("[HH:mm:ss]");
     return sdf.format(cal.getTime());

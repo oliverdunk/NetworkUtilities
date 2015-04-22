@@ -2,10 +2,7 @@ package me.olivervscreeper.networkutilities.utils;
 
 import me.olivervscreeper.networkutilities.NetworkUtilities;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 /**
  * A modified clone of the SLAPI API available on GitHub. Essentially, logging to the
@@ -28,11 +25,21 @@ public class DataUtils {
     try {
       ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(pathToSaveTo));
       oos.writeObject(objectToSave);
-      oos.flush();
       oos.close();
     } catch (Exception ex) {
       NetworkUtilities
           .log("Attempted to save file to " + pathToSaveTo + " - sadly, an error occurred.");
+    }
+  }
+
+  public static void saveStringToPath(String stringToSave, String pathToSaveTo){
+    try {
+      OutputStreamWriter oos = new OutputStreamWriter(new FileOutputStream(pathToSaveTo));
+      oos.write(stringToSave);
+      oos.close();
+    } catch (Exception ex) {
+      NetworkUtilities
+              .log("Attempted to save file to " + pathToSaveTo + " - sadly, an error occurred.");
     }
   }
 
