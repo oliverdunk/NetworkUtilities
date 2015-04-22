@@ -89,6 +89,10 @@ public class CommandManager implements Listener{
         this.permissionMessage = ChatColor.translateAlternateColorCodes('&', permissionMessage);
         this.errorMessage = ChatColor.translateAlternateColorCodes('&', errorMessage);
     }
+
+	public Set<String> getRegisteredCommand(){
+		return commandsOrderedByPrioirity.keySet();
+	}
     
     public void addAlias(String alias, String command){
         aliases.put(alias, command);
