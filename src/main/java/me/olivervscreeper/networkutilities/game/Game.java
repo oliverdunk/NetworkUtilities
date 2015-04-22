@@ -1,6 +1,5 @@
 package me.olivervscreeper.networkutilities.game;
 
-import gnu.trove.map.hash.THashMap;
 
 import me.olivervscreeper.networkutilities.NULogger;
 import me.olivervscreeper.networkutilities.NetworkUtilities;
