@@ -26,7 +26,7 @@ public class PasteUtils {
     HttpURLConnection connection = null;
     try {
       //Create connection
-      URL url = new URL(pasteURL);
+      URL url = new URL(pasteURL + "documents");
       connection = (HttpURLConnection) url.openConnection();
       connection.setRequestMethod("POST");
       connection.setDoInput(true);
@@ -40,7 +40,7 @@ public class PasteUtils {
 
       //Get Response
       BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-      return "http://www.hastebin.com/" + new JSONObject(rd.readLine()).getString("key");
+      return pasteURL + new JSONObject(rd.readLine()).getString("key");
     } catch (Exception ex) {
       return null;
     } finally {

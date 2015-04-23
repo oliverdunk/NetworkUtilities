@@ -22,6 +22,7 @@ public class CommunicationUtils implements Listener{
             connection.setDoInput(true);
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line = reader.readLine();
+            //TODO: Notices that only apply to specific versions
             if(line == null) return "";
             return line;
         } catch (Exception e) {
