@@ -6,7 +6,6 @@
 
     <groupId>OVC-Public</groupId>
     <artifactId>NetworkUtilities</artifactId>
-    <packaging>pom</packaging>
     <version>1.4-RELEASE</version>
 
     <repositories>

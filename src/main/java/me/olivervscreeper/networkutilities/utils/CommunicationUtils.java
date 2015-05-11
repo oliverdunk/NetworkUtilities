@@ -1,5 +1,6 @@
 package me.olivervscreeper.networkutilities.utils;
 
+import me.olivervscreeper.networkutilities.NetworkUtilities;
 import me.olivervscreeper.networkutilities.messages.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -22,8 +23,12 @@ public class CommunicationUtils implements Listener{
             connection.setDoInput(true);
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line = reader.readLine();
-            //TODO: Notices that only apply to specific versions
             if(line == null) return "";
+            if(line.contains(";")){
+                String[] parts = line.split(";");
+                if(NetworkUtilities.version.contains(parts[0])) return line;
+                return "";
+            }
             return line;
         } catch (Exception e) {
             return "";
