@@ -3,8 +3,9 @@ package me.olivervscreeper.networkutilities.serialization;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-import me.olivervscreeper.networkutilities.serialization.json.JSONException;
-import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A class to help with the serialization of player stats, like exp level and health. <br/> <br/>

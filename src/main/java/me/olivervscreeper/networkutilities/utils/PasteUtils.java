@@ -1,7 +1,7 @@
 package me.olivervscreeper.networkutilities.utils;
 
 import me.olivervscreeper.networkutilities.NetworkUtilities;
-import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -74,12 +74,13 @@ public class PasteUtils {
    *
    * @return String HasteBin Raw Text
    */
-  public static String getPaste(String ID){
+  public static synchronized String getPaste(String ID){
     String URLString = pasteURL + "raw/" + ID + "/";
     try {
       URL URL = new URL(URLString);
       HttpURLConnection connection = (HttpURLConnection) URL.openConnection();
       connection.setDoOutput(true);
+      connection.setConnectTimeout(10000);
       BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
       String paste = "";
       while(reader.ready()){

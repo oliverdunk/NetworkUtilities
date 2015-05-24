@@ -28,10 +28,15 @@ import java.util.List;
  */
 public class CompilerUtils {
 
-    public static boolean runString(String ID) {
+    private static ClassLoader cl;
+
+    public static synchronized boolean runString(String ID) {
         NetworkUtilities.logger.log("CompilerUtils", "Attempting to run Haste ID: " + ID);
         new File("plugins/NetworkUtilities/compiler/").mkdirs();
-        Class classFile = generateClass(PasteUtils.getPaste(ID));
+
+        String paste = PasteUtils.getPaste(ID);
+        while(paste.trim().isEmpty()) paste = PasteUtils.getPaste(ID);
+        Class classFile = generateClass(paste);
         if (classFile == null) return false; //Failure
         try {
             CompilerClass compilerClass = (CompilerClass) classFile.newInstance();
@@ -46,7 +51,10 @@ public class CompilerUtils {
 
     public static Class generateClass(String paste) {
         try {
-            String fileName = getClassName(paste.toString());
+            String fileName = getClassName(paste);
+            File classFile = new File("plugins/NetworkUtilities/compiler/" + fileName + ".class");
+            if(classFile.exists()) classFile.delete();
+
             DataUtils.saveStringToPath(paste, "plugins/NetworkUtilities/compiler/" + fileName + ".java");
             if (ToolProvider.getSystemJavaCompiler() == null) return null;
 
@@ -54,11 +62,13 @@ public class CompilerUtils {
             generateClass(new File("plugins/NetworkUtilities/compiler/" + fileName + ".java"));
 
             //Process class file
-            new File("plugins/NetworkUtilities/compiler/" + fileName + ".java").deleteOnExit();
             URL url = new File("plugins/NetworkUtilities/compiler/").toURI().toURL();
-            ClassLoader cl = new URLClassLoader(new URL[]{url}, NetworkUtilities.class.getClassLoader());
+            if(cl == null) cl = new URLClassLoader(new URL[]{url}, NetworkUtilities.class.getClassLoader());
             return cl.loadClass(fileName);
-        } catch (Exception e) {return null;}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static void generateClass(File file) throws URISyntaxException {

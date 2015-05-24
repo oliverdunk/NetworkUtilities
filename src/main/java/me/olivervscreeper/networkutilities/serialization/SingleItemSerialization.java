@@ -1,8 +1,8 @@
 package me.olivervscreeper.networkutilities.serialization;
 
-import me.olivervscreeper.networkutilities.serialization.json.JSONArray;
-import me.olivervscreeper.networkutilities.serialization.json.JSONException;
-import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
