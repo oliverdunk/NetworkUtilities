@@ -3,8 +3,9 @@ package me.olivervscreeper.networkutilities.serialization;
 import org.bukkit.Location;
 import org.bukkit.entity.Ocelot;
 
-import me.olivervscreeper.networkutilities.serialization.json.JSONException;
-import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A class to help with the serialization of Ocelots. <br/> <br/> This serialization class supports

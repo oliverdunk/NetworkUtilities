@@ -5,8 +5,9 @@ import org.bukkit.entity.Ageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
-import me.olivervscreeper.networkutilities.serialization.json.JSONException;
-import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A class to help with the serialization of LivingEntities. If the given LivingEntity is a Player,

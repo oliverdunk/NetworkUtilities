@@ -1,9 +1,10 @@
 package me.olivervscreeper.networkutilities.serialization;
 
 import org.bukkit.Color;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import me.olivervscreeper.networkutilities.serialization.json.JSONException;
-import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
 
 /**
  * A class to help with the serialilzation of Colors. Note that the Color class used is Bukkit's

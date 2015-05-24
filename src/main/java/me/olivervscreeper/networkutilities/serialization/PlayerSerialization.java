@@ -2,8 +2,10 @@ package me.olivervscreeper.networkutilities.serialization;
 
 import org.bukkit.entity.Player;
 
-import me.olivervscreeper.networkutilities.serialization.json.JSONException;
-import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
  * A class to help with the serialization of Players. <br/> <br/> This serialization class supports
