@@ -29,7 +29,7 @@ public class CommunicationUtils implements Listener{
     }
 
     public static String getNotice(){
-        String result = getStringFromURL("http://www.olivervscreeper.co.uk/api/NetworkUtilitiesTest.html");
+        String result = getStringFromURL("http://www.olivervscreeper.co.uk/api/NetworkUtilities.html");
         JSONObject object = new JSONObject(result);
         if(!object.has("message")) return "";
         if (object.has("version")) {
@@ -41,7 +41,7 @@ public class CommunicationUtils implements Listener{
     }
 
     public static boolean isOutdated(){
-        String result = getStringFromURL("http://www.olivervscreeper.co.uk/api/NetworkUtilitiesTest.html");
+        String result = getStringFromURL("http://www.olivervscreeper.co.uk/api/NetworkUtilities.html");
         JSONObject object = new JSONObject(result);
         if (object.has("current")) {
             if (object.getInt("current") > NetworkUtilities.versionID) return true;
