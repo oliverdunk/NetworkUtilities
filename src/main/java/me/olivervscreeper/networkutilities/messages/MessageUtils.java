@@ -13,8 +13,8 @@ public class MessageUtils {
         new MessageReflector().send(1, player, title, in, stay, out);
     }
 
-    public static void sendActionbar(Player player, String title){
-        new MessageReflector().sendActionbar(player, title);
+    public static void sendActionbar(Player player, String title, int in, int stay, int out){
+        new MessageReflector().sendActionbar(player, title, in, stay, out);
     }
 
 }

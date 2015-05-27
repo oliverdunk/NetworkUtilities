@@ -132,7 +132,7 @@ public class Message {
           player.sendMessage(newMessage);
           break;
         case ACTIONBAR:
-          MessageUtils.sendActionbar(player, message);
+          MessageUtils.sendActionbar(player, message, titleIn, titleStay, titleOut);
           break;
         case TITLE:
           MessageUtils.sendTitle(player, message, titleIn, titleStay, titleOut);
@@ -162,7 +162,7 @@ public class Message {
           player.sendMessage(newMessage);
           break;
         case ACTIONBAR:
-          MessageUtils.sendActionbar(player, message);
+          MessageUtils.sendActionbar(player, message, titleIn, titleStay, titleOut);
           break;
         case TITLE:
           MessageUtils.sendTitle(player, message, titleIn, titleStay, titleOut);

@@ -55,14 +55,18 @@ public class MessageReflector {
         }catch (Exception ex){}
     }
 
-    public void sendActionbar(Player player, String title){
+    public void sendActionbar(Player player, String title, int in, int stay, int out){
         try {
             Object handle = getHandle(player);
             Object connection = getField(handle.getClass(), "playerConnection").get(handle);
             Method sendPacket = getMethod(connection.getClass(), "sendPacket");
+            Object[] actions = packetActions.getEnumConstants();
+
+            Object packet = packetTitle.getConstructor(packetActions, chatBaseComponent, Integer.TYPE, Integer.TYPE, Integer.TYPE).newInstance(actions[2], null, in, stay, out);
+            sendPacket.invoke(connection, packet);
 
             Object serialized = getMethod(nmsChatSerializer, "a", String.class).invoke(null, "{text:\"" + ChatColor.translateAlternateColorCodes('&', title) + "\"" + "}");
-            Object packet = packetChat.getConstructor(chatBaseComponent, byte.class).newInstance(serialized, (byte) 2);
+            packet = packetChat.getConstructor(chatBaseComponent, byte.class).newInstance(serialized, (byte) 2);
             sendPacket.invoke(connection, packet);
         }catch (Exception ex){}
     }
