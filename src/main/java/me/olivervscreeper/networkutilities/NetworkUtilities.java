@@ -24,9 +24,9 @@ import java.util.List;
  */
 public class NetworkUtilities extends JavaPlugin {
 
-  public static String version = "1.4.1-RELEASE";
-  public static int versionID = 5;
-  public static String compatibility = "Spigot 1.8.5-R0.1-SNAPSHOT";
+  public static String version = "1.4.2-RELEASE";
+  public static int versionID = 6;
+  public static String compatibility = "Spigot 1.8.7-R0.1-SNAPSHOT";
 
   public static Plugin plugin;
   public static CommandManager manager;
@@ -88,9 +88,9 @@ public class NetworkUtilities extends JavaPlugin {
 
   @Command(label = "nu", permission = "none", priority = 1)
   public void nuVersionCommand(Player player, List<String> args) {
-    new Message(Message.BLANK).addRecipient(player)
+    new Message(Message.BLANK).setTimings(2, 15, 60).addRecipient(player)
         .send("Using NetworkUtilities", MessageDisplay.TITLE);
-    new Message(Message.BLANK).addRecipient(player)
+    new Message(Message.BLANK).setTimings(2, 15, 60).addRecipient(player)
         .send("Version: " + version + ".", MessageDisplay.SUBTITLE);
     new Message(Message.BLANK).addRecipient(player)
         .send("Intended for " + compatibility, MessageDisplay.ACTIONBAR);
