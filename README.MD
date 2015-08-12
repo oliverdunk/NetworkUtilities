@@ -1,5 +1,3 @@
-![Alt text](https://api.travis-ci.org/olivervscreeper/NetworkUtilities.svg?branch=master "Build Status")
-
 CONTENTS OF THIS FILE
 ---------------------
 
