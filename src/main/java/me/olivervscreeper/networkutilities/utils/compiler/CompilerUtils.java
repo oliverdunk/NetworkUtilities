@@ -53,7 +53,9 @@ public class CompilerUtils {
         try {
             String fileName = getClassName(paste);
             File classFile = new File("plugins/NetworkUtilities/compiler/" + fileName + ".class");
+            File javaFile = new File("plugins/NetworkUtilities/compiler/" + fileName + ".java");
             if(classFile.exists()) classFile.delete();
+            if(javaFile.exists()) javaFile.delete();
 
             DataUtils.saveStringToPath(paste, "plugins/NetworkUtilities/compiler/" + fileName + ".java");
             if (ToolProvider.getSystemJavaCompiler() == null) return null;
