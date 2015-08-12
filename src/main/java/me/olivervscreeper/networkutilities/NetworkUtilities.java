@@ -25,8 +25,8 @@ import java.util.List;
 public class NetworkUtilities extends JavaPlugin {
 
   public static String version = "1.4.2-RELEASE";
-  public static int versionID = 6;
-  public static String compatibility = "Spigot 1.8.7-R0.1-SNAPSHOT";
+  public static int versionID = 7;
+  public static String compatibility = "Spigot 1.8.8-R0.1-SNAPSHOT";
 
   public static Plugin plugin;
   public static CommandManager manager;
