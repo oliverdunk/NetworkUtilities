@@ -1,6 +1,7 @@
 package me.olivervscreeper.networkutilities.utils.compiler;
 
 import org.bukkit.Bukkit;
+import me.olivervscreeper.networkutilities.utils.compiler.CompilerClass;
 
 public class CompilerExample extends CompilerClass{
 

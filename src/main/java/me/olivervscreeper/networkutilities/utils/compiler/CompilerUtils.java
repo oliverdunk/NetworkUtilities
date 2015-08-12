@@ -52,12 +52,14 @@ public class CompilerUtils {
     public static Class generateClass(String paste) {
         try {
             String fileName = getClassName(paste);
+            System.out.println(getClassName(paste));
             File classFile = new File("plugins/NetworkUtilities/compiler/" + fileName + ".class");
             File javaFile = new File("plugins/NetworkUtilities/compiler/" + fileName + ".java");
-            if(classFile.exists()) classFile.delete();
-            if(javaFile.exists()) javaFile.delete();
+            classFile.delete();
+            javaFile.delete();
 
             DataUtils.saveStringToPath(paste, "plugins/NetworkUtilities/compiler/" + fileName + ".java");
+
             if (ToolProvider.getSystemJavaCompiler() == null) return null;
 
             //Generate class file
@@ -65,7 +67,7 @@ public class CompilerUtils {
 
             //Process class file
             URL url = new File("plugins/NetworkUtilities/compiler/").toURI().toURL();
-            if(cl == null) cl = new URLClassLoader(new URL[]{url}, NetworkUtilities.class.getClassLoader());
+            cl = new URLClassLoader(new URL[]{url}, NetworkUtilities.class.getClassLoader());
             return cl.loadClass(fileName);
         } catch (Exception e) {
             e.printStackTrace();
