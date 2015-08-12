@@ -63,7 +63,7 @@ public class MessageReflector {
             Object[] actions = packetActions.getEnumConstants();
 
             Object packet = packetTitle.getConstructor(packetActions, chatBaseComponent, Integer.TYPE, Integer.TYPE, Integer.TYPE).newInstance(actions[2], null, in, stay, out);
-            sendPacket.invoke(connection, packet);
+            //sendPacket.invoke(connection, packet);
 
             Object serialized = getMethod(nmsChatSerializer, "a", String.class).invoke(null, "{text:\"" + ChatColor.translateAlternateColorCodes('&', title) + "\"" + "}");
             packet = packetChat.getConstructor(chatBaseComponent, byte.class).newInstance(serialized, (byte) 2);
