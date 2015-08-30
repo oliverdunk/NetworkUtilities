@@ -5,7 +5,6 @@ import me.olivervscreeper.networkutilities.command.CommandManager;
 import me.olivervscreeper.networkutilities.messages.Message;
 import me.olivervscreeper.networkutilities.messages.MessageDisplay;
 
-import me.olivervscreeper.networkutilities.utils.CommunicationUtils;
 import me.olivervscreeper.networkutilities.utils.compiler.CompilerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -24,8 +23,7 @@ import java.util.List;
  */
 public class NetworkUtilities extends JavaPlugin {
 
-  public static String version = "1.4.2-RELEASE";
-  public static int versionID = 7;
+  public static String version = "1.4.3-RELEASE";
   public static String compatibility = "Spigot 1.8.8-R0.1-SNAPSHOT";
 
   public static Plugin plugin;
@@ -46,7 +44,6 @@ public class NetworkUtilities extends JavaPlugin {
     logger.log("NU", "New command manager created");
     manager.registerCommands(this);
     logger.log("NU", "Default commands loaded into Bukkit");
-    Bukkit.getPluginManager().registerEvents(new CommunicationUtils(), this);
     logger.log("NU", "Registered events into Bukkit");
     mcStats();
     logger.log("NU", "Enabled MCStats connection");
