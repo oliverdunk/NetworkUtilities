@@ -4,8 +4,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-import me.olivervscreeper.networkutilities.serialization.json.JSONException;
-import me.olivervscreeper.networkutilities.serialization.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A class to help with the serialization of dyed leather armor. The Red, Green, and Blue values are

@@ -1,5 +1,7 @@
 package me.olivervscreeper.networkutilities.command;
 
+import lombok.Getter;
+import me.olivervscreeper.networkutilities.messages.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
@@ -15,7 +17,6 @@ import org.bukkit.plugin.SimplePluginManager;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Array;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,9 +26,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * Template CommandManager.
  * Handles the loading and monitoring
  * of commands and executes methods with permission
- * checks where neccessary.
+ * checks where necessary.
  *
- * @author OliverVsCreeper
+ * @author Günther Jungbluth, OliverVsCreeper
  */
 public class CommandManager implements Listener{
 
@@ -40,37 +41,20 @@ public class CommandManager implements Listener{
      * @author scipio3000
      *
      */
-    private class MethodPair
-    {
-    	Method method;
-    	Object object;
-    	String permission;
-    	int priority;
+    private class MethodPair {
+
+		@Getter Method method;
+		@Getter Object object;
+		@Getter String permission;
+		@Getter int priority;
     	
-    	public MethodPair(Method method, Object object, String permission, int priority)
-    	{
+    	public MethodPair(Method method, Object object, String permission, int priority) {
     		this.method = method;
     		this.object = object;
     		this.permission = permission;
     		this.priority = priority;
     	}
-    	
-		public int getPriority() {
-			return priority;
-		}
-		
-		public Object getObject(){
-			return object;
-		}
 
-
-		public Method getMethod() {
-			return method;
-		}
-
-		public String getPermission() {
-			return permission;
-		}
     }
     
     public String permissionMessage;
@@ -86,11 +70,15 @@ public class CommandManager implements Listener{
     	this.plugin = plugin;
     	commands = new ConcurrentHashMap<Object, ConcurrentHashMap<String,ArrayList<MethodPair>>>();
     	aliases = new ConcurrentHashMap<String, String>();
-    	loadCommandsByPrioirity();
+    	loadCommandsByPriority();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        this.permissionMessage = permissionMessage;
-        this.errorMessage = errorMessage;
+        this.permissionMessage = ChatColor.translateAlternateColorCodes('&', permissionMessage);
+        this.errorMessage = ChatColor.translateAlternateColorCodes('&', errorMessage);
     }
+
+	public Set<String> getRegisteredCommand(){
+		return commandsOrderedByPrioirity.keySet();
+	}
     
     public void addAlias(String alias, String command){
         aliases.put(alias, command);
@@ -101,8 +89,7 @@ public class CommandManager implements Listener{
         aliases.remove(alias);
 	}
     
-    private void loadCommandsByPrioirity()
-    {
+    private void loadCommandsByPriority() {
     	commandsOrderedByPrioirity = new ConcurrentHashMap<String, ArrayList<MethodPair>>();
     	Iterator<Entry<Object, ConcurrentHashMap<String, ArrayList<MethodPair>>>> ite = commands.entrySet().iterator();
     	while(ite.hasNext())
@@ -124,8 +111,7 @@ public class CommandManager implements Listener{
     		}
     	}
     	Iterator<Entry<String, ArrayList<MethodPair>>> ite1 = commandsOrderedByPrioirity.entrySet().iterator();
-    	while(ite1.hasNext())
-    	{
+    	while(ite1.hasNext()) {
     		Entry<String, ArrayList<MethodPair>> e = ite1.next();
     		ArrayList<MethodPair> methods = e.getValue();
 			Collections.sort(methods, new Comparator<MethodPair>() {
@@ -142,43 +128,44 @@ public class CommandManager implements Listener{
      * 
      * @author scipio3000
      */
-    public void unregisterCommands(Object object)
-    {
+    public void unregisterCommands(Object object) {
     	commands.remove(object);
-    	loadCommandsByPrioirity();
+    	loadCommandsByPriority();
     }
+
+	public void registerCommands(Object object){
+		registerCommands(object, true);
+	}
+
     /**
      * Register a new command object
      * @param object The object
      * 
      * @author scipio3000
      */
-    public void registerCommands(Object object){
-    	for(Method method : object.getClass().getDeclaredMethods())//Declared output private methods too
-    	{
+    public void registerCommands(Object object, boolean registerIntoBukkit){
+    	for(Method method : object.getClass().getDeclaredMethods()){//Declared output private methods too
     		if(method.getAnnotation(Command.class) == null) continue;
     		Command command = ((Command)method.getAnnotation(Command.class));
     		String commandName = command.label();
     		if(commandName == null)continue;
     		commandName = commandName.toLowerCase();
     		ConcurrentHashMap<String, ArrayList<MethodPair>> methodList = commands.get(object);
-    		if(methodList == null)
-    		{
+    		if(methodList == null) {
     			methodList = new ConcurrentHashMap<String, ArrayList<MethodPair>>();
     			commands.put(object, methodList);
     		}
     		ArrayList<MethodPair> methods = methodList.get(commandName);
-    		if(methods == null)
-    		{
+    		if(methods == null) {
     			methods = new ArrayList<MethodPair>();
     			methodList.put(commandName, methods);
     		}
     		String permission = command.permission();
     		int priority = command.priority();
-    		registerCommand(commandName);//It's alright if the command already exist.
+    		if(registerIntoBukkit) registerCommand(commandName);//It's alright if the command already exist.
     		methods.add(new MethodPair(method, object, permission, priority));
     	}
-    	loadCommandsByPrioirity();
+    	loadCommandsByPriority();
     }
     
     /**
@@ -187,8 +174,7 @@ public class CommandManager implements Listener{
      * 
      * @author scipio3000
      */
-    private void registerCommandIntoBukkit(String name)
-    {
+    private void registerCommandIntoBukkit(String name) {
 		PluginCommand command = getCommand(name);
 		SimpleCommandMap map = (SimpleCommandMap) getCommandMap();
 		map.register(plugin.getDescription().getName(), command);
@@ -199,7 +185,7 @@ public class CommandManager implements Listener{
      * 
      * @author scipio3000
      */
-	private void registerCommand(String name) {
+	 public void registerCommand(String name) {
 		PluginCommand command = getCommand(name);
 		SimpleCommandMap map = (SimpleCommandMap) getCommandMap();
 		map.register(plugin.getDescription().getName(), command);
@@ -212,11 +198,10 @@ public class CommandManager implements Listener{
 	 * 
 	 * @author scipio3000
 	 */
-	private CommandMap getCommandMap()
-	{
+	private CommandMap getCommandMap() {
 		CommandMap commandMap = null;
 		try {
-			if (Bukkit.getPluginManager() instanceof SimplePluginManager) {
+			if (plugin.getServer().getPluginManager() instanceof SimplePluginManager) {
 				Field f = SimplePluginManager.class.getDeclaredField("commandMap");
 				f.setAccessible(true);
 				commandMap = (CommandMap) f.get(Bukkit.getPluginManager());
@@ -235,8 +220,7 @@ public class CommandManager implements Listener{
 	 * 
 	 * @author scipio3000
 	 */
-	private PluginCommand getCommand(String name)
-	{
+	private PluginCommand getCommand(String name) {
 		PluginCommand command = null;
 		try {
 			Constructor<PluginCommand> c = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
@@ -258,7 +242,7 @@ public class CommandManager implements Listener{
      */
     @EventHandler
     public void onCommandPre(PlayerCommandPreprocessEvent event){
-        List<String> messageArgs = Arrays.asList(event.getMessage().split(" "));
+        List<String> messageArgs = new ArrayList(Arrays.asList(event.getMessage().split(" ")));
         String command = messageArgs.iterator().next();
         messageArgs.remove(command);
         Boolean success = parseCommand(event.getPlayer(), command.replace("/", ""), messageArgs);
@@ -275,35 +259,30 @@ public class CommandManager implements Listener{
      * @param args arguments used by the executor
      * @return boolean If a command as executed.
      */
-    private Boolean parseCommand(Player player, String command, List<String> args){
+    public Boolean parseCommand(Player player, String command, List<String> args){
     	command = command.toLowerCase();
     	ArrayList<MethodPair> methods = commandsOrderedByPrioirity.get(command);
     	boolean found = false, good = false;
-    	if(methods == null)
-    	{
+    	if(methods == null) {
     		if(aliases.contains(command))
     			methods = commandsOrderedByPrioirity.get(aliases.get(command));
     	}
-    	if(methods != null)
-    	{
-    		for(MethodPair pair : methods)
-    		{
+    	if(methods != null) {
+    		for(MethodPair pair : methods) {
     			if(!player.hasPermission(pair.permission) && !pair.permission.equalsIgnoreCase("none"))continue;
     			good = true;
     			try {
     				pair.method.invoke(pair.getObject(), player, args);
     			} catch (Exception ex) {
     				ex.printStackTrace();
-    				player.sendMessage(errorMessage);
+    				new Message(Message.INFO).addRecipient(player).send(errorMessage);
     			}
     		}
     		found = true;
     	}
-    	if(found)
-    	{
-    		if(!good)
-    		{
-    			player.sendMessage(permissionMessage);
+    	if(found) {
+    		if(!good) {
+				new Message(Message.INFO).addRecipient(player).send(permissionMessage);
         		return false;
     		}
     		return true;

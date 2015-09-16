@@ -3,8 +3,6 @@ package me.olivervscreeper.networkutilities.game.states;
 import me.olivervscreeper.networkutilities.game.Game;
 
 /**
- * Created on 30/11/2014.
- *
  * @author OliverVsCreeper
  */
 public class IdleGameState extends GameState {

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Created by User on 07/12/2014.
+ * @author OliverVsCreeper
  */
 public class NULogger {
 
@@ -18,10 +18,8 @@ public class NULogger {
    * @param versionData If set to true, this will cause the logfile to be prefixed with several
    *                    lines based on version information for debug purposes
    */
-  public NULogger(Boolean versionData) {
-    if (!versionData) {
-      return;
-    }
+  public NULogger(boolean versionData) {
+    if (!versionData) return;
     log("NU", "NetworkUtilities generated log file");
     log("NU", "Server running version " + NetworkUtilities.version);
     log("NU", "Confirmed compatible with " + NetworkUtilities.compatibility + "\n");
@@ -34,9 +32,7 @@ public class NULogger {
    * @param logMessage The message which should be logged
    */
   public void log(String from, String logMessage) {
-    if (!(log == "")) {
-      log = log + "\n";
-    }
+    if (!(log == "")) log = log + "\n";
     log = log + getTimePrefix() + " " + "[" + from + "] " + logMessage;
   }
 
@@ -46,7 +42,7 @@ public class NULogger {
    *
    * @return Date in the format "[HH:mm:ss]"
    */
-  private String getTimePrefix() {
+  public String getTimePrefix() {
     Calendar cal = Calendar.getInstance();
     SimpleDateFormat sdf = new SimpleDateFormat("[HH:mm:ss]");
     return sdf.format(cal.getTime());
