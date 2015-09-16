@@ -20,6 +20,7 @@ public class PasteUtilsTest extends TestCase {
 
     public void testGetPaste() throws Exception {
         System.out.println("* PasteUtilsTest: testGetPaste()");
-        assertEquals(PasteUtils.getPaste("ixuserozop"), "Unit Testing!");
+        assertEquals(PasteUtils.getPaste(PasteUtils.paste("Unit Testing!").replace(PasteUtils.getPasteURL(), "")),
+                "Unit Testing!");
     }
 }
