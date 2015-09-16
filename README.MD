@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/oliverdunk/NetworkUtilities.svg?branch=master)](https://travis-ci.org/oliverdunk/NetworkUtilities)
-
 CONTENTS OF THIS FILE
 ---------------------
 
