@@ -6,6 +6,9 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author OliverVsCreeper
+ */
 public class NULoggerTest extends TestCase {
 
     public void testGetTimePrefix(){

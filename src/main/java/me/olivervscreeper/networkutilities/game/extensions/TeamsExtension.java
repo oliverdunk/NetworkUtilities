@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by User on 06/12/2014.
+ * @author OliverVsCreeper
  */
 public class TeamsExtension extends GameExtension implements Listener {
 
@@ -48,8 +48,7 @@ public class TeamsExtension extends GameExtension implements Listener {
   @Override //To prevent players without a team, loading in game is disabled
   public boolean onEnable() {
     if (gameInstance.players.size() > 0) {
-      gameInstance.getLogger().log("Teams",
-                                   "Extension cannot be enabled with players ingame");
+      gameInstance.getLogger().log("Teams", "Extension cannot be enabled with players ingame");
       return false;
     }
     if (enabled) {

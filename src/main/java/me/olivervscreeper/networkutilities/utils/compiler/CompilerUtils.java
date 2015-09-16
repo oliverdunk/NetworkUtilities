@@ -52,9 +52,9 @@ public class CompilerUtils {
     public static Class generateClass(String paste) {
         try {
             String fileName = getClassName(paste);
-            System.out.println(getClassName(paste));
             File classFile = new File("plugins/NetworkUtilities/compiler/" + fileName + ".class");
             File javaFile = new File("plugins/NetworkUtilities/compiler/" + fileName + ".java");
+            classFile.mkdirs();
             classFile.delete();
             javaFile.delete();
 

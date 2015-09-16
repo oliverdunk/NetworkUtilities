@@ -10,6 +10,8 @@ import java.util.Iterator;
 
 /**
  * Implementation of the Hastebin API
+ *
+ * @author OliverVsCreeper
  */
 public class PasteUtils {
 

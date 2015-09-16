@@ -1,5 +1,7 @@
 package me.olivervscreeper.networkutilities.game.events;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import me.olivervscreeper.networkutilities.game.Game;
 import me.olivervscreeper.networkutilities.game.states.GameState;
 import org.bukkit.event.Cancellable;
@@ -7,8 +9,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * Created on 30/11/2014.
- *
  * @author OliverVsCreeper
  */
 public class GameDestroyEvent extends Event implements Cancellable{
@@ -16,7 +16,7 @@ public class GameDestroyEvent extends Event implements Cancellable{
     static HandlerList handlers = new HandlerList();
     Boolean cancelled = false;
 
-    private Game game;
+    @Getter(AccessLevel.PUBLIC) private Game game;
 
     public GameDestroyEvent(Game game){
         this.game = game;
@@ -31,18 +31,12 @@ public class GameDestroyEvent extends Event implements Cancellable{
         return handlers;
     }
 
-    @Override
     public boolean isCancelled() {
         return cancelled;
     }
 
-    @Override
     public void setCancelled(boolean newStatus) {
         cancelled = newStatus;
-    }
-
-    public Game getGame() {
-        return game;
     }
 
 }

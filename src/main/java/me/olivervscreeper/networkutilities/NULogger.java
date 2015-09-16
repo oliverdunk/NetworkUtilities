@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Created by User on 07/12/2014.
+ * @author OliverVsCreeper
  */
 public class NULogger {
 
@@ -18,7 +18,7 @@ public class NULogger {
    * @param versionData If set to true, this will cause the logfile to be prefixed with several
    *                    lines based on version information for debug purposes
    */
-  public NULogger(Boolean versionData) {
+  public NULogger(boolean versionData) {
     if (!versionData) return;
     log("NU", "NetworkUtilities generated log file");
     log("NU", "Server running version " + NetworkUtilities.version);

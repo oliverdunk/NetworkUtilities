@@ -1,5 +1,7 @@
 package me.olivervscreeper.networkutilities.game.states;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.olivervscreeper.networkutilities.NetworkUtilities;
 import me.olivervscreeper.networkutilities.game.Game;
 
@@ -8,15 +10,13 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 /**
- * Created on 30/11/2014.
- *
  * @author OliverVsCreeper
  */
 public abstract class GameState implements Listener {
 
   public Game gameInstance;
-  private String name;
-  private String displayName;
+  @Getter @Setter private String name;
+  @Getter @Setter private String displayName;
 
   /**
    * Default constructor for a GameState
@@ -31,22 +31,10 @@ public abstract class GameState implements Listener {
     this.displayName = displayName;
   }
 
-  int runtime = 0;
-
-  public int getRuntime() {
-    return runtime;
-  }
+  @Getter int runtime = 0;
 
   public void incrementRuntime() {
     runtime++;
-  }
-
-  public String getName(){
-    return name;
-  }
-
-  public String getDisplayName(){
-    return displayName;
   }
 
   //If either return false, a GameState change can not take place

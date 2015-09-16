@@ -2,6 +2,9 @@ package me.olivervscreeper.networkutilities.utils;
 
 import junit.framework.TestCase;
 
+/**
+ * @author OliverVsCreeper
+ */
 public class PasteUtilsTest extends TestCase {
 
     public void testPaste(){

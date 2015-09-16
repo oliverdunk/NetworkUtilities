@@ -6,7 +6,7 @@
 
     <groupId>me.olivervscreeper.networkutilities</groupId>
     <artifactId>NetworkUtilities</artifactId>
-    <version>1.4.3-RELEASE</version>
+    <version>1.4.4-RELEASE</version>
 
     <repositories>
         <repository>
@@ -19,15 +19,25 @@
         </repository>
     </repositories>
 
+    <profiles>
+        <profile>
+            <id>default-profile</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <file>
+                    <exists>${java.home}/../lib/tools.jar</exists>
+                </file>
+            </activation>
+            <properties>
+                <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.8.7-R0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
             <version>1.8.7-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -45,6 +55,19 @@
             <artifactId>metrics</artifactId>
             <version>R7</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jdk.tools</groupId>
+            <artifactId>jdk.tools</artifactId>
+            <version>jdk1.8.0</version>
+            <scope>system</scope>
+            <systemPath>${toolsjar}</systemPath>
         </dependency>
     </dependencies>
 

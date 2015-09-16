@@ -2,6 +2,9 @@ package me.olivervscreeper.networkutilities.messages;
 
 import org.bukkit.entity.Player;
 
+/**
+ * @author OliverVsCreeper
+ */
 public class MessageUtils {
 
     public static void sendTitle(Player player, String title, int in, int stay, int out){

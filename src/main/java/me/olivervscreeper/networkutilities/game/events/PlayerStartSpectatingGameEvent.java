@@ -1,5 +1,6 @@
 package me.olivervscreeper.networkutilities.game.events;
 
+import lombok.Getter;
 import me.olivervscreeper.networkutilities.game.Game;
 import me.olivervscreeper.networkutilities.game.states.GameState;
 import org.bukkit.entity.Player;
@@ -8,8 +9,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * Created on 30/11/2014.
- *
  * @author OliverVsCreeper
  */
 public class PlayerStartSpectatingGameEvent extends Event implements Cancellable{
@@ -17,9 +16,9 @@ public class PlayerStartSpectatingGameEvent extends Event implements Cancellable
     static HandlerList handlers = new HandlerList();
     Boolean cancelled = false;
 
-    private Game game;
-    private Player player;
-    private GameState gameState;
+    @Getter private Game game;
+    @Getter private Player player;
+    @Getter private GameState gameState;
 
     public PlayerStartSpectatingGameEvent(Game game, Player player, GameState gameState){
         this.game = game;
@@ -36,25 +35,12 @@ public class PlayerStartSpectatingGameEvent extends Event implements Cancellable
         return handlers;
     }
 
-    @Override
     public boolean isCancelled() {
         return cancelled;
     }
 
-    @Override
     public void setCancelled(boolean newStatus) {
         cancelled = newStatus;
     }
 
-    public Game getGame() {
-        return game;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public GameState getGameState() {
-        return gameState;
-    }
 }

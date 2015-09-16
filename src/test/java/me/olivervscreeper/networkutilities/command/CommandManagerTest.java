@@ -11,6 +11,9 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author OliverVsCreeper
+ */
 public class CommandManagerTest extends TestCase {
 
     public boolean hasRun = false;

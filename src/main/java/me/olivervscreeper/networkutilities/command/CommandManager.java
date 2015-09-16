@@ -1,5 +1,6 @@
 package me.olivervscreeper.networkutilities.command;
 
+import lombok.Getter;
 import me.olivervscreeper.networkutilities.messages.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,9 +26,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * Template CommandManager.
  * Handles the loading and monitoring
  * of commands and executes methods with permission
- * checks where neccessary.
+ * checks where necessary.
  *
- * @author OliverVsCreeper
+ * @author Günther Jungbluth, OliverVsCreeper
  */
 public class CommandManager implements Listener{
 
@@ -41,10 +42,11 @@ public class CommandManager implements Listener{
      *
      */
     private class MethodPair {
-    	Method method;
-    	Object object;
-    	String permission;
-    	int priority;
+
+		@Getter Method method;
+		@Getter Object object;
+		@Getter String permission;
+		@Getter int priority;
     	
     	public MethodPair(Method method, Object object, String permission, int priority) {
     		this.method = method;
@@ -52,23 +54,7 @@ public class CommandManager implements Listener{
     		this.permission = permission;
     		this.priority = priority;
     	}
-    	
-		public int getPriority() {
-			return priority;
-		}
-		
-		public Object getObject(){
-			return object;
-		}
 
-
-		public Method getMethod() {
-			return method;
-		}
-
-		public String getPermission() {
-			return permission;
-		}
     }
     
     public String permissionMessage;

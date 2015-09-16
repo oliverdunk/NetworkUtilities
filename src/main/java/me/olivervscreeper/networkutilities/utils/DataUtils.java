@@ -38,6 +38,7 @@ public class DataUtils {
       oos.write(stringToSave);
       oos.close();
     } catch (Exception ex) {
+      ex.printStackTrace();
       NetworkUtilities
               .log("Attempted to save file to " + pathToSaveTo + " - sadly, an error occurred.");
     }

@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created on 30/11/2014.
- *
  * @author OliverVsCreeper
  */
 public class Message {

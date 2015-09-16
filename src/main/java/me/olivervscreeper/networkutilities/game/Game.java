@@ -1,13 +1,15 @@
 package me.olivervscreeper.networkutilities.game;
 
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import me.olivervscreeper.networkutilities.NULogger;
 import me.olivervscreeper.networkutilities.NetworkUtilities;
 import me.olivervscreeper.networkutilities.game.events.*;
 import me.olivervscreeper.networkutilities.game.extensions.GameExtension;
 import me.olivervscreeper.networkutilities.game.players.GamePlayer;
 import me.olivervscreeper.networkutilities.game.states.GameState;
-import me.olivervscreeper.networkutilities.game.states.IdleGameState;
 
 import me.olivervscreeper.networkutilities.messages.Message;
 import org.bukkit.Bukkit;
@@ -19,26 +21,23 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created on 29/11/2014.
- *
  * @author OliverVsCreeper
  */
 public abstract class Game implements Listener {
 
-  GameState currentState = null; //State of the Game
+  @Getter @NonNull GameState state = null; //State of the Game
   Iterator stateIterator;
-  private NULogger logger;
-  private String rawName;
-  private String name;
+
+  @Getter @Setter private NULogger logger;
+  @Getter @Setter private String rawName;
+  @Getter @Setter private String name;
 
   public HashMap<String, GamePlayer> players = new HashMap<String, GamePlayer>();
   public HashMap<String, GamePlayer> spectators = new HashMap<String, GamePlayer>();
@@ -47,28 +46,19 @@ public abstract class Game implements Listener {
 
   public abstract Location getLobbyLocation();
 
-  public String getName(){
-    return name;
-  }
-
-  public String getRawName(){
-    return rawName;
-  }
-
   /**
    * Default constructor for any Game instance
    *
    * @param logger Logger in which to write game debug information - cannot be null
    */
   public Game(NULogger logger, String rawName, String name) {
-    this.logger = logger;
-    this.rawName = rawName;
-    this.name = name;
+    setLogger(logger);
+    setRawName(rawName);
+    setName(name);
     logger.log("Game", rawName + " has been initialized");
     Bukkit.getPluginManager().registerEvents(this, NetworkUtilities.plugin);
     Bukkit.getScheduler().scheduleSyncRepeatingTask(NetworkUtilities.plugin,
                                                     new Runnable() {
-                                                      @Override
                                                       public void run() {
                                                         tick();
                                                       }
@@ -76,13 +66,6 @@ public abstract class Game implements Listener {
     logger.log("Game", "Events registered and ticks scheduled");
     GameCreateEvent event = new GameCreateEvent(this);
     Bukkit.getPluginManager().callEvent(event);
-  }
-
-  /**
-   * @return Debug logger in use by the Game instance
-   */
-  public NULogger getLogger() {
-    return logger;
   }
 
   /**
@@ -97,13 +80,6 @@ public abstract class Game implements Listener {
   }
 
   /**
-   * @return Returns the state of the Game instance
-   */
-  public GameState getState() {
-    return currentState;
-  }
-
-  /**
    * Calls the GameSwitchStateEvent. If this is successful, a state switch is attempted. However,
    * both the current state and next state could end this by returning false on initialization or
    * unloading
@@ -114,7 +90,7 @@ public abstract class Game implements Listener {
   @Deprecated //Deprecated to stop usage instead of nextState()
   public boolean setState(GameState state) {
     logger.log("Game", "Attempting to set state to " + state.getName());
-    if (currentState != null) {
+    if (this.state != null) {
       //Throw the linked event, and end the action if the event becomes cancelled
       GameSwitchStateEvent event = new GameSwitchStateEvent(this, state);
       Bukkit.getPluginManager().callEvent(event);
@@ -122,14 +98,14 @@ public abstract class Game implements Listener {
         return false;
       }
 
-      if (!currentState.onStateEnd()) {
+      if (!this.state.onStateEnd()) {
         return false;
       }
     }
     if (!state.onStateBegin()) {
       return false;
     }
-    currentState = state;
+    this.state = state;
     logger.log("Game", "State changed to " + getState().getName());
     return true;
   }
@@ -139,11 +115,11 @@ public abstract class Game implements Listener {
    * change is attempted. The tick method inside each state is also called here
    */
   public void tick() {
-    if (currentState == null) {
+    if (state == null) {
       nextState();
     }
-    currentState.tick();
-    currentState.incrementRuntime();
+    state.tick();
+    state.incrementRuntime();
   }
 
   /**
@@ -175,7 +151,7 @@ public abstract class Game implements Listener {
       return false;
     }
     //Throw the linked event, and end the action if the event becomes cancelled
-    PlayerJoinGameEvent event = new PlayerJoinGameEvent(this, player, currentState);
+    PlayerJoinGameEvent event = new PlayerJoinGameEvent(this, player, state);
     Bukkit.getPluginManager().callEvent(event);
     if (event.isCancelled()) {
       return false;
@@ -202,7 +178,7 @@ public abstract class Game implements Listener {
    */
   public boolean removePlayer(Player player) {
     //Throw the linked event, and end the action if the event becomes cancelled
-    PlayerLeaveGameEvent event = new PlayerLeaveGameEvent(this, player, currentState);
+    PlayerLeaveGameEvent event = new PlayerLeaveGameEvent(this, player, state);
     Bukkit.getPluginManager().callEvent(event);
     if (event.isCancelled()) {
       return false;
@@ -225,7 +201,7 @@ public abstract class Game implements Listener {
   public boolean addSpectator(Player player) {
     //Throw the linked event, and end the action if the event becomes cancelled
     PlayerStartSpectatingGameEvent event =
-        new PlayerStartSpectatingGameEvent(this, player, currentState);
+        new PlayerStartSpectatingGameEvent(this, player, state);
     Bukkit.getPluginManager().callEvent(event);
     if (event.isCancelled()) {
       return false;
@@ -251,7 +227,7 @@ public abstract class Game implements Listener {
   public boolean removeSpectator(Player player) {
     //Throw the linked event, and end the action if the event becomes cancelled
     PlayerStopSpectatingGameEvent event =
-        new PlayerStopSpectatingGameEvent(this, player, currentState);
+        new PlayerStopSpectatingGameEvent(this, player, state);
     Bukkit.getPluginManager().callEvent(event);
     if (event.isCancelled()) {
       return false;

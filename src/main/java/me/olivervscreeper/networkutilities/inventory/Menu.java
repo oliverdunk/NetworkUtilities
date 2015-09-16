@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by OliverVsCreeper on 29/01/2015.
+ * @author OliverVsCreeper
  */
 public class Menu implements Listener{
 
@@ -69,7 +69,6 @@ public class Menu implements Listener{
         if(closeOnClick){
             Bukkit.getScheduler().runTaskLater(NetworkUtilities.plugin,
                     new Runnable() {
-                        @Override
                         public void run() {
                             event.getWhoClicked().closeInventory();
                         }

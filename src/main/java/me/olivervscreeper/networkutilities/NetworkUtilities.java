@@ -6,7 +6,6 @@ import me.olivervscreeper.networkutilities.messages.Message;
 import me.olivervscreeper.networkutilities.messages.MessageDisplay;
 
 import me.olivervscreeper.networkutilities.utils.compiler.CompilerUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 public class NetworkUtilities extends JavaPlugin {
 
-  public static String version = "1.4.3-RELEASE";
+  public static String version = "1.4.4-RELEASE";
   public static String compatibility = "Spigot 1.8.8-R0.1-SNAPSHOT";
 
   public static Plugin plugin;
@@ -69,7 +68,7 @@ public class NetworkUtilities extends JavaPlugin {
    * @param message message for the console to log
    */
   public static void log(String message) {
-    plugin.getServer().getLogger().info("[NetworkUtilities] - " + message);
+    if(plugin != null) plugin.getServer().getLogger().info("[NetworkUtilities] - " + message);
   }
 
   /**
@@ -94,21 +93,30 @@ public class NetworkUtilities extends JavaPlugin {
   }
 
   @Command(label = "nu-log", permission = "nu.all")
-  public void nuLogCommand(Player player, List<String> args) {
-    new Message(Message.INFO).addRecipient(player).send("Log File: " + logger.getLog());
+  public void nuLogCommand(final Player player, List<String> args) {
+      new Message(Message.INFO).addRecipient(player).send("Uploading log...");
+      getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
+          public void run() {
+              new Message(Message.INFO).addRecipient(player).send("Log File: " + logger.getLog());
+          }
+      });
   }
 
   @Command(label = "nu-run", permission = "nu.all")
-  public void onRunCommand(Player player, List<String> args){
+  public void onRunCommand(final Player player, final List<String> args){
     if(args.size() == 1){
       new Message(Message.WARNING).addRecipient(player).send("This is a powerful command! Use with caution.");
       new Message(Message.NETWORK).addRecipient(player).send("Attempting to run Haste ID: " + args.get(0));
-      if(CompilerUtils.runString(args.get(0))){
-        new Message(Message.NETWORK).addRecipient(player).send("Successfully executed!");
-      }else{
-        new Message(Message.WARNING).addRecipient(player).send((ToolProvider.getSystemJavaCompiler() == null)
-                ? "Server is not running in a JDK!" : "An error occurred while executing!");
-      }
+      getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
+          public void run() {
+              if(CompilerUtils.runString(args.get(0))){
+                  new Message(Message.NETWORK).addRecipient(player).send("Successfully executed!");
+              }else{
+                  new Message(Message.WARNING).addRecipient(player).send((ToolProvider.getSystemJavaCompiler() == null)
+                          ? "Server is not running in a JDK!" : "An error occurred while executing!");
+              }
+          }
+      });
       return;
     }
     new Message(Message.WARNING).addRecipient(player).send("Usage: /run <HasteID>");

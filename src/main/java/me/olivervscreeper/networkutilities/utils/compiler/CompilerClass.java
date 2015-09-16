@@ -1,7 +1,7 @@
 package me.olivervscreeper.networkutilities.utils.compiler;
 
 /**
- * Created by User on 21/04/2015.
+ * @author OliverVsCreeper
  */
 public abstract class CompilerClass  {
 

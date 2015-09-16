@@ -9,8 +9,6 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 /**
- * Created on 30/11/2014.
- *
  * @author OliverVsCreeper
  */
 public class PlayerData {
