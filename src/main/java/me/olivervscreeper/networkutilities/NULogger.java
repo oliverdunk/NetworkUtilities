@@ -32,8 +32,8 @@ public class NULogger {
    * @param logMessage The message which should be logged
    */
   public void log(String from, String logMessage) {
-    if (!(log == "")) log = log + "\n";
-    log = log + getTimePrefix() + " " + "[" + from + "] " + logMessage;
+    if (log != "") log += "\n";
+    log += getTimePrefix() + " [" + from + "] " + logMessage;
   }
 
   /**
