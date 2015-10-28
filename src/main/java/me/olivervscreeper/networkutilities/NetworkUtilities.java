@@ -9,6 +9,7 @@ import me.olivervscreeper.networkutilities.utils.compiler.CompilerUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.mcstats.Metrics;
 
 import javax.tools.ToolProvider;
@@ -22,8 +23,8 @@ import java.util.List;
  */
 public class NetworkUtilities extends JavaPlugin {
 
-  public static String version = "1.4.4-RELEASE";
-  public static String compatibility = "Spigot 1.8.8-R0.1-SNAPSHOT";
+  public static final String version = "1.4.4-RELEASE";
+  public static final String compatibility = "Spigot 1.8.8-R0.1-SNAPSHOT";
 
   public static Plugin plugin;
   public static CommandManager manager;
@@ -107,16 +108,16 @@ public class NetworkUtilities extends JavaPlugin {
     if(args.size() == 1){
       new Message(Message.WARNING).addRecipient(player).send("This is a powerful command! Use with caution.");
       new Message(Message.NETWORK).addRecipient(player).send("Attempting to run Haste ID: " + args.get(0));
-      getServer().getScheduler().runTaskAsynchronously(this, new Runnable() {
-          public void run() {
-              if(CompilerUtils.runString(args.get(0))){
-                  new Message(Message.NETWORK).addRecipient(player).send("Successfully executed!");
-              }else{
-                  new Message(Message.WARNING).addRecipient(player).send((ToolProvider.getSystemJavaCompiler() == null)
-                          ? "Server is not running in a JDK!" : "An error occurred while executing!");
-              }
-          }
-      });
+        new BukkitRunnable(){
+            public void run() {
+                if(CompilerUtils.runString(args.get(0))){
+                    new Message(Message.NETWORK).addRecipient(player).send("Successfully executed!");
+                }else{
+                    new Message(Message.WARNING).addRecipient(player).send((ToolProvider.getSystemJavaCompiler() == null)
+                            ? "Server is not running in a JDK!" : "An error occurred while executing!");
+                }
+            }
+        }.runTaskLaterAsynchronously(this, 0);
       return;
     }
     new Message(Message.WARNING).addRecipient(player).send("Usage: /run <HasteID>");
