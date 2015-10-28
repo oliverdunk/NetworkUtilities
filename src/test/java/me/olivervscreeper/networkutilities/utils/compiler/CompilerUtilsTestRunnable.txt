@@ -1,0 +1,14 @@
+import me.olivervscreeper.networkutilities.utils.compiler.CompilerClass;
+import me.olivervscreeper.networkutilities.utils.compiler.CompilerUtilsTest;
+
+/**
+ * Created by Oliver on 28/10/2015.
+ */
+public class CompilerUtilsTestRunnable extends CompilerClass{
+
+    @Override
+    public void run() {
+        CompilerUtilsTest.hasRun = true;
+    }
+
+}
