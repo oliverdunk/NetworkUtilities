@@ -4,16 +4,13 @@ import me.olivervscreeper.networkutilities.command.Command;
 import me.olivervscreeper.networkutilities.command.CommandManager;
 import me.olivervscreeper.networkutilities.messages.Message;
 import me.olivervscreeper.networkutilities.messages.MessageDisplay;
-
 import me.olivervscreeper.networkutilities.utils.compiler.CompilerUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.mcstats.Metrics;
 
 import javax.tools.ToolProvider;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -53,12 +50,15 @@ public class NetworkUtilities extends JavaPlugin {
   }
 
   private void mcStats() {
-    try {
+      /* TODO: Enable it again when the MCStats website is back online. */
+      logger.log("NU", "MCStats is temporarily disabled.");
+
+    /*try {
       Metrics metrics = new Metrics(this);
       metrics.start();
     } catch (IOException e) {
       logger.log("NU", "Failed to enable MCStats connection");
-    }
+    }*/
   }
 
   /**
