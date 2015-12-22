@@ -6,5 +6,10 @@ package me.olivervscreeper.networkutilities.messages;
  * @author OliverVsCreeper
  */
 public enum MessageDisplay {
-  CHAT, ACTIONBAR, TITLE, SUBTITLE
+
+    CHAT,
+    ACTIONBAR,
+    TITLE,
+    SUBTITLE
+
 }

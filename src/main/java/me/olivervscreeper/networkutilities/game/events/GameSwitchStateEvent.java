@@ -1,43 +1,38 @@
 package me.olivervscreeper.networkutilities.game.events;
 
-import lombok.Getter;
-import me.olivervscreeper.networkutilities.game.Game;
-import me.olivervscreeper.networkutilities.game.states.GameState;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import lombok.Getter;
+import lombok.Setter;
+import me.olivervscreeper.networkutilities.game.Game;
+import me.olivervscreeper.networkutilities.game.states.GameState;
+
 /**
  * @author OliverVsCreeper
  */
-public class GameSwitchStateEvent extends Event implements Cancellable{
+@Getter
+public class GameSwitchStateEvent extends Event implements Cancellable {
 
-    static HandlerList handlers = new HandlerList();
-    Boolean cancelled = false;
-
-    @Getter private Game game;
-    @Getter private GameState newGameState;
-
-    public GameSwitchStateEvent(Game game, GameState newGameState){
-        this.game = game;
-        this.newGameState = newGameState;
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+    private static HandlerList handlers = new HandlerList();
 
     public static HandlerList getHandlerList() {
         return handlers;
     }
 
-    public boolean isCancelled() {
-        return cancelled;
-    }
+    @Setter private boolean cancelled;
+    private Game game;
+    private GameState newGameState;
 
-    public void setCancelled(boolean newStatus) {
-        cancelled = newStatus;
+    public GameSwitchStateEvent(Game game, GameState newGameState) {
+        this.game = game;
+        this.newGameState = newGameState;
+        cancelled = false;
+    }
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
     }
 
 }

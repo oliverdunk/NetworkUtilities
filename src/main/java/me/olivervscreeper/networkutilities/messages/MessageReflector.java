@@ -1,21 +1,24 @@
 package me.olivervscreeper.networkutilities.messages;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Reflects titles and subtitles, version independent. Heavily adapted before use.
  *
- * @version 1.1.0
  * @author Maxim Van de Wynckel
+ * @version 1.1.0
  */
 public class MessageReflector {
+
+    private static final Map<Class<?>, Class<?>> CORRESPONDING_TYPES = new HashMap<Class<?>, Class<?>>();
     /* Title packet */
     private Class<?> packetTitle;
     private Class<?> packetChat;
@@ -25,10 +28,17 @@ public class MessageReflector {
     private Class<?> nmsChatSerializer;
     private Class<?> chatBaseComponent;
 
-    private static final Map<Class<?>, Class<?>> CORRESPONDING_TYPES = new HashMap<Class<?>, Class<?>>();
-
     public MessageReflector() {
         loadClasses();
+    }
+
+    private static boolean equalsTypeArray(Class<?>[] a, Class<?>[] o) {
+        if (a.length != o.length)
+            return false;
+        for (int i = 0; i < a.length; i++)
+            if (!a[i].equals(o[i]) && !a[i].isAssignableFrom(o[i]))
+                return false;
+        return true;
     }
 
     private void loadClasses() {
@@ -39,7 +49,7 @@ public class MessageReflector {
         nmsChatSerializer = getNMSClass("IChatBaseComponent$ChatSerializer");
     }
 
-    public void send(int type, Player player, String title, int in, int stay, int out){
+    public void send(int type, Player player, String title, int in, int stay, int out) {
         try {
             Object handle = getHandle(player);
             Object connection = getField(handle.getClass(), "playerConnection").get(handle);
@@ -52,10 +62,12 @@ public class MessageReflector {
             Object serialized = getMethod(nmsChatSerializer, "a", String.class).invoke(null, "{text:\"" + ChatColor.translateAlternateColorCodes('&', title) + "\"" + "}");
             packet = packetTitle.getConstructor(packetActions, chatBaseComponent).newInstance(actions[type], serialized);
             sendPacket.invoke(connection, packet);
-        }catch (Exception ex){}
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void sendActionbar(Player player, String title, int in, int stay, int out){
+    public void sendActionbar(Player player, String title, int in, int stay, int out) {
         try {
             Object handle = getHandle(player);
             Object connection = getField(handle.getClass(), "playerConnection").get(handle);
@@ -68,7 +80,9 @@ public class MessageReflector {
             Object serialized = getMethod(nmsChatSerializer, "a", String.class).invoke(null, "{text:\"" + ChatColor.translateAlternateColorCodes('&', title) + "\"" + "}");
             packet = packetChat.getConstructor(chatBaseComponent, byte.class).newInstance(serialized, (byte) 2);
             sendPacket.invoke(connection, packet);
-        }catch (Exception ex){}
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     private Class<?> getPrimitiveType(Class<?> clazz) {
@@ -84,19 +98,10 @@ public class MessageReflector {
         return types;
     }
 
-    private static boolean equalsTypeArray(Class<?>[] a, Class<?>[] o) {
-        if (a.length != o.length)
-            return false;
-        for (int i = 0; i < a.length; i++)
-            if (!a[i].equals(o[i]) && !a[i].isAssignableFrom(o[i]))
-                return false;
-        return true;
-    }
-
     private Object getHandle(Object obj) {
         try {
             return getMethod("getHandle", obj.getClass()).invoke(obj);
-        } catch (Exception e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             return null;
         }
@@ -124,7 +129,7 @@ public class MessageReflector {
         Class<?> clazz = null;
         try {
             clazz = Class.forName(fullName);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return clazz;
@@ -152,12 +157,12 @@ public class MessageReflector {
         return null;
     }
 
-    private boolean ClassListEqual(Class<?>[] l1, Class<?>[] l2) {
+    private boolean ClassListEqual(Class<?>[] classListOne, Class<?>[] classListTwo) {
         boolean equal = true;
-        if (l1.length != l2.length)
+        if (classListOne.length != classListTwo.length)
             return false;
-        for (int i = 0; i < l1.length; i++)
-            if (l1[i] != l2[i]) {
+        for (int i = 0; i < classListOne.length; i++)
+            if (classListOne[i] != classListTwo[i]) {
                 equal = false;
                 break;
             }
