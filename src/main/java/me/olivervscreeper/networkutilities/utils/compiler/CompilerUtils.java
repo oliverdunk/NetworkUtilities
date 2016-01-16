@@ -1,16 +1,10 @@
 package me.olivervscreeper.networkutilities.utils.compiler;
 
 
-import me.olivervscreeper.networkutilities.NetworkUtilities;
-import me.olivervscreeper.networkutilities.utils.DataUtils;
-import me.olivervscreeper.networkutilities.utils.PasteUtils;
 import org.bukkit.Bukkit;
 
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
-import java.io.*;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -19,12 +13,23 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
+
+import me.olivervscreeper.networkutilities.NetworkUtilities;
+import me.olivervscreeper.networkutilities.utils.DataUtils;
+import me.olivervscreeper.networkutilities.utils.PasteUtils;
+
 /**
  * Created by OliverVsCreeper on 20/04/2015.
+ *
  * @author Inspired by the work of Jonas Balsfulland, but with many modifications and changes.
  *
- * This is essentially a very dangerous feature. In order to use it, your server must be running in a JDK, rather
- * than the JRE, and you will need full NetworkUtilities permissions.
+ *         This is essentially a very dangerous feature. In order to use it, your server must be
+ *         running in a JDK, rather than the JRE, and you will need full NetworkUtilities
+ *         permissions.
  */
 public class CompilerUtils {
 
@@ -35,14 +40,14 @@ public class CompilerUtils {
         new File("plugins/NetworkUtilities/compiler/").mkdirs();
 
         String paste = PasteUtils.getPaste(ID);
-        while(paste.trim().isEmpty()) paste = PasteUtils.getPaste(ID);
+        while (paste.trim().isEmpty()) paste = PasteUtils.getPaste(ID);
         Class classFile = generateClass(paste);
         if (classFile == null) return false; //Failure
         try {
             CompilerClass compilerClass = (CompilerClass) classFile.newInstance();
             compilerClass.run();
             NetworkUtilities.logger.log("CompilerUtils", "Successfully ran Haste ID: " + ID);
-        } catch (Exception e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             NetworkUtilities.logger.log("CompilerUtils", "Error running Haste ID: " + ID);
             return false; //Failure
         }
@@ -69,7 +74,7 @@ public class CompilerUtils {
             URL url = new File("plugins/NetworkUtilities/compiler/").toURI().toURL();
             cl = new URLClassLoader(new URL[]{url}, NetworkUtilities.class.getClassLoader());
             return cl.loadClass(fileName);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException |  MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             return null;
         }
@@ -79,7 +84,7 @@ public class CompilerUtils {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         List<String> optionList = new ArrayList();
         String classes = buildClassPath(new String[]{getJar(Bukkit.class).getAbsolutePath(), getPluginDirectory().getAbsolutePath() + "/*"});
-        optionList.addAll(Arrays.asList(new String[] { "-classpath", classes }));
+        optionList.addAll(Arrays.asList(new String[]{"-classpath", classes}));
         File[] files1 = new File[1];
         files1[0] = file;
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
@@ -97,7 +102,8 @@ public class CompilerUtils {
         List<String> words = Arrays.asList(string.split(" "));
         Iterator wordIterator = words.iterator();
         while (wordIterator.hasNext())
-            if (wordIterator.next().equals("class")) return ((String) wordIterator.next()).replace("{", "");
+            if (wordIterator.next().equals("class"))
+                return ((String) wordIterator.next()).replace("{", "");
         return null;
     }
 
@@ -121,8 +127,8 @@ public class CompilerUtils {
         return sb.toString();
     }
 
-    public static File getJar(Class aclass) throws URISyntaxException {
-        return new File(aclass.getProtectionDomain().getCodeSource().getLocation().toURI());
+    public static File getJar(Class clazz) throws URISyntaxException {
+        return new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI());
     }
 
 }

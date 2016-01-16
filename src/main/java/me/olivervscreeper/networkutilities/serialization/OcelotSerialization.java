@@ -2,8 +2,6 @@ package me.olivervscreeper.networkutilities.serialization;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Ocelot;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,102 +16,102 @@ import org.json.JSONObject;
  */
 public class OcelotSerialization {
 
-  protected OcelotSerialization() {
-  }
-
-  /**
-   * Serialize an Ocelot into a JSONObject
-   *
-   * @param ocelot The ocelot to serialize
-   * @return The serialize Ocelot, in the form of a JSONObject
-   */
-  public static JSONObject serializeOcelot(Ocelot ocelot) {
-    try {
-      JSONObject root = LivingEntitySerialization.serializeEntity(ocelot);
-      root.put("type", ocelot.getCatType().name());
-      return root;
-    } catch (JSONException e) {
-      e.printStackTrace();
-      return null;
+    protected OcelotSerialization() {
     }
-  }
 
-  /**
-   * Serialize an Ocelot as a String
-   *
-   * @param ocelot The Ocelot to serialize
-   * @return The serialization string
-   */
-  public static String serializeOcelotAsString(Ocelot ocelot) {
-    return serializeOcelotAsString(ocelot, false);
-  }
-
-  /**
-   * Serialize an Ocelot as a String
-   *
-   * @param ocelot The Ocelot to serialize
-   * @param pretty Whether the resulting string should be 'pretty' or not
-   * @return The serialization string
-   */
-  public static String serializeOcelotAsString(Ocelot ocelot, boolean pretty) {
-    return serializeOcelotAsString(ocelot, pretty, 5);
-  }
-
-  /**
-   * Serialize an Ocelot as a String
-   *
-   * @param ocelot       The Ocelot to serialize
-   * @param pretty       Whether the resulting string should be 'pretty' or not
-   * @param indentFactor The amount of spaces in a tab
-   * @return The serialization string
-   */
-  public static String serializeOcelotAsString(Ocelot ocelot, boolean pretty, int indentFactor) {
-    try {
-      if (pretty) {
-        return serializeOcelot(ocelot).toString(indentFactor);
-      } else {
-        return serializeOcelot(ocelot).toString();
-      }
-    } catch (JSONException e) {
-      e.printStackTrace();
-      return null;
+    /**
+     * Serialize an Ocelot into a JSONObject
+     *
+     * @param ocelot The ocelot to serialize
+     * @return The serialize Ocelot, in the form of a JSONObject
+     */
+    public static JSONObject serializeOcelot(Ocelot ocelot) {
+        try {
+            JSONObject root = LivingEntitySerialization.serializeEntity(ocelot);
+            root.put("type", ocelot.getCatType().name());
+            return root;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-  }
 
-  /**
-   * Spawn a ocelot in a desired location desired stats
-   *
-   * @param location Where to spawn the ocelot
-   * @param stats    The desired stats
-   * @return The spawned Ocelot
-   */
-  public static Ocelot spawnOcelot(Location location, String stats) {
-    try {
-      return spawnOcelot(location, new JSONObject(stats));
-    } catch (JSONException e) {
-      e.printStackTrace();
-      return null;
+    /**
+     * Serialize an Ocelot as a String
+     *
+     * @param ocelot The Ocelot to serialize
+     * @return The serialization string
+     */
+    public static String serializeOcelotAsString(Ocelot ocelot) {
+        return serializeOcelotAsString(ocelot, false);
     }
-  }
 
-  /**
-   * Spawn a ocelot in a desired location desired stats
-   *
-   * @param location Where to spawn the ocelot
-   * @param stats    The desired stats
-   * @return The spawned Ocelot
-   */
-  public static Ocelot spawnOcelot(Location location, JSONObject stats) {
-    try {
-      Ocelot ocelot = (Ocelot) LivingEntitySerialization.spawnEntity(location, stats);
-      if (stats.has("type")) {
-        ocelot.setCatType(Ocelot.Type.valueOf(stats.getString("type")));
-      }
-      return ocelot;
-    } catch (JSONException e) {
-      e.printStackTrace();
-      return null;
+    /**
+     * Serialize an Ocelot as a String
+     *
+     * @param ocelot The Ocelot to serialize
+     * @param pretty Whether the resulting string should be 'pretty' or not
+     * @return The serialization string
+     */
+    public static String serializeOcelotAsString(Ocelot ocelot, boolean pretty) {
+        return serializeOcelotAsString(ocelot, pretty, 5);
     }
-  }
+
+    /**
+     * Serialize an Ocelot as a String
+     *
+     * @param ocelot       The Ocelot to serialize
+     * @param pretty       Whether the resulting string should be 'pretty' or not
+     * @param indentFactor The amount of spaces in a tab
+     * @return The serialization string
+     */
+    public static String serializeOcelotAsString(Ocelot ocelot, boolean pretty, int indentFactor) {
+        try {
+            if (pretty) {
+                return serializeOcelot(ocelot).toString(indentFactor);
+            } else {
+                return serializeOcelot(ocelot).toString();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Spawn a ocelot in a desired location desired stats
+     *
+     * @param location Where to spawn the ocelot
+     * @param stats    The desired stats
+     * @return The spawned Ocelot
+     */
+    public static Ocelot spawnOcelot(Location location, String stats) {
+        try {
+            return spawnOcelot(location, new JSONObject(stats));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Spawn a ocelot in a desired location desired stats
+     *
+     * @param location Where to spawn the ocelot
+     * @param stats    The desired stats
+     * @return The spawned Ocelot
+     */
+    public static Ocelot spawnOcelot(Location location, JSONObject stats) {
+        try {
+            Ocelot ocelot = (Ocelot) LivingEntitySerialization.spawnEntity(location, stats);
+            if (stats.has("type")) {
+                ocelot.setCatType(Ocelot.Type.valueOf(stats.getString("type")));
+            }
+            return ocelot;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }
