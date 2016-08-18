@@ -47,7 +47,7 @@ public class TeamsExtension extends GameExtension implements Listener {
 
     @Override //To prevent players without a team, loading in game is disabled
     public boolean onEnable() {
-        if (gameInstance.players.size() > 0) {
+        if (gameInstance.getPlayers().size() > 0) {
             gameInstance.getLogger().log("Teams", "Extension cannot be enabled with players ingame");
             return false;
         }

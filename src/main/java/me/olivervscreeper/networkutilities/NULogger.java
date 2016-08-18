@@ -3,6 +3,7 @@ package me.olivervscreeper.networkutilities;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import lombok.Getter;
 import me.olivervscreeper.networkutilities.utils.PasteUtils;
 
 /**
@@ -10,7 +11,7 @@ import me.olivervscreeper.networkutilities.utils.PasteUtils;
  */
 public class NULogger {
 
-    private String log = "";
+    public String log = "";
 
     /**
      * Constructor creates a new logger instance.

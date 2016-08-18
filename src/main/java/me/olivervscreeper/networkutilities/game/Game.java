@@ -41,7 +41,7 @@ import me.olivervscreeper.networkutilities.messages.Message;
 @Getter
 public abstract class Game implements Listener {
 
-    private Map<String, GamePlayer> players;
+    @Getter private Map<String, GamePlayer> players;
     private Map<String, GamePlayer> spectators;
     @NonNull private GameState state = null; //State of the Game
     private Iterator stateIterator;

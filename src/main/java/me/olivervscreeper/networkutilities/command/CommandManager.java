@@ -33,7 +33,7 @@ import me.olivervscreeper.networkutilities.messages.Message;
  * Created on 28/11/2014. Template CommandManager. Handles the loading and monitoring of commands
  * and executes methods with permission checks where necessary.
  *
- * @author Günther Jungbluth, OliverVsCreeper
+ * @author Gonther Jungbluth, OliverVsCreeper
  */
 public class CommandManager implements Listener {
 
